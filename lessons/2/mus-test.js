@@ -4,6 +4,25 @@ var mus = require('./mus-compiler.js');
 var test_cases = [
 
   {
+    message: "Simple one-note test",
+    mus: { tag: 'note', pitch: 'a4', dur: 250 },
+    note: [ { tag: 'note', pitch: 'a4', start: 0, dur: 250 } ]
+  },
+
+  {
+    message: "Simple two-note test",
+    mus: {
+      tag: 'seq',
+      left: { tag: 'note', pitch: 'a4', dur: 250 },
+      right: { tag: 'note', pitch: 'b4', dur: 250 }
+    },
+    note: [
+      { tag: 'note', pitch: 'a4', start: 0, dur: 250 },
+      { tag: 'note', pitch: 'b4', start: 250, dur: 250 }
+    ]
+  },
+
+  {
     message: "Simple four-note test",
     mus: {
       tag: 'seq',
@@ -26,10 +45,32 @@ var test_cases = [
     ]
   },
 
+  {
+    message: "C major chord",
+    mus: {
+      tag: 'par',
+      left: { tag: 'note', pitch: 'c4', dur: 250 },
+      right: {
+        tag: 'par',
+        left: { tag: 'note', pitch: 'e4', dur: 250 },
+        right: { tag: 'note', pitch: 'g4', dur: 250 }
+      }
+    },
+    note: [
+      { tag: 'note', pitch: 'c4', start: 0, dur: 250 },
+      { tag: 'note', pitch: 'e4', start: 0, dur: 250 },
+      { tag: 'note', pitch: 'g4', start: 0, dur: 250 }
+    ]
+  },
+
 ];
 
 for (var i in test_cases) {
   if (/[^0-9]/.test(i)) continue;
   tc = test_cases[i];
-  assert.test(mus.compile(tc.mus), tc.note, tc.message);
+  if ('note' in tc) {
+    assert.test(mus.compile(tc.mus), tc.note, tc.message);
+  } else if ('note_midi' in tc) {
+    assert.test(mus.midi_pitches(mus.compile(tc.mus)), tc.note_midi, tc.message);
+  }
 }
