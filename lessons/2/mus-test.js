@@ -1,4 +1,5 @@
-var assert = require('../../lib/assert.js');
+var assert = require('assert');
+var testrunner = require('../../lib/testrunner.js');
 var mus = require('./mus-compiler.js');
 
 var test_cases = [
@@ -185,17 +186,10 @@ var test_cases = [
 
 ];
 
-for (var i in test_cases) {
-  if (/[^0-9]/.test(i)) continue;
-  tc = test_cases[i];
-  try {
-    if ('note' in tc) {
-      assert.test(mus.compile(tc.mus), tc.note, tc.message);
-    } else if ('note_midi' in tc) {
-      assert.test(mus.midi_pitches(mus.compile(tc.mus)), tc.note_midi, tc.message);
-    }
-  } catch (e) {
-    console.log("\033[1;31mFAIL\033[m: " + tc.message);
-    console.log("  "+e);
+testrunner.run(test_cases, function(tc){
+  if ('note' in tc) {
+    assert.deepEqual(mus.compile(tc.mus), tc.note, tc.message);
+  } else if ('note_midi' in tc) {
+    assert.deepEqual(mus.midi_pitches(mus.compile(tc.mus)), tc.note_midi, tc.message);
   }
-}
+});
