@@ -13,6 +13,7 @@ var endTime = function (start, musexpr) {
 };
 
 var compile_dispatch = {
+
   'note': function(s, i, o) {
     o.push({
       tag: 'note',
@@ -36,6 +37,11 @@ var compile_dispatch = {
     );
     return s;
   },
+
+  'rest': function(s, i, o) {
+    return s + i.dur;
+  },
+
 };
 
 var compile_ = function (start, musexpr, out) {
