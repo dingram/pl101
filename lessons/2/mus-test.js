@@ -64,6 +64,24 @@ var test_cases = [
   },
 
   {
+    message: "C major chord (MIDI)",
+    mus: {
+      tag: 'par',
+      left: { tag: 'note', pitch: 'c4', dur: 250 },
+      right: {
+        tag: 'par',
+        left: { tag: 'note', pitch: 'e4', dur: 250 },
+        right: { tag: 'note', pitch: 'g4', dur: 250 }
+      }
+    },
+    note_midi: [
+      { tag: 'note', pitch: 60, start: 0, dur: 250 },
+      { tag: 'note', pitch: 64, start: 0, dur: 250 },
+      { tag: 'note', pitch: 67, start: 0, dur: 250 }
+    ]
+  },
+
+  {
     message: "Simple two-note test with rest",
     mus: {
       tag: 'seq',

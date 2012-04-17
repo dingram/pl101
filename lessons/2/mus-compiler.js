@@ -59,4 +59,19 @@ var compile = function (musexpr) {
   return out;
 };
 
-module.exports = {compile: compile};
+var midi_letter_pitches = { a:9, b:11, c:0, d:2, e:4, f:5, g:7 };
+var pitch_to_midi_ = function(p) {
+  var note = p.substr(0, 1), octave = parseInt(p.substr(1), 10);
+  return 12 * (octave + 1) + midi_letter_pitches[note];
+};
+
+/* NOTE: For efficiency, this modifies the input */
+var midi_pitches = function (noteexpr) {
+  for (var i in noteexpr) {
+    if (/[^0-9]/.test(i)) continue;
+    noteexpr[i].pitch = pitch_to_midi_(noteexpr[i].pitch);
+  }
+  return noteexpr;
+};
+
+module.exports = {compile: compile, midi_pitches: midi_pitches};
