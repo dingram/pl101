@@ -68,9 +68,14 @@ var test_cases = [
 for (var i in test_cases) {
   if (/[^0-9]/.test(i)) continue;
   tc = test_cases[i];
-  if ('note' in tc) {
-    assert.test(mus.compile(tc.mus), tc.note, tc.message);
-  } else if ('note_midi' in tc) {
-    assert.test(mus.midi_pitches(mus.compile(tc.mus)), tc.note_midi, tc.message);
+  try {
+    if ('note' in tc) {
+      assert.test(mus.compile(tc.mus), tc.note, tc.message);
+    } else if ('note_midi' in tc) {
+      assert.test(mus.midi_pitches(mus.compile(tc.mus)), tc.note_midi, tc.message);
+    }
+  } catch (e) {
+    console.log("\033[1;31mFAIL\033[m: " + tc.message);
+    console.log("  "+e);
   }
 }
