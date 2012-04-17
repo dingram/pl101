@@ -116,7 +116,7 @@ var test_cases = [
           left: {
             tag: 'seq',
             left: { tag: 'note', pitch: 'c4', dur: 500 },
-            right: { tag: 'rest', dur: 500 },
+            right: { tag: 'rest', duration: 500 },
           },
           right: { tag: 'note', pitch: 'd4', dur: 500 }
         }

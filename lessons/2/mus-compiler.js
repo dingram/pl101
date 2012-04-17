@@ -41,7 +41,7 @@ var compile_dispatch = {
   },
 
   'rest': function(s, i, o) {
-    return s + i.dur;
+    return s + (('dur' in i) ? i.dur : i.duration);
   },
 
   'repeat': function(s, i, o) {
