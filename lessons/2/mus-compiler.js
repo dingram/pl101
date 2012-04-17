@@ -25,17 +25,18 @@ var compile_dispatch = {
   },
 
   'seq': function(s, i, o) {
-    s = compile_(s, i.left, o);
-    s = compile_(s, i.right, o);
-    return s;
+    return compile_(
+      compile_(s, i.left, o),
+      i.right,
+      o
+    );
   },
 
   'par': function(s, i, o) {
-    s = Math.max(
+    return Math.max(
       compile_(s, i.left, o),
       compile_(s, i.right, o)
     );
-    return s;
   },
 
   'rest': function(s, i, o) {
