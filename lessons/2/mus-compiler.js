@@ -5,7 +5,7 @@ var endTime_dispatch = {
 };
 
 var endTime = function (start, musexpr) {
-  if (!musexpr.tag in endTime_dispatch) {
+  if (!(musexpr.tag in endTime_dispatch)) {
     throw 'Unrecognised music tag "' + musexpr.tag + '"';
     return start;
   }
@@ -39,7 +39,7 @@ var compile_dispatch = {
 };
 
 var compile_ = function (start, musexpr, out) {
-  if (!musexpr.tag in compile_dispatch) {
+  if (!(musexpr.tag in compile_dispatch)) {
     throw 'Unrecognised music tag "' + musexpr.tag + '"';
     return start;
   }
