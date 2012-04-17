@@ -2,6 +2,7 @@ var endTime_dispatch = {
   'note': function(t,e) { return t + e.dur; },
   'seq':  function(t,e) { return endTime(endTime(t, e.left), e.right); },
   'par':  function(t,e) { return Math.max(endTime(t, e.left), endTime(t, e.right)); },
+  'rest': function(t,e) { return t + e.dur; },
 };
 
 var endTime = function (start, musexpr) {
