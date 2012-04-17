@@ -44,6 +44,12 @@ var compile_dispatch = {
     return s + i.dur;
   },
 
+  'repeat': function(s, i, o) {
+    for (var n = 0; n < i.count; ++n) {
+      s = compile_(s, i.section, o);
+    }
+  },
+
 };
 
 var compile_ = function (start, musexpr, out) {
