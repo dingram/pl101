@@ -81,4 +81,43 @@ var midi_pitches = function (noteexpr) {
   return noteexpr;
 };
 
-module.exports = {compile: compile, midi_pitches: midi_pitches};
+
+/**
+ * Generate a sequence of notes from more convenient input
+ */
+var seqgen = function(input) {
+  var elts = input.split(/[ \t\n\r]+/);
+  var seq = create_empty_seq(elts.length);
+  seq = fill_seq(seq, elts);
+  return seq;
+};
+
+var create_empty_seq = function(len) {
+  if (len <= 1) {
+    return {};
+  } else {
+    // bias to heavy left -- swap ceil/floor for heavy right
+    return { tag: 'seq', left: create_empty_seq(Math.ceil(len/2)), right: create_empty_seq(Math.floor(len/2)) };
+  }
+};
+
+var genstr_to_note = function(str) {
+  var t = str.split(':');
+  if (t[0] === 'r') {
+    return { tag: 'rest', dur: parseInt(t[1], 10) };
+  } else {
+    return { tag: 'note', pitch: t[0], dur: parseInt(t[1], 10) };
+  }
+};
+
+var fill_seq = function(seq, notes) {
+  if (seq === null || !('tag' in seq)) {
+    seq = genstr_to_note(notes.shift());
+  } else {
+    seq.left = fill_seq(seq.left, notes);
+    seq.right = fill_seq(seq.right, notes);
+  }
+  return seq;
+};
+
+module.exports = {compile: compile, midi_pitches: midi_pitches, seqgen: seqgen};
