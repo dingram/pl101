@@ -141,6 +141,42 @@ var test_cases = [
   },
 
   {
+    message: "E major chord (MIDI)",
+    mus: {
+      tag: 'par',
+      left: { tag: 'note', pitch: 'e4', dur: 250 },
+      right: {
+        tag: 'par',
+        left: { tag: 'note', pitch: 'g#4', dur: 250 },
+        right: { tag: 'note', pitch: 'b4', dur: 250 }
+      }
+    },
+    note_midi: [
+      { tag: 'note', pitch: 64, start: 0, dur: 250 },
+      { tag: 'note', pitch: 68, start: 0, dur: 250 },
+      { tag: 'note', pitch: 71, start: 0, dur: 250 }
+    ]
+  },
+
+  {
+    message: "Eb major chord (MIDI)",
+    mus: {
+      tag: 'par',
+      left: { tag: 'note', pitch: 'eb4', dur: 250 },
+      right: {
+        tag: 'par',
+        left: { tag: 'note', pitch: 'g4', dur: 250 },
+        right: { tag: 'note', pitch: 'bb4', dur: 250 }
+      }
+    },
+    note_midi: [
+      { tag: 'note', pitch: 63, start: 0, dur: 250 },
+      { tag: 'note', pitch: 67, start: 0, dur: 250 },
+      { tag: 'note', pitch: 70, start: 0, dur: 250 }
+    ]
+  },
+
+  {
     message: "Simple two-note test with rest",
     mus: mus.seqgen('a4:250 r:100 b4:250'),
     note: [

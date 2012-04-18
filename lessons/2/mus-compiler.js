@@ -73,8 +73,9 @@ var compile = function (musexpr) {
 
 var midi_letter_pitches = { a:21, b:23, c:12, d:14, e:16, f:17, g:19 };
 var pitch_to_midi_ = function(p) {
-  var note = p.substr(0, 1), octave = parseInt(p.substr(1), 10);
-  return (12 * octave) + midi_letter_pitches[note];
+  var matches = /([a-g])(#+|b+)?([0-9]+)$/i.exec(p);
+  var note = matches[1], accidental = matches[2] || '', octave = parseInt(matches[3], 10);
+  return (12 * octave) + midi_letter_pitches[note] + (accidental.substr(0)=='#'?1:-1) * accidental.length;
 };
 
 /* NOTE: For efficiency, this modifies the input */
