@@ -3,6 +3,8 @@ var endTime_dispatch = {
   'seq':  function(t,e) { return endTime(endTime(t, e.left), e.right); },
   'par':  function(t,e) { return Math.max(endTime(t, e.left), endTime(t, e.right)); },
   'rest': function(t,e) { return t + e.dur; },
+  // note: I use 0 in the call here, to work out how long the section lasts in isolation
+  'repeat': function(t,e) { return t + e.count * endTime(0, e.section); },
 };
 
 var endTime = function (start, musexpr) {
