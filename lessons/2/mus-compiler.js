@@ -71,10 +71,10 @@ var compile = function (musexpr) {
   return out;
 };
 
-var midi_letter_pitches = { a:9, b:11, c:0, d:2, e:4, f:5, g:7 };
+var midi_letter_pitches = { a:21, b:23, c:12, d:14, e:16, f:17, g:19 };
 var pitch_to_midi_ = function(p) {
   var note = p.substr(0, 1), octave = parseInt(p.substr(1), 10);
-  return 12 * (octave + 1) + midi_letter_pitches[note];
+  return (12 * octave) + midi_letter_pitches[note];
 };
 
 /* NOTE: For efficiency, this modifies the input */
