@@ -1,65 +1,68 @@
-var endTime_dispatch = {
-  'note': function(t,e) { return t + e.dur; },
-  'seq':  function(t,e) { return endTime(endTime(t, e.left), e.right); },
-  'par':  function(t,e) { return Math.max(endTime(t, e.left), endTime(t, e.right)); },
-  'rest': function(t,e) { return t + e.dur; },
-  // note: I use 0 in the call here, to work out how long the section lasts in isolation
-  'repeat': function(t,e) { return t + e.count * endTime(0, e.section); },
+var _dispatch = {
+  endTime: {
+    'note': function(t,e) { return t + e.dur; },
+    'seq':  function(t,e) { return endTime(endTime(t, e.left), e.right); },
+    'par':  function(t,e) { return Math.max(endTime(t, e.left), endTime(t, e.right)); },
+    'rest': function(t,e) { return t + e.dur; },
+    // note: I use 0 in the call here, to work out how long the section lasts in isolation
+    'repeat': function(t,e) { return t + e.count * endTime(0, e.section); },
+  },
+
+  compile: {
+
+    'note': function(s, i, o) {
+      o.push({
+        tag: 'note',
+          pitch: i.pitch,
+          start: s,
+          dur:   i.dur
+      });
+      return s + i.dur;
+    },
+
+    'seq': function(s, i, o) {
+      return compile_(
+        compile_(s, i.left, o),
+        i.right,
+        o
+      );
+    },
+
+    'par': function(s, i, o) {
+      return Math.max(
+        compile_(s, i.left, o),
+        compile_(s, i.right, o)
+      );
+    },
+
+    'rest': function(s, i, o) {
+      return s + (('dur' in i) ? i.dur : i.duration);
+    },
+
+    'repeat': function(s, i, o) {
+      for (var n = 0; n < i.count; ++n) {
+        s = compile_(s, i.section, o);
+      }
+    },
+
+  },
+
 };
 
 var endTime = function (start, musexpr) {
-  if (!(musexpr.tag in endTime_dispatch)) {
+  if (!(musexpr.tag in _dispatch.endTime)) {
     throw 'Unrecognised music tag "' + musexpr.tag + '"';
     return start;
   }
-  return endTime_dispatch[musexpr.tag](start, musexpr);
-};
-
-var compile_dispatch = {
-
-  'note': function(s, i, o) {
-    o.push({
-      tag: 'note',
-        pitch: i.pitch,
-        start: s,
-        dur:   i.dur
-    });
-    return s + i.dur;
-  },
-
-  'seq': function(s, i, o) {
-    return compile_(
-      compile_(s, i.left, o),
-      i.right,
-      o
-    );
-  },
-
-  'par': function(s, i, o) {
-    return Math.max(
-      compile_(s, i.left, o),
-      compile_(s, i.right, o)
-    );
-  },
-
-  'rest': function(s, i, o) {
-    return s + (('dur' in i) ? i.dur : i.duration);
-  },
-
-  'repeat': function(s, i, o) {
-    for (var n = 0; n < i.count; ++n) {
-      s = compile_(s, i.section, o);
-    }
-  },
-
+  return _dispatch.endTime[musexpr.tag](start, musexpr);
 };
 
 var compile_ = function (start, musexpr, out) {
-  if (!(musexpr.tag in compile_dispatch)) {
+  if (!(musexpr.tag in _dispatch.compile)) {
     throw 'Unrecognised music tag "' + musexpr.tag + '"';
     return start;
   }
-  return compile_dispatch[musexpr.tag](start, musexpr, out);
+  return _dispatch.compile[musexpr.tag](start, musexpr, out);
 };
 
 var compile = function (musexpr) {
