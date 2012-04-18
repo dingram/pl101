@@ -164,7 +164,7 @@ var test_cases = [
     message: "Repeat one note 4x",
     mus: {
       tag: 'repeat',
-      section: { tag: 'note', pitch: 'c4', dur: 250 },
+      section: mus.seqgen('c4:250'),
       count: 4
     },
     note: [
@@ -179,27 +179,7 @@ var test_cases = [
     message: "Repeat four-note pattern with rests 2x",
     mus: {
       tag: 'repeat',
-      section: {
-        tag: 'seq',
-        left: {
-          tag: 'seq',
-          left: { tag: 'note', pitch: 'a4', dur: 250 },
-          right: { tag: 'note', pitch: 'b4', dur: 250 }
-        },
-        right: {
-          tag: 'seq',
-          left: { tag: 'rest', dur: 500 },
-          right: {
-            tag: 'seq',
-            left: {
-              tag: 'seq',
-              left: { tag: 'note', pitch: 'c4', dur: 500 },
-              right: { tag: 'rest', dur: 500 },
-            },
-            right: { tag: 'note', pitch: 'd4', dur: 500 }
-          }
-        }
-      },
+      section: mus.seqgen('a4:250 b4:250 r:500 c4:500 r:500 d4:500'),
       count: 2
     },
     note: [
