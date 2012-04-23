@@ -81,7 +81,7 @@ note =
 	/ note_len
 
 note_len =
-	pitch:pitch ':' len:int
+	pitch:pitch ':' len:length
 		{ return { tag: 'note', pitch: pitch, dur: durFromLen(len) }; }
 
 note_dur =
@@ -90,6 +90,18 @@ note_dur =
 
 pitch = p:([a-g][#b]*[0-9])
 	{ return flatten(p).join(''); }
+
+length =
+	n:power_ii '...'
+		{ return parseInt(n, 10) * (1 + 0.5 + 0.25 + 0.125); }
+	/ n:power_ii '..'
+		{ return parseInt(n, 10) * (1 + 0.5 + 0.25); }
+	/ n:power_ii '.'
+		{ return parseInt(n, 10) * (1 + 0.5); }
+	/ n:power_ii
+		{ return parseInt(n, 10); }
+
+power_ii = '1' / '2' / '4' / '8' / '16' / '32' / '64' / '128'
 
 
 pargroup =
