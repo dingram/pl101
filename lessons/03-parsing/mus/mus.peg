@@ -1,12 +1,12 @@
 {
-	tempo = 60;
-	tempo_base = 4;
+	var tempo = 60;
+	var tempo_base = 4;
 
-	function durFromLen(len) {
+	var durFromLen = function (len) {
 		return (60000 * tempo_base) / (len * tempo);
 	}
 
-	function flatten(array){
+	var flatten = function (array){
 			var flat = [];
 			for (var i = 0, l = array.length; i < l; i++){
 					var type = Object.prototype.toString.call(array[i]).split(' ').pop().split(']').shift().toLowerCase();
@@ -14,6 +14,31 @@
 			}
 			return flat;
 	}
+
+	var pargen = function(input, dur) {
+		var par = create_empty_par(input.length);
+		par = fill_par(par, dur, input);
+		return par;
+	};
+
+	var create_empty_par = function(len) {
+		if (len <= 1) {
+			return {};
+		} else {
+			// bias to heavy right -- swap ceil/floor for heavy left
+			return { tag: 'par', left: create_empty_par(Math.floor(len/2)), right: create_empty_par(Math.ceil(len/2)) };
+		}
+	};
+
+	var fill_par = function(par, dur, notes) {
+		if (par === null || !('tag' in par)) {
+			par = {tag: 'note', pitch: notes.shift(), dur: dur};
+		} else {
+			par.left = fill_par(par.left, dur, notes);
+			par.right = fill_par(par.right, dur, notes);
+		}
+		return par;
+	};
 }
 
 start =
@@ -53,12 +78,23 @@ pitch = p:([a-g][#b]*[0-9])
 	{ return flatten(p).join(''); }
 
 
-pargroup = '<' ws* l:parlist ws* '>' { return l; }
+pargroup =
+	p:parblock ':' len:int
+		{
+			return pargen(p, durFromLen(len));
+		}
+	/ p:parblock '/' dur:float
+		{
+			return pargen(p, dur);
+		}
+
+parblock = '<' ws* l:parlist ws* '>' { return l; }
 
 parlist =
-	n:noteitem ws+ l:parlist
-		{ return {tag:'par', left: n, right: l} }
-	/ noteitem
+	p:pitch ws+ l:parlist
+		{ return [p].concat(l); }
+	/ p:pitch
+		{ return [p]; }
 
 extpargroup = '<<' ws* l:extparlist ws* '>>' { return l; }
 
