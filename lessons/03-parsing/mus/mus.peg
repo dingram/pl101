@@ -1,0 +1,44 @@
+{tempo = 60; tempo_base = 4;}
+
+start =
+	ws* n:notelist ws* { return n; }
+
+notelist =
+	tempo ws+ l:notelist
+		{ /* do not return tempo objects */ return l; }
+	/ n:noteitem ws+ l:notelist
+		{ return {tag:'seq', left:n, right: l} }
+	/ noteitem
+
+noteitem =
+	note
+
+tempo =
+	'tempo' ws+ b:int ws* '=' ws* t:int
+		{ tempo_base = b; tempo = t; return {tag: 'tempo', base:b, tempo:t}; }
+	/ 'tempo' ws+ t:int
+		{ tempo_base = 4; tempo = t; return {tag: 'tempo', base:4, tempo:t}; }
+
+note =
+	note_dur
+	/ note_len
+
+note_len =
+	pitch:([a-g][#b]*[0-9]) ':' dur:int
+		{
+			if(pitch[1]) pitch[1]=pitch[1].join('');
+			pitch = pitch.join('');
+			dur = (60000 * tempo_base) / (dur * tempo);
+			return { tag: 'note', pitch: pitch, dur: dur };
+		}
+
+note_dur =
+	pitch:([a-g][#b]*[0-9]) '/' dur:float
+		{ if(pitch[1]) pitch[1]=pitch[1].join(''); pitch = pitch.join(''); return { tag: 'note', pitch: pitch, dur: dur }; }
+
+float = x:int ( "." y:zint )? { if (typeof y != 'undefined') return parseFloat(x+'.'+y); else return x; }
+int = x:([1-9][0-9]*) { if(x[1]) x[1]=x[1].join(''); x = x.join(''); return parseInt(x, 10); }
+zint = x:([0-9]+) { if(x[1]) x[1]=x[1].join(''); x = x.join(''); return parseInt(x, 10); }
+
+ws = 
+	[ \t\n\r]+
