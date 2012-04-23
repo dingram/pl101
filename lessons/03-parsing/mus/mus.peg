@@ -59,8 +59,21 @@ tempo =
 
 noteitem =
 	note
+	/ rest
 	/ extpargroup
 	/ pargroup
+
+rest =
+	rest_dur
+	/ rest_len
+
+rest_len =
+	'r' ':'? len:int
+		{ return { tag: 'rest', dur: durFromLen(len) }; }
+
+rest_dur =
+	'r/' dur:float
+		{ return { tag: 'rest', dur: dur }; }
 
 note =
 	note_dur
