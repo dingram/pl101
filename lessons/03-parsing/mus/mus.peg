@@ -66,7 +66,7 @@ extparlist =
         s:seqgroup ws* l:extparlist
 		{ return {tag:'par', left: s, right: l} }
         / seqgroup
-	/ n:noteitem ws+ l:parlist
+	/ n:noteitem ws+ l:extparlist
 		{ return {tag:'par', left: n, right: l} }
 	/ noteitem
 
