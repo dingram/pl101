@@ -2,10 +2,18 @@ var PEG = require('pegjs');
 var assert = require('assert');
 var fs = require('fs'); // for loading files
 var testrunner = require('../../../lib/testrunner.js');
+var util = require('util');
 
 var data = fs.readFileSync('mus.peg', 'utf-8');
 //console.log(data);
-var parse = PEG.buildParser(data).parse;
+
+var parse;
+try {
+	parse = PEG.buildParser(data).parse;
+} catch (e) {
+	console.log(util.inspect(e, false, null));
+	return;
+}
 
 var test_cases = [
 
