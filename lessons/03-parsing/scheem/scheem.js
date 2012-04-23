@@ -1,7 +1,7 @@
 var PEG = require('pegjs');
 var assert = require('assert');
 var fs = require('fs'); // for loading files
-var testrunner = require('../../lib/testrunner.js');
+var testrunner = require('../../../lib/testrunner.js');
 
 var data = fs.readFileSync('scheem.peg', 'utf-8');
 //console.log(data);
