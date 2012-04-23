@@ -101,6 +101,20 @@ var test_cases = [
               right: { tag: 'note', pitch: 'c4', dur: 1000 } } } } }
 	},
 
+	{ message: "Repeat one note 2x (default)",
+		input: "|: a4:4 :|",
+		output: {tag: 'repeat', section:{tag:'note', pitch: 'a4', dur: 1000}, count: 2} },
+	{ message: "Repeat one note 4x",
+		input: "|: a4:4 :| (4)",
+		output: {tag: 'repeat', section:{tag:'note', pitch: 'a4', dur: 1000}, count: 4} },
+
+	{ message: "Repeat a sequence 2x (default)",
+		input: "|: a4:4 b4:4 :|",
+		output: {tag: 'repeat', section:{tag: 'seq', left:{tag:'note', pitch: 'a4', dur: 1000}, right: {tag:'note', pitch: 'b4', dur: 1000} }, count: 2} },
+	{ message: "Repeat a sequence 4x",
+		input: "|: a4:4 b4:4 :| (4)",
+		output: {tag: 'repeat', section:{tag: 'seq', left:{tag:'note', pitch: 'a4', dur: 1000}, right: {tag:'note', pitch: 'b4', dur: 1000} }, count: 4} },
+
 ];
 
 testrunner.run(test_cases, function(tc){
