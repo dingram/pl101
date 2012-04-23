@@ -105,7 +105,7 @@ power_ii = '128' / '64' / '32' / '16' / '8' / '4' / '2' / '1'
 
 
 pargroup =
-	p:parblock ':' len:int
+	p:parblock ':' len:length
 		{
 			return pargen(p, durFromLen(len));
 		}
