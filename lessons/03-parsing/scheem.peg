@@ -3,11 +3,11 @@ start =
 
 expression =
     atom
-    / '(' a:atomlist ')'
+    / '(' [ \t\n\r]* a:atomlist [ \t\n\r]* ')'
     	{ return a; }
 
 atomlist =
-    a:expression ' ' al:atomlist
+    a:expression [ \t\n\r]+ al:atomlist
     	{ return [a].concat(al); }
 	/ a:expression
     	{ return [a]; }
