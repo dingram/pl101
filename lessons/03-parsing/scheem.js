@@ -59,6 +59,18 @@ var test_cases = [
 	{ message: 'Quote support (inside a list)',
 		input: "(x '(y) z)",
 		output: ['x', ['quote', ['y']], 'z'] },
+	{ message: 'Quote support (inside a list)',
+		input: "(x '(y) z)",
+		output: ['x', ['quote', ['y']], 'z'] },
+	{ message: 'Comment support',
+		input: ";; This is a comment\n(x '(y) z)",
+		output: ['x', ['quote', ['y']], 'z'] },
+	{ message: 'Comment support (within an expression)',
+		input: ";; This is a comment\n(x \n;; as is this\n  '(y)\n  z)",
+		output: ['x', ['quote', ['y']], 'z'] },
+	{ message: 'Comment support (at the end of a line)',
+		input: ";; This is a comment\n(x ;; as is this\n  '(y)\n  z)",
+		output: ['x', ['quote', ['y']], 'z'] },
 ];
 
 testrunner.run(test_cases, function(tc){

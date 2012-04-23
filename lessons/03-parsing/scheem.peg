@@ -1,18 +1,23 @@
 start =
-    expression
+    ws* expr:expression ws*
+			{return expr;}
 
 expression =
     atom
-    / '(' [ \t\n\r]* a:atomlist [ \t\n\r]* ')'
+    / '(' ws* a:atomlist ws* ')'
     	{ return a; }
     / "'" expr:expression
     	{ return ['quote', expr]; }
 
 atomlist =
-    a:expression [ \t\n\r]+ al:atomlist
+    a:expression ws+ al:atomlist
     	{ return [a].concat(al); }
 	/ a:expression
     	{ return [a]; }
+
+ws = 
+	[ \t\n\r]+
+	/ ";;" [^\r\n]*
 
 validchar
     = [0-9a-zA-Z_?!+\=@#$%^&*/.-]
