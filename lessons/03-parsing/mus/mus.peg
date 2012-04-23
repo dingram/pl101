@@ -38,16 +38,18 @@ note =
 	/ note_len
 
 note_len =
-	pitch:([a-g][#b]*[0-9]) ':' dur:int
+	pitch:pitch ':' dur:int
 		{
-			pitch = flatten(pitch).join('');
 			dur = (60000 * tempo_base) / (dur * tempo);
 			return { tag: 'note', pitch: pitch, dur: dur };
 		}
 
 note_dur =
-	pitch:([a-g][#b]*[0-9]) '/' dur:float
-		{ pitch = flatten(pitch).join(''); return { tag: 'note', pitch: pitch, dur: dur }; }
+	pitch:pitch '/' dur:float
+		{ return { tag: 'note', pitch: pitch, dur: dur }; }
+
+pitch = p:([a-g][#b]*[0-9])
+	{ return flatten(p).join(''); }
 
 
 pargroup = '<' ws* l:parlist ws* '>' { return l; }
