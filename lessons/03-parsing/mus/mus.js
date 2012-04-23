@@ -136,6 +136,27 @@ var test_cases = [
 		input: "|: a4:4 % This is a comment\n b4:4 :| (4)",
 		output: {tag: 'repeat', section:{tag: 'seq', left:{tag:'note', pitch: 'a4', dur: 1000}, right: {tag:'note', pitch: 'b4', dur: 1000} }, count: 4} },
 
+	{ message: 'Notes missing length (after the first)',
+		input: "a4:4 b4 c4",
+		output: {tag: 'seq', left:{tag:'note', pitch: 'a4', dur: 1000}, right: {tag: 'seq', left: {tag:'note', pitch: 'b4', dur: 1000 }, right: {tag:'note', pitch: 'c4', dur: 1000} } } },
+	{ message: 'Notes missing length #2',
+		input: "a4:4 b4 c4:2 d4",
+		output: {tag: 'seq', left:{tag:'note', pitch: 'a4', dur: 1000}, right: {tag: 'seq', left: {tag:'note', pitch: 'b4', dur: 1000 }, right: {tag:'seq', left:{tag:'note', pitch: 'c4', dur: 2000}, right: {tag:'note', pitch: 'd4', dur: 2000 } } } } },
+
+	{ message: 'Notes missing octave (after the first)',
+		input: "a4:4 b:4 c:4",
+		output: {tag: 'seq', left:{tag:'note', pitch: 'a4', dur: 1000}, right: {tag: 'seq', left: {tag:'note', pitch: 'b4', dur: 1000 }, right: {tag:'note', pitch: 'c4', dur: 1000} } } },
+	{ message: 'Notes missing octave #2',
+		input: "a4:4 b:4 c5:2 d:2",
+		output: {tag: 'seq', left:{tag:'note', pitch: 'a4', dur: 1000}, right: {tag: 'seq', left: {tag:'note', pitch: 'b4', dur: 1000 }, right: {tag:'seq', left:{tag:'note', pitch: 'c5', dur: 2000}, right: {tag:'note', pitch: 'd5', dur: 2000 } } } } },
+
+	{ message: 'Notes missing octave and length (after the first)',
+		input: "a4:4 b c",
+		output: {tag: 'seq', left:{tag:'note', pitch: 'a4', dur: 1000}, right: {tag: 'seq', left: {tag:'note', pitch: 'b4', dur: 1000 }, right: {tag:'note', pitch: 'c4', dur: 1000} } } },
+	{ message: 'Notes missing octave and length #2',
+		input: "a4:4 b c5:2 d",
+		output: {tag: 'seq', left:{tag:'note', pitch: 'a4', dur: 1000}, right: {tag: 'seq', left: {tag:'note', pitch: 'b4', dur: 1000 }, right: {tag:'seq', left:{tag:'note', pitch: 'c5', dur: 2000}, right: {tag:'note', pitch: 'd5', dur: 2000 } } } } },
+
 	{ message: "Twinkle Twinkle Little Star",
 		input: "c4:4 c4:4 g4:4 g4:4 a4:4 a4:4 g4:2\nf4:4 f4:4 e4:4 e4:4 d4:4 d4:4 c4:2\n|: g4:4 g4:4 f4:4 f4:4 e4:4 e4:4 d4:2 :|\nc4:4 c4:4 g4:4 g4:4 a4:4 a4:4 g4:2\nf4:4 f4:4 e4:4 e4:4 d4:4 d4:4 c4:2",
 		output: {tag:'seq',left:{tag:'note',pitch:'c4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'c4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'g4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'g4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'a4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'a4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'g4',dur:2000},right:{tag:'seq',left:{tag:'note',pitch:'f4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'f4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'e4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'e4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'d4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'d4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'c4',dur:2000},right:{tag:'seq',left:{tag:'repeat',section:{tag:'seq',left:{tag:'note',pitch:'g4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'g4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'f4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'f4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'e4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'e4',dur:1000},right:{tag:'note',pitch:'d4',dur:2000}}}}}}},count:2},right:{tag:'seq',left:{tag:'note',pitch:'c4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'c4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'g4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'g4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'a4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'a4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'g4',dur:2000},right:{tag:'seq',left:{tag:'note',pitch:'f4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'f4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'e4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'e4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'d4',dur:1000},right:{tag:'seq',left:{tag:'note',pitch:'d4',dur:1000},right:{tag:'note',pitch:'c4',dur:2000}}}}}}}}}}}}}}}}}}}}}}}}}}}}}

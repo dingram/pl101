@@ -1,6 +1,8 @@
 {
 	var tempo = 60;
 	var tempo_base = 4;
+	var last_octave = 0;
+	var last_duration = 0;
 
 	var durFromLen = function (len) {
 		return (60000 * tempo_base) / (len * tempo);
@@ -79,17 +81,25 @@ rest_dur =
 note =
 	note_dur
 	/ note_len
+	/ note_nolen
 
 note_len =
 	pitch:pitch ':' len:length
-		{ return { tag: 'note', pitch: pitch, dur: durFromLen(len) }; }
+		{ last_duration = durFromLen(len); return { tag: 'note', pitch: pitch, dur: last_duration }; }
 
 note_dur =
 	pitch:pitch '/' dur:float
-		{ return { tag: 'note', pitch: pitch, dur: dur }; }
+		{ last_duration = dur; return { tag: 'note', pitch: pitch, dur: last_duration }; }
 
-pitch = p:([a-g]i[#b]*[0-9])
-	{ return flatten(p).join(''); }
+note_nolen =
+	pitch:pitch
+		{ return { tag: 'note', pitch: pitch, dur: last_duration }; }
+
+pitch =
+	p:([a-g]i[#b]*[0-9])
+		{ last_octave = p[p.length-1]; return flatten(p).join(''); }
+	/ p:([a-g]i[#b]*)
+		{ return flatten(p).join('') + last_octave; }
 
 length =
 	n:power_ii '...'
@@ -106,13 +116,11 @@ power_ii = '128' / '64' / '32' / '16' / '8' / '4' / '2' / '1'
 
 pargroup =
 	p:parblock ':' len:length
-		{
-			return pargen(p, durFromLen(len));
-		}
+		{ last_duration = durFromLen(len); return pargen(p, last_duration); }
 	/ p:parblock '/' dur:float
-		{
-			return pargen(p, dur);
-		}
+		{ last_duration = dur; return pargen(p, last_duration); }
+	/ p:parblock
+		{ return pargen(p, last_duration); }
 
 parblock = '<' ws* l:parlist ws* '>' { return l; }
 
