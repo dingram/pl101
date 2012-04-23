@@ -8,15 +8,18 @@ var data = fs.readFileSync('mus.peg', 'utf-8');
 var parse = PEG.buildParser(data).parse;
 
 var test_cases = [
+
 	{ message: 'Empty string',
 		input: '',
 		expect_fail: true },
+
 	{ message: 'Single note with integer duration',
 		input: "a4/250",
 		output: {tag:'note', pitch: 'a4', dur: 250} },
 	{ message: 'Single note with floating-point duration',
 		input: "a4/250.5",
 		output: {tag:'note', pitch: 'a4', dur: 250} },
+
 	{ message: 'Quarter note with length (default tempo, 4=60)',
 		input: "a4:4",
 		output: {tag:'note', pitch: 'a4', dur: 1000} },
@@ -32,18 +35,22 @@ var test_cases = [
 	{ message: 'Three quarter notes with length (default tempo)',
 		input: "a4:4 b4:4 c4:2",
 		output: {tag: 'seq', left:{tag:'note', pitch: 'a4', dur: 1000}, right: {tag: 'seq', left: {tag:'note', pitch: 'b4', dur: 1000 }, right: {tag:'note', pitch: 'c4', dur: 2000} } } },
+
 	{ message: 'C major chord, quarter notes with length (default tempo)',
 		input: "<< a4:4 b4:4 c4:4 >>",
 		output: {tag: 'par', left:{tag:'note', pitch: 'a4', dur: 1000}, right: {tag: 'par', left: {tag:'note', pitch: 'b4', dur: 1000 }, right: {tag:'note', pitch: 'c4', dur: 1000} } } },
+
 	{ message: 'Two sequences played together',
 		input: "<< { a4:4 b4:4 } { c4:4 d4:4 } >>",
 		output: {tag: 'par', left: {tag: 'seq', left: {tag:'note', pitch: 'a4', dur: 1000 }, right: {tag:'note', pitch: 'b4', dur: 1000} }, right: {tag: 'seq', left: {tag:'note', pitch: 'c4', dur: 1000 }, right: {tag:'note', pitch: 'd4', dur: 1000} } } },
+
 	{ message: 'C major chord with minified syntax, quarter notes with duration (default tempo)',
 		input: "< a4 b4 c4 >/1000",
 		output: {tag: 'par', left:{tag:'note', pitch: 'a4', dur: 1000}, right: {tag: 'par', left: {tag:'note', pitch: 'b4', dur: 1000 }, right: {tag:'note', pitch: 'c4', dur: 1000} } } },
 	{ message: 'C major chord with minified syntax, quarter notes with length (default tempo)',
 		input: "< a4 b4 c4 >:4",
 		output: {tag: 'par', left:{tag:'note', pitch: 'a4', dur: 1000}, right: {tag: 'par', left: {tag:'note', pitch: 'b4', dur: 1000 }, right: {tag:'note', pitch: 'c4', dur: 1000} } } },
+
 	{ message: 'Two quarter notes with half-note rest + length (default tempo)',
 		input: "a4:4 r:2 b4:4",
 		output: { tag: 'seq',
@@ -68,6 +75,7 @@ var test_cases = [
               left: { tag: 'rest', dur: 500 },
               right: { tag: 'note', pitch: 'c4', dur: 1000 } } } } }
 	},
+
 	{ message: 'Two quarter notes with half-note rest + duration',
 		input: "a4/1000 r/2000 b4/1000",
 		output: { tag: 'seq',
@@ -92,6 +100,7 @@ var test_cases = [
               left: { tag: 'rest', dur: 500 },
               right: { tag: 'note', pitch: 'c4', dur: 1000 } } } } }
 	},
+
 ];
 
 testrunner.run(test_cases, function(tc){
