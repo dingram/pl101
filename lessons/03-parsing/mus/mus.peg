@@ -88,7 +88,7 @@ note_dur =
 	pitch:pitch '/' dur:float
 		{ return { tag: 'note', pitch: pitch, dur: dur }; }
 
-pitch = p:([a-g][#b]*[0-9])
+pitch = p:([a-g]i[#b]*[0-9])
 	{ return flatten(p).join(''); }
 
 length =
