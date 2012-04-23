@@ -1,0 +1,138 @@
+start =
+    wordlist
+
+wordlist =
+    w:word " " wl:wordlist
+    	{ return [w].concat(wl); }
+    / w:word
+    	{ return [w]; }
+
+word =
+	    letter:[a-z]+
+    	{ return letter.join(""); }
+
+------------------------------------------------------------------------
+
+start =
+    atom
+
+validchar
+    = [0-9a-zA-Z_?!+\-=@#$%^&*/.]
+
+atom =
+    chars:validchar+
+        { return chars.join(""); }
+
+
+------------------------------------------------------------------------
+
+start =
+    expression
+
+expression =
+    atom
+    / '(' a:atomlist ')'
+    	{ return a; }
+
+atomlist =
+    a:expression ' ' al:atomlist
+    	{ return [a].concat(al); }
+	/ a:expression
+    	{ return [a]; }
+
+validchar
+    = [0-9a-zA-Z_?!+\-=@#$%^&*/.]
+
+atom =
+    chars:validchar+
+        { return chars.join(""); }
+
+
+------------------------------------------------------------------------
+
+start =
+    commative
+
+commative =
+	left:additive "," right:commative
+    	{ return {tag:",", left:left, right:right}; }
+    / additive
+
+additive =
+    left:multiplicative "+" right:additive
+        { return {tag: "+", left:left, right:right}; }
+  / multiplicative
+
+multiplicative =
+    left:primary "*" right:multiplicative
+        { return {tag: "*", left:left, right:right}; }
+  / primary
+
+primary =
+    integer
+  / "(" additive:additive ")"
+      { return additive; }
+
+integer =
+    digits:[0-9]+
+        { return parseInt(digits.join(""), 10); }
+
+------------------------------------------------------------------------------
+
+
+var PEG = require('pegjs');
+var assert = require('assert');
+var fs = require('fs'); // for loading files
+
+// Read file contents
+var data = fs.readFileSync('my.peg', 'utf-8');
+// Show the PEG grammar file
+console.log(data);
+// Create my parser
+var parse = PEG.buildParser(data).parse;
+// Do a test
+assert.deepEqual( parse("(a b c)"), ["a", "b", "c"] )
+
+
+==============================================================================
+
+Homework Part 1
+
+The first part of your homework for this week is to get your Scheem PEG parser working in your GitHub project and write some unit tests for it. Once it's working and you have some tests, start adding some features.
+
+Whitespace - Allow any number of spaces between atoms, and allow spaces around parentheses. Then allow newlines and tabs as well. Make Scheem less ugly.
+Quotes - Scheme has a special syntax 'x that is short for (quote x). So '(1 2 3) is short for (quote (1 2 3)). Add this feature into the parser.
+Comments - Lines that start with ;; are comments and should be ignored by the parser.
+As you add features, add test cases to prove they work. For working on PEG grammars I like to play around with the online PEG editor[1]. Also, ask for help in the forums if you get stuck.
+
+When you get something working, post a comment on the forums[2].
+
+ 1: http://pegjs.majda.cz/online
+ 2: http://nathansuniversity.com/vanilla/discussion/53/homework-3-part-1-scheem-parser#Item_1
+
+==============================================================================
+
+Homework Part 2
+
+For the second part of your homework for this lesson, create a syntax for your MUS language and implement a PEG parser for it.
+
+For this part you have some freedom. Here are some questions to think about.
+
+ - How are notes specified? What about different octaves? What about rests?
+ - How will durations work? You want to be user friendly.
+ - How do harmonies work?
+ - For repeats you need some way to specify the start and end point and the number of times to repeat.
+
+The requirement for this part is that the output of your PEG parser matches the abstract syntax tree format needed by your MUS to NOTE compiler from the last lesson. Start small, maybe just with a single note. Then write unit tests to make sure things are working as you expect. Next slowly add on features.
+
+One trick that might be helpful is that the PEG parsers you generate can be started from rules other than start. You might start out by defining note. Then you might move on to notelist but you still want your unit tests for note to keep passing. To start the parser from a different rule just pass the rule name as a second parameter to the parser. Your unit tests might look like:
+
+
+assert.deepEqual(parse("a4[100]", "note"),
+    {tag:"note", pitch:"a4", dur:100});
+
+Work on the parsing grammar and also write up a short example of your MUS syntax to demonstrate how it works.
+
+When you have something interesting working, tell everyone about it on the forums.
+
+==============================================================================
