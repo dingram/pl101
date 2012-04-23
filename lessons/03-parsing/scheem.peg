@@ -5,6 +5,8 @@ expression =
     atom
     / '(' [ \t\n\r]* a:atomlist [ \t\n\r]* ')'
     	{ return a; }
+    / "'" expr:expression
+    	{ return ['quote', expr]; }
 
 atomlist =
     a:expression [ \t\n\r]+ al:atomlist

@@ -47,6 +47,18 @@ var test_cases = [
 	{ message: 'Whitespace, including newlines',
 		input: "( \t a\n  (b\n     (c d)\n  e)\n)",
 		output: ['a', ['b', ['c', 'd'], 'e']] },
+	{ message: 'Quote support (atom)',
+		input: "'x",
+		output: ['quote', 'x'] },
+	{ message: 'Quote support (list)',
+		input: "'(x y z)",
+		output: ['quote', ['x', 'y', 'z']] },
+	{ message: 'Quote support (nested list)',
+		input: "'(x (y) z)",
+		output: ['quote', ['x', ['y'], 'z']] },
+	{ message: 'Quote support (inside a list)',
+		input: "(x '(y) z)",
+		output: ['x', ['quote', ['y']], 'z'] },
 ];
 
 testrunner.run(test_cases, function(tc){
