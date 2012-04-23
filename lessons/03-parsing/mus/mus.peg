@@ -2,6 +2,10 @@
 	tempo = 60;
 	tempo_base = 4;
 
+	function durFromLen(len) {
+		return (60000 * tempo_base) / (len * tempo);
+	}
+
 	function flatten(array){
 			var flat = [];
 			for (var i = 0, l = array.length; i < l; i++){
@@ -38,11 +42,8 @@ note =
 	/ note_len
 
 note_len =
-	pitch:pitch ':' dur:int
-		{
-			dur = (60000 * tempo_base) / (dur * tempo);
-			return { tag: 'note', pitch: pitch, dur: dur };
-		}
+	pitch:pitch ':' len:int
+		{ return { tag: 'note', pitch: pitch, dur: durFromLen(len) }; }
 
 note_dur =
 	pitch:pitch '/' dur:float
