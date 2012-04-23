@@ -32,6 +32,12 @@ var test_cases = [
 	{ message: 'Three quarter notes with length (default tempo)',
 		input: "a4:4 b4:4 c4:2",
 		output: {tag: 'seq', left:{tag:'note', pitch: 'a4', dur: 1000}, right: {tag: 'seq', left: {tag:'note', pitch: 'b4', dur: 1000 }, right: {tag:'note', pitch: 'c4', dur: 2000} } } },
+	{ message: 'C major chord, quarter notes with length (default tempo)',
+		input: "<< a4:4 b4:4 c4:4 >>",
+		output: {tag: 'par', left:{tag:'note', pitch: 'a4', dur: 1000}, right: {tag: 'par', left: {tag:'note', pitch: 'b4', dur: 1000 }, right: {tag:'note', pitch: 'c4', dur: 1000} } } },
+	{ message: 'Two sequences played together',
+		input: "<< { a4:4 b4:4 } { c4:4 d4:4 } >>",
+		output: {tag: 'par', left: {tag: 'seq', left: {tag:'note', pitch: 'a4', dur: 1000 }, right: {tag:'note', pitch: 'b4', dur: 1000} }, right: {tag: 'seq', left: {tag:'note', pitch: 'c4', dur: 1000 }, right: {tag:'note', pitch: 'd4', dur: 1000} } } },
 ];
 
 testrunner.run(test_cases, function(tc){

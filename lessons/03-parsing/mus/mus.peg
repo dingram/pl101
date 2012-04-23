@@ -22,14 +22,16 @@ notelist =
 		{ return {tag:'seq', left:n, right: l} }
 	/ noteitem
 
-noteitem =
-	note
-
 tempo =
 	'tempo' ws+ b:int ws* '=' ws* t:int
 		{ tempo_base = b; tempo = t; return {tag: 'tempo', base:b, tempo:t}; }
 	/ 'tempo' ws+ t:int
 		{ tempo_base = 4; tempo = t; return {tag: 'tempo', base:4, tempo:t}; }
+
+noteitem =
+	note
+	/ extpargroup
+	/ pargroup
 
 note =
 	note_dur
@@ -46,6 +48,27 @@ note_len =
 note_dur =
 	pitch:([a-g][#b]*[0-9]) '/' dur:float
 		{ pitch = flatten(pitch).join(''); return { tag: 'note', pitch: pitch, dur: dur }; }
+
+
+pargroup = '<' ws* l:parlist ws* '>' { return l; }
+
+parlist =
+	n:noteitem ws+ l:parlist
+		{ return {tag:'par', left: n, right: l} }
+	/ noteitem
+
+extpargroup = '<<' ws* l:extparlist ws* '>>' { return l; }
+
+extparlist =
+        s:seqgroup ws* l:extparlist
+		{ return {tag:'par', left: s, right: l} }
+        / seqgroup
+	/ n:noteitem ws+ l:parlist
+		{ return {tag:'par', left: n, right: l} }
+	/ noteitem
+
+seqgroup = '{' ws* s:notelist ws* '}'
+		{ return s; }
 
 float = x:int ( "." y:zint )? { if (typeof y != 'undefined') return parseFloat(x+'.'+y); else return x; }
 int = x:([1-9][0-9]*) { x = flatten(x).join(''); return parseInt(x, 10); }
