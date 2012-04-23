@@ -40,7 +40,7 @@ var test_cases = [
 		input: "<< a4:4 b4:4 c4:4 >>",
 		output: {tag: 'par', left:{tag:'note', pitch: 'a4', dur: 1000}, right: {tag: 'par', left: {tag:'note', pitch: 'b4', dur: 1000 }, right: {tag:'note', pitch: 'c4', dur: 1000} } } },
 
-	{ message: 'Two sequences played together',
+	{ message: 'Two sequences played in parallel',
 		input: "<< { a4:4 b4:4 } { c4:4 d4:4 } >>",
 		output: {tag: 'par', left: {tag: 'seq', left: {tag:'note', pitch: 'a4', dur: 1000 }, right: {tag:'note', pitch: 'b4', dur: 1000} }, right: {tag: 'seq', left: {tag:'note', pitch: 'c4', dur: 1000 }, right: {tag:'note', pitch: 'd4', dur: 1000} } } },
 
