@@ -49,17 +49,50 @@ start =
 	ws* n:notelist ws* { return n; }
 
 notelist =
-	tempo ws+ l:notelist
-		{ /* do not return tempo objects */ return l; }
+	c:command ws+ l:notelist
+		{ return {tag:'seq', left:c, right:l}; }
+	/ ghost_command ws+ l:notelist
+		{ /* do not return ghost command objects */ return l; }
 	/ n:noteitem ws+ l:notelist
 		{ return {tag:'seq', left:n, right: l} }
 	/ noteitem
 
-tempo =
+command = '\\' c:cmd_name { return c; }
+
+ghost_command = '\\' c:ghost_cmd_name { return c; }
+
+cmd_name =
+	time_sig_cmd
+	/ key_sig_cmd
+	/ clef_cmd
+	/ voice_cmd
+
+ghost_cmd_name =
+	tempo_cmd
+
+tempo_cmd =
 	'tempo' ws+ b:int ws* '=' ws* t:int
 		{ tempo_base = b; tempo = t; return {tag: 'tempo', base:b, tempo:t}; }
 	/ 'tempo' ws+ t:int
 		{ tempo_base = 4; tempo = t; return {tag: 'tempo', base:4, tempo:t}; }
+
+time_sig_cmd =
+	('timesig'/'time') ws+ t:int ws* '/' ws* b:int
+		{ return {tag: 'timesig', beats:t, base:b}; }
+
+key_sig_cmd =
+	('keysig'/'key') ws+ p:pitch 'm'
+		{ return {tag: 'keysig', pitch:p, minor:true}; }
+	/ ('keysig'/'key') ws+ p:pitch
+		{ return {tag: 'keysig', pitch:p, minor:false}; }
+
+clef_cmd =
+	'clef' ws+ t:('treble' / 'bass' / 'alto' / 'tenor')
+		{ return {tag: 'clef', type:t}; }
+
+voice_cmd =
+	'voice' ws+ v:int ws+ '{' ws* l:notelist ws* '}'
+		{ return {tag: 'voice', voice:v, section:l}; }
 
 noteitem =
 	note
