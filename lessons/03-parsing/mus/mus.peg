@@ -51,24 +51,18 @@ start =
 notelist =
 	c:command ws+ l:notelist
 		{ return {tag:'seq', left:c, right:l}; }
-	/ ghost_command ws+ l:notelist
-		{ /* do not return ghost command objects */ return l; }
 	/ n:noteitem ws+ l:notelist
 		{ return {tag:'seq', left:n, right: l} }
 	/ noteitem
 
 command = '\\' c:cmd_name { return c; }
 
-ghost_command = '\\' c:ghost_cmd_name { return c; }
-
 cmd_name =
 	time_sig_cmd
 	/ key_sig_cmd
 	/ clef_cmd
 	/ voice_cmd
-
-ghost_cmd_name =
-	tempo_cmd
+	/ tempo_cmd
 
 tempo_cmd =
 	'tempo' ws+ b:int ws* '=' ws* t:int
