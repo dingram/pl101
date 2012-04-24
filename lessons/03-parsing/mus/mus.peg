@@ -3,6 +3,7 @@
 	var tempo_base = 4;
 	var last_octave = 0;
 	var last_duration = 0;
+	var last_len = 0;
 
 	var durFromLen = function (len) {
 		return (60000 * tempo_base) / (len * tempo);
@@ -17,9 +18,9 @@
 			return flat;
 	}
 
-	var pargen = function(input, dur) {
+	var pargen = function(input, dur, len) {
 		var par = create_empty_par(input.length);
-		par = fill_par(par, dur, input);
+		par = fill_par(par, dur, len, input);
 		return par;
 	};
 
@@ -32,12 +33,13 @@
 		}
 	};
 
-	var fill_par = function(par, dur, notes) {
+	var fill_par = function(par, dur, len, notes) {
 		if (par === null || !('tag' in par)) {
 			par = {tag: 'note', pitch: notes.shift(), dur: dur};
+			if (len !== null) par.len = len;
 		} else {
-			par.left = fill_par(par.left, dur, notes);
-			par.right = fill_par(par.right, dur, notes);
+			par.left = fill_par(par.left, dur, len, notes);
+			par.right = fill_par(par.right, dur, len, notes);
 		}
 		return par;
 	};
@@ -72,15 +74,15 @@ rest =
 
 rest_len =
 	'r' ':'? len:int
-		{ last_duration = durFromLen(len); return { tag: 'rest', dur: last_duration }; }
+		{ last_duration = durFromLen(len); last_len = len; return { tag: 'rest', dur: last_duration, len: last_len }; }
 
 rest_dur =
 	'r/' dur:float
-		{ last_duration = dur; return { tag: 'rest', dur: last_duration }; }
+		{ last_duration = dur; last_len = null; return { tag: 'rest', dur: last_duration }; }
 
 rest_nolen =
 	'r'
-		{ return { tag: 'rest', dur: last_duration }; }
+		{ var d = { tag: 'rest', dur: last_duration }; if (last_len !== null) d.len=last_len; return d; }
 
 note =
 	note_dur
@@ -89,15 +91,15 @@ note =
 
 note_len =
 	pitch:pitch ':' len:length
-		{ last_duration = durFromLen(len); return { tag: 'note', pitch: pitch, dur: last_duration }; }
+		{ last_duration = durFromLen(len); last_len = len; return { tag: 'note', pitch: pitch, dur: last_duration, len: last_len }; }
 
 note_dur =
 	pitch:pitch '/' dur:float
-		{ last_duration = dur; return { tag: 'note', pitch: pitch, dur: last_duration }; }
+		{ last_duration = dur; last_len = null; return { tag: 'note', pitch: pitch, dur: last_duration }; }
 
 note_nolen =
 	pitch:pitch
-		{ return { tag: 'note', pitch: pitch, dur: last_duration }; }
+		{ var d = { tag: 'note', pitch: pitch, dur: last_duration }; if (last_len !== null) d.len=last_len; return d; }
 
 pitch =
 	p:([a-g]i[#b]*[0-9])
@@ -120,11 +122,11 @@ power_ii = '128' / '64' / '32' / '16' / '8' / '4' / '2' / '1'
 
 pargroup =
 	p:parblock ':' len:length
-		{ last_duration = durFromLen(len); return pargen(p, last_duration); }
+		{ last_duration = durFromLen(len); last_len = len; return pargen(p, last_duration, last_len); }
 	/ p:parblock '/' dur:float
-		{ last_duration = dur; return pargen(p, last_duration); }
+		{ last_duration = dur; last_len = null; return pargen(p, last_duration, null); }
 	/ p:parblock
-		{ return pargen(p, last_duration); }
+		{ return pargen(p, last_duration, last_len); }
 
 parblock = '<' ws* l:parlist ws* '>' { return l; }
 
