@@ -72,11 +72,15 @@ rest =
 
 rest_len =
 	'r' ':'? len:int
-		{ return { tag: 'rest', dur: durFromLen(len) }; }
+		{ last_duration = durFromLen(len); return { tag: 'rest', dur: last_duration }; }
 
 rest_dur =
 	'r/' dur:float
-		{ return { tag: 'rest', dur: dur }; }
+		{ last_duration = dur; return { tag: 'rest', dur: last_duration }; }
+
+rest_nolen =
+	'r'
+		{ return { tag: 'rest', dur: last_duration }; }
 
 note =
 	note_dur
