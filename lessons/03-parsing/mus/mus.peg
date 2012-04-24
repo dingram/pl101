@@ -133,9 +133,9 @@ parlist =
 extpargroup = '<<' ws* l:extparlist ws* '>>' { return l; }
 
 extparlist =
-        s:seqgroup ws* l:extparlist
+	s:seqgroup ws* l:extparlist
 		{ return {tag:'par', left: s, right: l} }
-        / seqgroup
+	/ seqgroup
 	/ n:noteitem ws+ l:extparlist
 		{ return {tag:'par', left: n, right: l} }
 	/ noteitem
@@ -157,7 +157,7 @@ float = x:int ( "." y:zint )? { if (typeof y != 'undefined') return parseFloat(x
 int = x:([1-9][0-9]*) { x = flatten(x).join(''); return parseInt(x, 10); }
 zint = x:([0-9]+) { flatten(x).join(''); return parseInt(x, 10); }
 
-ws = 
+ws =
 	[ \t\n\r]+
 	/ '/*' (!'*/' .)* '*/'
 	/ '%{' (!'%}' .)* '%}'
