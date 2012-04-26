@@ -98,6 +98,7 @@ noteitem =
 rest =
 	rest_dur
 	/ rest_len
+	/ rest_nolen
 
 rest_len =
 	'r' ':'? len:int
