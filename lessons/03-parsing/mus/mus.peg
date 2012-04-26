@@ -136,11 +136,11 @@ pitch =
 
 length =
 	n:power_ii '...'
-		{ return parseInt(n, 10) * (1 + 0.5 + 0.25 + 0.125); }
+		{ return parseInt(n, 10) / (1 + 0.5 + 0.25 + 0.125); }
 	/ n:power_ii '..'
-		{ return parseInt(n, 10) * (1 + 0.5 + 0.25); }
+		{ return parseInt(n, 10) / (1 + 0.5 + 0.25); }
 	/ n:power_ii '.'
-		{ return parseInt(n, 10) * (1 + 0.5); }
+		{ return parseInt(n, 10) / (1 + 0.5); }
 	/ n:power_ii
 		{ return parseInt(n, 10); }
 
