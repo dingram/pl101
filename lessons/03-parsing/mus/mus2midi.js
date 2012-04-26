@@ -1,40 +1,121 @@
-var midi = require('../../../lib/midi.js');
+var PEG = require('pegjs');
+var Midi = require('../../../../jsmidgen/lib/jsmidgen.js');
 var fs = require('fs'); // for loading files
+var util = require('util');
+
 
 if (process.argv.length != 4) {
 	process.stderr.write("Len: "+process.argv.length);
-	process.stderr.write("Usage: mus2midi inputfile outputfile\n");
+	process.stderr.write("Usage: mus2midi inputfile.mus outputfile.mid\n");
 	process.exit(1);
 }
 var musin = process.argv[2];
 var midiout = process.argv[3];
 
-var noteEvents = [
-	// set instrument
-	new midi.MidiEvent({
-			time:    0,
-			type:    0xC,
-			channel: 0,
-			param1:  0x51
-	}),
-];
+var parserdata = fs.readFileSync('mus.peg', 'utf-8');
 
-[
-	'C4', // c4
-	'D4', // d
-	'E4', // e
-	'F4', // f
-	'G4', // g
-	'A4', // a
-	'B4', // b
-	'C5', // c5
-].forEach(function(note) {
-    Array.prototype.push.apply(noteEvents, midi.MidiEvent.createNote(note));
+var parse;
+try {
+	parse = PEG.buildParser(parserdata, {trackLineAndColumn: true}).parse;
+} catch (e) {
+	console.log(util.inspect(e, false, null));
+	process.exit(1);
+}
+
+var durToTicks = function(d) {
+	// arbitrarily decide that 250ms = 128 ticks
+	return Math.floor(d / 250 * 128);
+};
+
+var _dispatch = {
+
+  compile: {
+
+    'note': function(s, i, o) {
+			var start = s,
+				end = s + (i.len ? Math.floor(512 / i.len) : durToTicks(i.dur));
+      o.push({
+        tag: 'noteOn',
+				time: start,
+				pitch: i.pitch,
+      });
+      o.push({
+        tag: 'noteOff',
+				time:  end,
+				pitch: i.pitch,
+			});
+      return end;
+    },
+
+    'rest': function(s, i, o) {
+			return s + (i.len ? Math.floor(512 / i.len) : durToTicks(('dur' in i) ? i.dur : i.duration));
+    },
+
+    'seq': function(s, i, o) {
+      return compile_(
+        compile_(s, i.left, o),
+        i.right,
+        o
+      );
+    },
+
+    'par': function(s, i, o) {
+      return Math.max(
+        compile_(s, i.left, o),
+        compile_(s, i.right, o)
+      );
+    },
+
+    'repeat': function(s, i, o) {
+      for (var n = 0; n < i.count; ++n) {
+        s = compile_(s, i.section, o);
+      }
+			return s;
+    },
+
+  },
+
+};
+
+var compile_ = function (start, musexpr, out) {
+  if (!(musexpr.tag in _dispatch.compile)) {
+    throw 'Unrecognised music tag "' + musexpr.tag + '"';
+    return start;
+  }
+  return _dispatch.compile[musexpr.tag](start, musexpr, out);
+};
+
+var compile = function (musexpr) {
+  var out = [];
+  compile_(0, musexpr, out);
+  return out;
+};
+
+var data = fs.readFileSync(musin, 'utf-8');
+var mus = parse(data);
+var note = compile(mus);
+
+// sort NOTE output in increasing order of time
+note.sort(function($a, $b) {
+	var d = $a.time - $b.time;
+	if (d != 0) return d;
+	if ($a.tag === 'noteOff' && $b.tag === 'noteOn') return -1;
+	if ($b.tag === 'noteOff' && $a.tag === 'noteOn') return 1;
+	return 0;
 });
 
-// Create a track that contains the events to play the notes above
-var track = new midi.MidiTrack({ tempo: 240, events: noteEvents });
+// convert absolute times to relative
+var prevTime = 0;
+for (var i=0,l=note.length; i<l; ++i) {
+	note[i].interval = note[i].time - prevTime;
+	prevTime = note[i].time;
+}
+//console.log(note);
 
-var song  = midi.MidiWriter({ tracks: [track] });
+var midi = new Midi.File();
+var track = midi.addTrack();
+for (var i=0,l=note.length; i<l; ++i) {
+	track[note[i].tag](0, note[i].pitch, note[i].interval);
+}
 
-fs.writeFileSync(midiout, song.hex, 'binary');
+fs.writeFileSync(midiout, midi.toBytes(), 'binary');
