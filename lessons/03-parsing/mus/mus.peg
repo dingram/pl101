@@ -129,9 +129,9 @@ note_nolen =
 		{ var d = { tag: 'note', pitch: pitch, dur: last_duration }; if (last_len !== null) d.len=last_len; return d; }
 
 pitch =
-	p:([a-g]i[#b]*[0-9])
+	p:([a-gA-G][#b]*[0-9])
 		{ last_octave = p[p.length-1]; return flatten(p).join(''); }
-	/ p:([a-g]i[#b]*)
+	/ p:([a-gA-G][#b]*)
 		{ return flatten(p).join('') + last_octave; }
 
 length =
