@@ -51,6 +51,15 @@ var _dispatch = {
 			return s + (i.len ? Math.floor(512 / i.len) : durToTicks(('dur' in i) ? i.dur : i.duration));
     },
 
+    'tempo': function(s, i, o) {
+			o.push({
+				tag: 'tempo',
+				time: s,
+				bpm: i.tempo * i.base/4,
+			});
+			return s;
+    },
+
     'seq': function(s, i, o) {
       return compile_(
         compile_(s, i.left, o),
@@ -115,7 +124,11 @@ for (var i=0,l=note.length; i<l; ++i) {
 var midi = new Midi.File();
 var track = midi.addTrack();
 for (var i=0,l=note.length; i<l; ++i) {
-	track[note[i].tag](0, note[i].pitch, note[i].interval);
+	if (note[i].tag === 'tempo') {
+		track.tempo(note[i].bpm, note[i].interval);
+	} else {
+		track[note[i].tag](0, note[i].pitch, note[i].interval);
+	}
 }
 
 fs.writeFileSync(midiout, midi.toBytes(), 'binary');
