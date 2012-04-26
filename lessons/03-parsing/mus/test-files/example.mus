@@ -1,0 +1,11 @@
+\tempo 130
+<<
+	{
+		<db4 gb bb db5>:4. <eb4 ab c5 eb> <eb4 gb ab>:4
+		<c4 f ab c5 eb>:4. <f4 bb db5 f> ab5:16 gb f
+	}
+	{
+		bb2:16 r bb bb bb f3 eb r eb r ab r ab bb ab gb2
+		f r f f f c3 bb2 r:8 bb:16 bb c3 r bb2 f3:8
+	}
+>>
