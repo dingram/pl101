@@ -1,9 +1,9 @@
 {
 	var tempo = 60;
 	var tempo_base = 4;
-	var last_octave = 0;
-	var last_duration = 0;
-	var last_len = 0;
+	var last_octave = 4;
+	var last_duration = 250;
+	var last_len = 4;
 
 	var durFromLen = function (len) {
 		return (60000 * tempo_base) / (len * tempo);
