@@ -77,8 +77,13 @@ There are three comment styles: two block, and one line-wise:
 
 There are a few advanced commands which are supported, although not necessarily completely.
 
- - `\triplet` will play three notes in the time usually reserved for two (by simply multiplying their duration by 2/3)
- - `\swung` will swing two notes that are usually the same length, by dotting the first and halving the second
+ - `\triplet{note note note}` will play three notes in the time usually reserved for two (by simply multiplying their duration by 2/3)
+ - `\swung{note note}` will swing two notes that are usually the same length, by dotting the first and halving the second
+ - `\time n/d` will set the time signature to `n`/`d` (not currently supported for MIDI)
+ - `\key c` will set the key signature to C major (not currently supported for MIDI)
+ - `\key f#m` will set the key signature to F# minor (not currently supported for MIDI)
+ - `\clef treble` will insert a (notional) treble clef. Also supported: bass, alto, tenor. (not currently supported for MIDI)
+ - `\voice 2` will switch to voice two (not currently supported for MIDI)
 
 ## Examples
 
