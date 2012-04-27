@@ -118,7 +118,7 @@ clef_cmd =
 		{ return {tag: 'clef', type:t}; }
 
 voice_cmd =
-	'voice' ws+ v:int ws+ '{' ws* l:notelist ws* '}'
+	'voice' v:int ws* '{' ws* l:notelist ws* '}'
 		{ return {tag: 'voice', voice:v, section:l}; }
 
 instrument_cmd =
