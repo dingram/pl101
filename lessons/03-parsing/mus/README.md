@@ -170,7 +170,7 @@ There is also a stringifier in mus-util.js (complete with tests!) that converts 
 
 It is also possible to convert MUS format files into MIDI. See `mus2midi.js` for the gory details. To run it, call:
 
-   node mus2midi.js input.mus output.midi
+    node mus2midi.js input.mus output.midi
 
 This requires the `jsmidgen` module from `npm`.
 
