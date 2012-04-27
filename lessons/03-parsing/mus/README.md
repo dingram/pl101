@@ -146,6 +146,14 @@ If you want to see the MUS that these translate to, then check out the tests. It
 
 There is also a stringifier in mus-util.js (complete with tests!) that converts a MUS structure into a string using the grammar described above. Given the right options, it does a fair job of minifying the output. Having said that, it currently doesn't handle dotted relative durations, tempo changes, or the compressed parallel note syntax for chords.
 
+## MIDI output
+
+It is also possible to convert MUS format files into MIDI. See `mus2midi.js` for the gory details. To run it, call:
+
+   node mus2midi.js input.mus output.midi
+
+This requires the `jsmidgen` module from `npm`.
+
 ## Future plans
 
  - `'` and `,` operators for relative pitches
