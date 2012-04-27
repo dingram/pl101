@@ -152,7 +152,7 @@ rest_dur =
 
 rest_nolen =
 	'r'
-		{ var d = { tag: 'rest', dur: last_duration }; if (last_len !== null) d.len=last_len; return d; }
+		{ if (last_len !== null) last_duration = durFromLen(last_len); var d = { tag: 'rest', dur: last_duration }; if (last_len !== null) d.len=last_len; return d; }
 
 note =
 	note_dur
@@ -169,7 +169,7 @@ note_dur =
 
 note_nolen =
 	pitch:pitch
-		{ var d = { tag: 'note', pitch: pitch, dur: last_duration }; if (last_len !== null) d.len=last_len; return d; }
+		{ if (last_len !== null) last_duration = durFromLen(last_len); var d = { tag: 'note', pitch: pitch, dur: last_duration }; if (last_len !== null) d.len=last_len; return d; }
 
 pitch =
 	p:([a-gA-G][#b]*[0-9])
