@@ -54,18 +54,18 @@ var _dispatch = {
 		'tempo': function(s, i, o) {
 			o.push({
 				tag: 'tempo',
-			time: s,
-			bpm: i.tempo * i.base/4,
+				time: s,
+				bpm: i.tempo * i.base/4,
 			});
 			return s;
 		},
 
 		'seq': function(s, i, o) {
 			return compile_(
-					compile_(s, i.left, o),
-					i.right,
-					o
-					);
+				compile_(s, i.left, o),
+				i.right,
+				o
+			);
 		},
 
 		'par': function(s, i, o) {
@@ -87,17 +87,17 @@ var _dispatch = {
 };
 
 var compile_ = function (start, musexpr, out) {
-  if (!(musexpr.tag in _dispatch.compile)) {
-    throw 'Unrecognised music tag "' + musexpr.tag + '"';
-    return start;
-  }
-  return _dispatch.compile[musexpr.tag](start, musexpr, out);
+	if (!(musexpr.tag in _dispatch.compile)) {
+		throw 'Unrecognised music tag "' + musexpr.tag + '"';
+		return start;
+	}
+	return _dispatch.compile[musexpr.tag](start, musexpr, out);
 };
 
 var compile = function (musexpr) {
-  var out = [];
-  compile_(0, musexpr, out);
-  return out;
+	var out = [];
+	compile_(0, musexpr, out);
+	return out;
 };
 
 var data = fs.readFileSync(musin, 'utf-8');

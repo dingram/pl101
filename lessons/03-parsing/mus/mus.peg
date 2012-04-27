@@ -69,32 +69,32 @@ cmd_name =
 triplet_cmd =
 	'triplet' ws* '{' ws* one:playable ws+ two:playable ws+ three:playable ws* '}'
 		{
-      one.dur *= 2; one.dur /= 3; if (one.len) { one.len /= 2; one.len *= 3; }
-      two.dur *= 2; two.dur /= 3; if (two.len) { two.len /= 2; two.len *= 3; }
-      three.dur *= 2; three.dur /= 3; if (three.len) { three.len /= 2; three.len *= 3; }
-      return {tag: 'seq', left:one, right:{tag: 'seq', left:two, right:three}};
-    }
+			one.dur *= 2; one.dur /= 3; if (one.len) { one.len /= 2; one.len *= 3; }
+			two.dur *= 2; two.dur /= 3; if (two.len) { two.len /= 2; two.len *= 3; }
+			three.dur *= 2; three.dur /= 3; if (three.len) { three.len /= 2; three.len *= 3; }
+			return {tag: 'seq', left:one, right:{tag: 'seq', left:two, right:three}};
+		}
 	/ 'triplet' ws+ one:playable ws+ two:playable ws+ three:playable
 		{
-      one.dur *= 2; one.dur /= 3; if (one.len) { one.len /= 2; one.len *= 3; }
-      two.dur *= 2; two.dur /= 3; if (two.len) { two.len /= 2; two.len *= 3; }
-      three.dur *= 2; three.dur /= 3; if (three.len) { three.len /= 2; three.len *= 3; }
-      return {tag: 'seq', left:one, right:{tag: 'seq', left:two, right:three}};
-    }
+			one.dur *= 2; one.dur /= 3; if (one.len) { one.len /= 2; one.len *= 3; }
+			two.dur *= 2; two.dur /= 3; if (two.len) { two.len /= 2; two.len *= 3; }
+			three.dur *= 2; three.dur /= 3; if (three.len) { three.len /= 2; three.len *= 3; }
+			return {tag: 'seq', left:one, right:{tag: 'seq', left:two, right:three}};
+		}
 
 swung_cmd =
 	'swung' ws* '{' ws* one:playable ws+ two:playable ws* '}'
 		{
-      one.dur *= 1.5; if (one.len) { one.len /= 1.5; }
-      two.dur /= 2; if (two.len) { two.len *= 2; }
-      return {tag: 'seq', left:one, right:two};
-    }
+			one.dur *= 1.5; if (one.len) { one.len /= 1.5; }
+			two.dur /= 2; if (two.len) { two.len *= 2; }
+			return {tag: 'seq', left:one, right:two};
+		}
 	/ 'swung' ws+ one:playable ws+ two:playable
 		{
-      one.dur *= 1.5; if (one.len) { one.len /= 1.5; }
-      two.dur /= 2; if (two.len) { two.len *= 2; }
-      return {tag: 'seq', left:one, right:two};
-    }
+			one.dur *= 1.5; if (one.len) { one.len /= 1.5; }
+			two.dur /= 2; if (two.len) { two.len *= 2; }
+			return {tag: 'seq', left:one, right:two};
+		}
 
 tempo_cmd =
 	'tempo' ws+ b:int ws* '=' ws* t:int
