@@ -84,7 +84,7 @@ There are a few advanced commands which are supported, although not necessarily 
  - `\key c` will set the key signature to C major (not currently supported for MIDI)
  - `\key f#m` will set the key signature to F# minor (not currently supported for MIDI)
  - `\clef treble` will insert a (notional) treble clef. Also supported: bass, alto, tenor. (not currently supported for MIDI)
- - `\voice 2` will switch to voice two (not currently supported for MIDI)
+ - `\voice2{…}` will switch to voice two for the given note sequence (not currently supported for MIDI)
 
 ## Examples
 
