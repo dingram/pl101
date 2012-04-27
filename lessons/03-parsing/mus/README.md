@@ -155,6 +155,7 @@ There are a few advanced commands which are supported, although not necessarily 
 
 ### Trumpet Hornpipe (a.k.a. Captain Pugwash)
 
+    \instrument "accordion"
     |: d4:4 \triplet{g:8 g g} g:4 \triplet{g:8 g g} g:4 \swung{b:8 g} \swung{b d5} \swung{g d} \swung{b4 g}
     \triplet{d4:8 d d} d:4 \triplet{d:8 d d} d:4 \swung{f#:8 d} \swung{f# a} \swung{c5 a4} \swung{f# a}
     \triplet{g4:8 g g} g:4 \triplet{g:8 g g} g:4 \swung{b:8 g} \swung{b d5} g:4 g
