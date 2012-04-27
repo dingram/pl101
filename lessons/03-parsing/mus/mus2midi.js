@@ -1,5 +1,5 @@
 var PEG = require('pegjs');
-var Midi = require('../../../../jsmidgen/lib/jsmidgen.js');
+var Midi = require('jsmidgen');
 var fs = require('fs'); // for loading files
 var util = require('util');
 
