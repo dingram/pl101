@@ -73,6 +73,13 @@ There are three comment styles: two block, and one line-wise:
       or also using the Lilypond style
     %}
 
+## Advanced commands
+
+There are a few advanced commands which are supported, although not necessarily completely.
+
+ - `\triplet` will play three notes in the time usually reserved for two (by simply multiplying their duration by 2/3)
+ - `\swung` will swing two notes that are usually the same length, by dotting the first and halving the second
+
 ## Examples
 
 ### Twinkle Twinkle Little Star
@@ -139,6 +146,13 @@ There are three comment styles: two block, and one line-wise:
     c:8 c c:8. c:16 g2:8 g g g3:16 g
     e:8 e a:8 a:8 d:4 r }
     >>
+
+### Trumpet Hornpipe (a.k.a. Captain Pugwash)
+
+    |: d4:4 \triplet{g:8 g g} g:4 \triplet{g:8 g g} g:4 \swung{b:8 g} \swung{b d5} \swung{g d} \swung{b4 g}
+    \triplet{d4:8 d d} d:4 \triplet{d:8 d d} d:4 \swung{f#:8 d} \swung{f# a} \swung{c5 a4} \swung{f# a}
+    \triplet{g4:8 g g} g:4 \triplet{g:8 g g} g:4 \swung{b:8 g} \swung{b d5} g:4 g
+    \swung{f# a} \swung{g f#} \swung{e g} \swung{f# e} d:4 d d :|
 
 If you want to see the MUS that these translate to, then check out the tests. It's pretty painful :-)
 
