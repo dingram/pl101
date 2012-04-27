@@ -79,6 +79,7 @@ There are a few advanced commands which are supported, although not necessarily 
 
  - `\triplet{note note note}` will play three notes in the time usually reserved for two (by simply multiplying their duration by 2/3)
  - `\swung{note note}` will swing two notes that are usually the same length, by dotting the first and halving the second
+ - `\instrument 22` will change to instrument number 22, an accordion. Instruments can also be specified by name: `\instrument "trumpet"`. For the full list of instruments, see the end of `mus.peg`.
  - `\time n/d` will set the time signature to `n`/`d` (not currently supported for MIDI)
  - `\key c` will set the key signature to C major (not currently supported for MIDI)
  - `\key f#m` will set the key signature to F# minor (not currently supported for MIDI)

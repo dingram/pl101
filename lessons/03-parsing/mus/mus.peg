@@ -61,6 +61,7 @@ cmd_name =
 	time_sig_cmd
 	/ key_sig_cmd
 	/ clef_cmd
+	/ instrument_cmd
 	/ voice_cmd
 	/ tempo_cmd
 	/ triplet_cmd
@@ -119,6 +120,12 @@ clef_cmd =
 voice_cmd =
 	'voice' ws+ v:int ws+ '{' ws* l:notelist ws* '}'
 		{ return {tag: 'voice', voice:v, section:l}; }
+
+instrument_cmd =
+	'instrument' ws+ v:int
+		{ return {tag: 'instrument', patch:v}; }
+	/ 'instrument' ws+ '"' v:instrument_name '"'
+		{ return {tag: 'instrument', patch:v}; }
 
 noteitem =
 	playable
@@ -231,3 +238,134 @@ ws =
 	/ '/*' (!'*/' .)* '*/'
 	/ '%{' (!'%}' .)* '%}'
 	/ '%' [^\r\n]*
+
+
+instrument_name =
+	('piano' / 'acoustic grand') { return 1; }
+	/ 'bright acoustic'          { return 2; }
+	/ 'electric grand'           { return 3; }
+	/ 'honky-tonk'               { return 4; }
+	/ 'electric piano 1'         { return 5; }
+	/ 'electric piano 2'         { return 6; }
+	/ 'harpsichord'              { return 7; }
+	/ 'clav'                     { return 8; }
+	/ 'celesta'                  { return 9; }
+	/ 'glockenspiel'             { return 10; }
+	/ 'music box'                { return 11; }
+	/ 'vibraphone'               { return 12; }
+	/ 'marimba'                  { return 13; }
+	/ 'xylophone'                { return 14; }
+	/ 'tubular bells'            { return 15; }
+	/ 'dulcimer'                 { return 16; }
+	/ 'drawbar organ'            { return 17; }
+	/ 'percussive organ'         { return 18; }
+	/ 'rock organ'               { return 19; }
+	/ 'church organ'             { return 20; }
+	/ 'reed organ'               { return 21; }
+	/ 'accordion'                { return 22; }
+	/ 'harmonica'                { return 23; }
+	/ 'concertina'               { return 24; }
+	/ 'acoustic guitar (nylon)'  { return 25; }
+	/ 'acoustic guitar (steel)'  { return 26; }
+	/ 'electric guitar (jazz)'   { return 27; }
+	/ 'electric guitar (clean)'  { return 28; }
+	/ 'electric guitar (muted)'  { return 29; }
+	/ 'overdriven guitar'        { return 30; }
+	/ 'distorted guitar'         { return 31; }
+	/ 'guitar harmonics'         { return 32; }
+	/ 'acoustic bass'            { return 33; }
+	/ 'electric bass (finger)'   { return 34; }
+	/ 'electric bass (pick)'     { return 35; }
+	/ 'fretless bass'            { return 36; }
+	/ 'slap bass 1'              { return 37; }
+	/ 'slap bass 2'              { return 38; }
+	/ 'synth bass 1'             { return 39; }
+	/ 'synth bass 2'             { return 40; }
+	/ 'violin'                   { return 41; }
+	/ 'viola'                    { return 42; }
+	/ 'cello'                    { return 43; }
+	/ 'contrabass'               { return 44; }
+	/ 'tremolo strings'          { return 45; }
+	/ 'pizzicato strings'        { return 46; }
+	/ 'orchestral strings'       { return 47; }
+	/ 'timpani'                  { return 48; }
+	/ 'string ensemble 1'        { return 49; }
+	/ 'string ensemble 2'        { return 50; }
+	/ 'synthstrings 1'           { return 51; }
+	/ 'synthstrings 2'           { return 52; }
+	/ 'choir aahs'               { return 53; }
+	/ 'voice oohs'               { return 54; }
+	/ 'synth voice'              { return 55; }
+	/ 'orchestra hit'            { return 56; }
+	/ 'trumpet'                  { return 57; }
+	/ 'trombone'                 { return 58; }
+	/ 'tuba'                     { return 59; }
+	/ 'muted trumpet'            { return 60; }
+	/ 'french horn'              { return 61; }
+	/ 'brass section'            { return 62; }
+	/ 'synthbrass 1'             { return 63; }
+	/ 'synthbrass 2'             { return 64; }
+	/ 'soprano sax'              { return 65; }
+	/ 'alto sax'                 { return 66; }
+	/ 'tenor sax'                { return 67; }
+	/ 'baritone sax'             { return 68; }
+	/ 'oboe'                     { return 69; }
+	/ 'english horn'             { return 70; }
+	/ 'bassoon'                  { return 71; }
+	/ 'clarinet'                 { return 72; }
+	/ 'piccolo'                  { return 73; }
+	/ 'flute'                    { return 74; }
+	/ 'recorder'                 { return 75; }
+	/ 'pan flute'                { return 76; }
+	/ 'blown bottle'             { return 77; }
+	/ 'shakuhachi'               { return 78; }
+	/ 'whistle'                  { return 79; }
+	/ 'ocarina'                  { return 80; }
+	/ 'lead 1 (square)'          { return 81; }
+	/ 'lead 2 (sawtooth)'        { return 82; }
+	/ 'lead 3 (calliope)'        { return 83; }
+	/ 'lead 4 (chiff)'           { return 84; }
+	/ 'lead 5 (charang)'         { return 85; }
+	/ 'lead 6 (voice)'           { return 86; }
+	/ 'lead 7 (fifths)'          { return 87; }
+	/ 'lead 8 (bass+lead)'       { return 88; }
+	/ 'pad 1 (new age)'          { return 89; }
+	/ 'pad 2 (warm)'             { return 90; }
+	/ 'pad 3 (polysynth)'        { return 91; }
+	/ 'pad 4 (choir)'            { return 92; }
+	/ 'pad 5 (bowed)'            { return 93; }
+	/ 'pad 6 (metallic)'         { return 94; }
+	/ 'pad 7 (halo)'             { return 95; }
+	/ 'pad 8 (sweep)'            { return 96; }
+	/ 'fx 1 (rain)'              { return 97; }
+	/ 'fx 2 (soundtrack)'        { return 98; }
+	/ 'fx 3 (crystal)'           { return 99; }
+	/ 'fx 4 (atmosphere)'        { return 100; }
+	/ 'fx 5 (brightness)'        { return 101; }
+	/ 'fx 6 (goblins)'           { return 102; }
+	/ 'fx 7 (echoes)'            { return 103; }
+	/ 'fx 8 (sci-fi)'            { return 104; }
+	/ 'sitar'                    { return 105; }
+	/ 'banjo'                    { return 106; }
+	/ 'shamisen'                 { return 107; }
+	/ 'koto'                     { return 108; }
+	/ 'kalimba'                  { return 109; }
+	/ 'bagpipe'                  { return 110; }
+	/ 'fiddle'                   { return 111; }
+	/ 'shanai'                   { return 112; }
+	/ 'tinkle bell'              { return 113; }
+	/ 'agogo'                    { return 114; }
+	/ 'steel drums'              { return 115; }
+	/ 'woodblock'                { return 116; }
+	/ 'taiko drum'               { return 117; }
+	/ 'melodic tom'              { return 118; }
+	/ 'synth drum'               { return 119; }
+	/ 'reverse cymbal'           { return 120; }
+	/ 'guitar fret noise'        { return 121; }
+	/ 'breath noise'             { return 122; }
+	/ 'seashore'                 { return 123; }
+	/ 'bird tweet'               { return 124; }
+	/ 'telephone ring'           { return 125; }
+	/ 'helicopter'               { return 126; }
+	/ 'applause'                 { return 127; }
+	/ 'gunshot'                  { return 128; }

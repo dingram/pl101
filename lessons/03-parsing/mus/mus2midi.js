@@ -60,6 +60,15 @@ var _dispatch = {
 			return s;
 		},
 
+		'instrument': function(s, i, o) {
+			o.push({
+				tag: 'instrument',
+				time: s,
+				patch: i.patch,
+			});
+			return s;
+		},
+
 		'seq': function(s, i, o) {
 			return compile_(
 				compile_(s, i.left, o),
@@ -126,6 +135,8 @@ var track = midi.addTrack();
 for (var i=0,l=note.length; i<l; ++i) {
 	if (note[i].tag === 'tempo') {
 		track.tempo(note[i].bpm, note[i].interval);
+	} else if (note[i].tag === 'instrument') {
+		track.instrument(0, note[i].patch, note[i].interval);
 	} else {
 		track[note[i].tag](0, note[i].pitch, note[i].interval);
 	}
