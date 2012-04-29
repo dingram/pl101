@@ -1,10 +1,12 @@
 if (typeof module !== 'undefined') {
 	// In Node load required modules
 	var assert = require('chai').assert;
+	var expect = require('chai').expect;
 	var evalScheem = require('../scheem').evalScheem;
 } else {
 	// In browser assume already loaded by <script> tags
 	var assert = chai.assert;
+	var expect = chai.expect;
 }
 
 suite('quote', function() {
@@ -25,6 +27,16 @@ suite('quote', function() {
 			evalScheem(['quote', [1, 2, 3]], {}),
 			[1, 2, 3]
 			);
+	});
+	test('zero arguments', function() {
+		expect(function(){
+			evalScheem(['quote'], {});
+		}).to.throw();
+	});
+	test('more than one argument', function() {
+		expect(function(){
+			evalScheem(['quote', 3, 4], {});
+		}).to.throw();
 	});
 });
 

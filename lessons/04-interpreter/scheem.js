@@ -1,3 +1,11 @@
+var ScheemError = function(message) {
+	this.message = message;
+	this.name = 'ScheemError';
+	this.toString = function() {
+		return this.message;
+	};
+};
+
 var _func_dispatch = {
 
 	// simple arithmetic
@@ -37,12 +45,12 @@ var evalScheem = function(expr, env) {
 		} else if (expr in env) {
 			return env[expr];
 		} else {
-			throw 'Undefined variable: '+expr;
+			throw new ScheemError('Undefined variable: '+expr);
 		}
 	}
 
   if (!(expr[0] in _func_dispatch)) {
-    throw 'Unrecognised Scheem function "' + expr[0] + '"';
+    throw new ScheemError('Unrecognised Scheem function "' + expr[0] + '"');
   }
   var func_info = _func_dispatch[expr[0]];
   if (typeof func_info === 'function') {
@@ -51,7 +59,7 @@ var evalScheem = function(expr, env) {
   } else {
 		// specific argcount
 		if ((expr.length - 1) !== func_info[0]) {
-			throw 'Scheem function "' + expr[0] + '" requires exactly ' + func_info[0] + ' arguments; ' + (expr.length - 1) + ' given.';
+			throw new ScheemError('Scheem function "' + expr[0] + '" requires exactly ' + func_info[0] + ' arguments; ' + (expr.length - 1) + ' given.');
 		}
 		return func_info[1](expr, env);
 	}
