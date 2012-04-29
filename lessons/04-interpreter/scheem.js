@@ -22,6 +22,14 @@ var _func_dispatch = {
 		return r;
 	},
 
+	'define': [2, function(expr, env) {
+		if (expr[1] in env) {
+			throw new ScheemError('Variable has already been defined: '+expr);
+		}
+		env[expr[1]] = evalScheem(expr[2], env);
+		return 0;
+	}],
+
 	'quote': [1, function(expr, env) {
 		return expr[1];
 	}],
