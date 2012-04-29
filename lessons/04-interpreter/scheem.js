@@ -30,13 +30,12 @@ var evalScheem = function(expr, env) {
 		return func_info(expr, env);
   } else {
 		// specific argcount
-		if ((expr[0].length + 1) !== func_info[0]) {
-			throw 'Scheem function "' + expr[0] + '" requires exactly ' + func_info[0] + ' arguments.';
+		if ((expr.length - 1) !== func_info[0]) {
+			throw 'Scheem function "' + expr[0] + '" requires exactly ' + func_info[0] + ' arguments; ' + (expr.length - 1) + ' given.';
 		}
 		return func_info[1](expr, env);
 	}
 };
-
 
 if (typeof module !== 'undefined') {
 	module.exports.evalScheem = evalScheem;
