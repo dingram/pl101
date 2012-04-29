@@ -309,3 +309,57 @@ suite('division', function() {
 			);
 	});
 });
+
+suite('equality', function() {
+	test('of two equal items (both integer atoms)', function() {
+		assert.deepEqual(
+			evalScheem(['=', 1, 1], {}),
+			'#t'
+			);
+	});
+	test('of two inequal items (both integer atoms)', function() {
+		assert.deepEqual(
+			evalScheem(['=', 2, 1], {}),
+			'#f'
+			);
+	});
+	test('of two equal items (both 2-item integer lists)', function() {
+		assert.deepEqual(
+			evalScheem(['=', ['quote', [1, 2]], ['quote', [1, 2]]], {}),
+			'#t'
+			);
+	});
+	test('of two inequal items (both 2-item integer lists)', function() {
+		assert.deepEqual(
+			evalScheem(['=', ['quote', [1, 2]], ['quote', [2, 1]]], {}),
+			'#f'
+			);
+	});
+});
+
+suite('less-than', function() {
+	test('of two items (both integer atoms)', function() {
+		assert.deepEqual(
+			evalScheem(['<', 1, 2], {}),
+			'#t'
+			);
+	});
+	test('of two more items (both integer atoms)', function() {
+		assert.deepEqual(
+			evalScheem(['<', 2, 1], {}),
+			'#f'
+			);
+	});
+	test('of two items (both 2-item integer lists)', function() {
+		assert.deepEqual(
+			evalScheem(['<', ['quote', [1, 2]], ['quote', [2, 3]]], {}),
+			'#t'
+			);
+	});
+	test('of two more items (both 2-item integer lists)', function() {
+		assert.deepEqual(
+			evalScheem(['<', ['quote', [1, 2]], ['quote', [2, 1]]], {}),
+			'#f'
+			);
+	});
+});

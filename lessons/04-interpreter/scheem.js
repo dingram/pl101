@@ -6,6 +6,37 @@ var ScheemError = function(message) {
 	};
 };
 
+var _compare_items = function(a, b, comparator) {
+	if (typeof a != typeof b) {
+		throw new ScheemError('Cannot compare two items with different types');
+	}
+	if (Array.isArray(a)) {
+		if (a.length != b.length) {
+			throw new ScheemError('Cannot compare two lists with different lengths');
+		}
+		for (var i = 0, l = a.length; i < l; ++i) {
+			if (!_compare_items(a[i], b[i], comparator)) {
+				return false;
+			}
+		}
+	} else if (!comparator(a, b)) {
+		return false;
+	}
+	return true;
+};
+
+var _eval_transitive_truth = function(expr, env, func) {
+	var last = evalScheem(expr[1], env);
+	for (var i = 2, l = expr.length; i < l; ++i) {
+		var cur = evalScheem(expr[i], env);
+		if (!_compare_items(last, cur, func)) {
+			return '#f';
+		}
+		last = cur;
+	}
+	return '#t';
+};
+
 var _func_dispatch = {
 
 	// simple arithmetic
@@ -14,6 +45,11 @@ var _func_dispatch = {
 	'*': function(expr, env) { return expr.slice(1).reduce(function(a,b) { return evalScheem(a, env) * evalScheem(b, env); }); },
 	'/': function(expr, env) { return expr.slice(1).reduce(function(a,b) { return evalScheem(a, env) / evalScheem(b, env); }); },
 
+	// conditionals
+	'=':  function(expr, env) { return _eval_transitive_truth(expr, env, function(a, b) { return a == b; }); },
+	'<':  function(expr, env) { return _eval_transitive_truth(expr, env, function(a, b) { return a < b; }); },
+
+	// the rest
 	'begin': function(expr, env) {
 		var r = 0;
 		for (var i = 1, l = expr.length; i<l; ++i) {
