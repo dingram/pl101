@@ -48,6 +48,9 @@ var _func_dispatch = {
 	// conditionals
 	'=':  function(expr, env) { return _eval_transitive_truth(expr, env, function(a, b) { return a == b; }); },
 	'<':  function(expr, env) { return _eval_transitive_truth(expr, env, function(a, b) { return a < b; }); },
+	'>':  function(expr, env) { return _eval_transitive_truth(expr, env, function(a, b) { return a > b; }); },
+	'<=': function(expr, env) { return _eval_transitive_truth(expr, env, function(a, b) { return a <= b; }); },
+	'>=': function(expr, env) { return _eval_transitive_truth(expr, env, function(a, b) { return a >= b; }); },
 
 	// the rest
 	'begin': function(expr, env) {
