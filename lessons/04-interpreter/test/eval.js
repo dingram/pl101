@@ -429,3 +429,30 @@ suite('or', function() {
 			);
 	});
 });
+
+suite('not', function() {
+	test('f = t', function() {
+		assert.deepEqual(
+			evalScheem(['not', '#f'], {}),
+			'#t'
+			);
+	});
+	test('f t = t', function() {
+		assert.deepEqual(
+			evalScheem(['not', '#t'], {}),
+			'#f'
+			);
+	});
+	test('of a true item', function() {
+		assert.deepEqual(
+			evalScheem(['not', ['=', 2, 2]], {}),
+			'#f'
+			);
+	});
+	test('of a false item', function() {
+		assert.deepEqual(
+			evalScheem(['not', ['=', 2, 1]], {}),
+			'#t'
+			);
+	});
+});

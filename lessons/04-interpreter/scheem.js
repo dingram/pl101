@@ -55,6 +55,7 @@ var _func_dispatch = {
 	// logical
 	'&': function(expr, env) { return expr.slice(1).every(function(a) { return evalScheem(a, env) == '#t'; }) ? '#t' : '#f'; },
 	'|': function(expr, env) { return expr.slice(1).some(function(a)  { return evalScheem(a, env) == '#t'; }) ? '#t' : '#f'; },
+	'not': [1, function(expr, env) { return (evalScheem(expr[1], env) == '#t') ? '#f' : '#t'; }],
 
 	// aliases
 	"\u00F7": function(expr, env) { return evalScheem(['*'].concat(expr.slice(1)), env); },
