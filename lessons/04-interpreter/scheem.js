@@ -140,20 +140,20 @@ var evalScheem = function(expr, env) {
 		}
 	}
 
-  if (!(expr[0] in _func_dispatch)) {
-    throw new ScheemError('Unrecognised Scheem function "' + expr[0] + '"');
-  }
-  var func_info = _func_dispatch[expr[0]];
-  if (typeof func_info === 'function') {
+	if (!(expr[0] in _func_dispatch)) {
+		throw new ScheemError('Unrecognised Scheem function "' + expr[0] + '"');
+	}
+	var func_info = _func_dispatch[expr[0]];
+	if (typeof func_info === 'function') {
 		// unlimited args
 		return func_info(expr, env);
-  } else if (func_info.length == 2) {
+	} else if (func_info.length == 2) {
 		// specific argcount
 		if ((expr.length - 1) !== func_info[0]) {
 			throw new ScheemError('Scheem function "' + expr[0] + '" requires exactly ' + func_info[0] + ' arguments; ' + (expr.length - 1) + ' given.');
 		}
 		return func_info[1](expr, env);
-  } else if (func_info.length == 3) {
+	} else if (func_info.length == 3) {
 		// variable argcount, with min/max
 		if (func_info[0] !== null && (expr.length - 1) < func_info[0]) {
 			throw new ScheemError('Scheem function "' + expr[0] + '" requires at least ' + func_info[0] + ' arguments; ' + (expr.length - 1) + ' given.');
