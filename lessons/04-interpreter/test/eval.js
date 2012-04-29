@@ -459,6 +459,65 @@ suite('not', function() {
 	});
 });
 
+suite('if', function() {
+	test('true then atom a', function() {
+		assert.deepEqual(
+			evalScheem(['if', '#t', 1, 2], {}),
+			1
+			);
+	});
+	test('false then atom b', function() {
+		assert.deepEqual(
+			evalScheem(['if', '#f', 1, 2], {}),
+			2
+			);
+	});
+	test('true then result a', function() {
+		assert.deepEqual(
+			evalScheem(['if', '#t', ['+', 1, 2], ['-', 2, 1]], {}),
+			3
+			);
+	});
+	test('false then result b', function() {
+		assert.deepEqual(
+			evalScheem(['if', '#f', ['+', 1, 2], ['-', 2, 1]], {}),
+			1
+			);
+	});
+	test('true expr then result a', function() {
+		assert.deepEqual(
+			evalScheem(['if', ['<', 1, 2], ['+', 1, 2], ['-', 2, 1]], {}),
+			3
+			);
+	});
+	test('false expr then result b', function() {
+		assert.deepEqual(
+			evalScheem(['if', ['<', 2, 1], ['+', 1, 2], ['-', 2, 1]], {}),
+			1
+			);
+	});
+	test('zero arguments fail', function() {
+		expect(function(){
+			evalScheem(['if'], {});
+		}).to.throw();
+	});
+	test('one argument fail', function() {
+		expect(function(){
+			evalScheem(['if', '#t'], {});
+		}).to.throw();
+	});
+	test('four arguments fail', function() {
+		expect(function(){
+			evalScheem(['if', '#t', 1, 2, 3], {});
+		}).to.throw();
+	});
+	test('non-bool argument fail', function() {
+		expect(function(){
+			evalScheem(['if', 1, 2, 3], {});
+		}).to.throw();
+	});
+});
+
 suite('evalString', function(){
 	test('int', function() {
 		assert.deepEqual(

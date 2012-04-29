@@ -110,6 +110,17 @@ var _func_dispatch = {
 		return evalScheem(expr[1], env).slice(1);
 	}],
 
+	'if': [2, 3, function(expr, env) {
+		var test = evalScheem(expr[1], env);
+		if (test === '#t') {
+			return evalScheem(expr[2], env);
+		} else if (test === '#f') {
+			return evalScheem(expr[3], env);
+		} else {
+			throw new ScheemError('First argument to "if" must evaluate to a boolean (#t or #f)');
+		}
+	}],
+
 };
 
 
@@ -136,12 +147,21 @@ var evalScheem = function(expr, env) {
   if (typeof func_info === 'function') {
 		// unlimited args
 		return func_info(expr, env);
-  } else {
+  } else if (func_info.length == 2) {
 		// specific argcount
 		if ((expr.length - 1) !== func_info[0]) {
 			throw new ScheemError('Scheem function "' + expr[0] + '" requires exactly ' + func_info[0] + ' arguments; ' + (expr.length - 1) + ' given.');
 		}
 		return func_info[1](expr, env);
+  } else if (func_info.length == 3) {
+		// variable argcount, with min/max
+		if (func_info[0] !== null && (expr.length - 1) < func_info[0]) {
+			throw new ScheemError('Scheem function "' + expr[0] + '" requires at least ' + func_info[0] + ' arguments; ' + (expr.length - 1) + ' given.');
+		}
+		if (func_info[1] !== null && (expr.length - 1) > func_info[1]) {
+			throw new ScheemError('Scheem function "' + expr[0] + '" requires no more than ' + func_info[1] + ' arguments; ' + (expr.length - 1) + ' given.');
+		}
+		return func_info[2](expr, env);
 	}
 };
 
