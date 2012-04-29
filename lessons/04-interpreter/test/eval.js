@@ -81,3 +81,30 @@ suite('car', function() {
 			);
 	});
 });
+
+suite('cdr', function() {
+	test('of a multi-item list (atom)', function() {
+		assert.deepEqual(
+			evalScheem(['cdr', ['quote', [1, 2, 3]]], {}),
+			[2, 3]
+			);
+	});
+	test('of a multi-item list (list)', function() {
+		assert.deepEqual(
+			evalScheem(['cdr', ['quote', [[1,2], [3,4], [5,6]]]], {}),
+			[[3,4], [5,6]]
+			);
+	});
+	test('of a single-item list', function() {
+		assert.deepEqual(
+			evalScheem(['cdr', ['quote', [1]]], {}),
+			[]
+			);
+	});
+	test('of an empty list', function() {
+		assert.deepEqual(
+			evalScheem(['cdr', ['quote', []]], {}),
+			[]
+			);
+	});
+});

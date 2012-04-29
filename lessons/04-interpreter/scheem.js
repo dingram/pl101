@@ -12,6 +12,10 @@ var _func_dispatch = {
 		return evalScheem(expr[1], env)[0];
 	}],
 
+	'cdr': [1, function(expr, env) {
+		return evalScheem(expr[1], env).slice(1);
+	}],
+
 };
 
 
