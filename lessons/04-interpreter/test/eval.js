@@ -27,3 +27,30 @@ suite('quote', function() {
 			);
 	});
 });
+
+suite('cons', function() {
+	test('atom onto an empty list', function() {
+		assert.deepEqual(
+			evalScheem(['cons', 1, ['quote', []]], {}),
+			[1]
+			);
+	});
+	test('atom onto a two-item list', function() {
+		assert.deepEqual(
+			evalScheem(['cons', 1, ['quote', [2, 3]]], {}),
+			[1, 2, 3]
+			);
+	});
+	test('list onto an empty list', function() {
+		assert.deepEqual(
+			evalScheem(['cons', ['quote', [1]], ['quote', []]], {}),
+			[[1]]
+			);
+	});
+	test('list onto a two-item list', function() {
+		assert.deepEqual(
+			evalScheem(['cons', ['quote', [1]], ['quote', [2, 3]]], {}),
+			[[1], 2, 3]
+			);
+	});
+});

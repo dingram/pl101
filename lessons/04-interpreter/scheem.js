@@ -1,7 +1,13 @@
 var _func_dispatch = {
+
 	'quote': [1, function(expr, env) {
 		return expr[1];
 	}],
+
+	'cons': function(expr, env) {
+		return [evalScheem(expr[1], env)].concat(evalScheem(expr[2], env));
+	},
+
 };
 
 
