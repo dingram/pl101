@@ -1,7 +1,7 @@
 var _func_dispatch = {
-	'quote': function(expr, env) {
+	'quote': [1, function(expr, env) {
 		return expr[1];
-	},
+	}],
 };
 
 
