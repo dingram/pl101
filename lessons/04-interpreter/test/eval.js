@@ -9,6 +9,27 @@ if (typeof module !== 'undefined') {
 	var expect = chai.expect;
 }
 
+suite('begin', function() {
+	test('simply quote a number', function() {
+		assert.deepEqual(
+			evalScheem(['begin', ['quote', 3]], {}),
+			3
+			);
+	});
+	test('simple arithmetic', function() {
+		assert.deepEqual(
+			evalScheem(['begin', ['*', ['+', 4, 2], ['-', 10, 3]]], {}),
+			42
+			);
+	});
+	test('multiple expressions', function() {
+		assert.deepEqual(
+			evalScheem(['begin', ['+', 3, 2], ['*', ['+', 4, 2], ['-', 9, 2]]], {}),
+			42
+			);
+	});
+});
+
 suite('quote', function() {
 	test('a number', function() {
 		assert.deepEqual(

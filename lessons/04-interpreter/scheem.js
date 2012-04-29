@@ -14,6 +14,14 @@ var _func_dispatch = {
 	'*': function(expr, env) { return expr.slice(1).reduce(function(a,b) { return evalScheem(a, env) * evalScheem(b, env); }); },
 	'/': [2, function(expr, env) { return evalScheem(expr[1], env) / evalScheem(expr[2], env); }],
 
+	'begin': function(expr, env) {
+		var r = 0;
+		for (var i = 1, l = expr.length; i<l; ++i) {
+			r = evalScheem(expr[i], env);
+		}
+		return r;
+	},
+
 	'quote': [1, function(expr, env) {
 		return expr[1];
 	}],
