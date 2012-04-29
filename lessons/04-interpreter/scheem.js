@@ -30,6 +30,14 @@ var _func_dispatch = {
 		return 0;
 	}],
 
+	'set!': [2, function(expr, env) {
+		if (!(expr[1] in env)) {
+			throw new ScheemError('Undefined variable: '+expr);
+		}
+		env[expr[1]] = evalScheem(expr[2], env);
+		return 0;
+	}],
+
 	'quote': [1, function(expr, env) {
 		return expr[1];
 	}],

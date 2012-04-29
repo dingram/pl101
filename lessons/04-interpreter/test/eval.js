@@ -66,6 +66,42 @@ suite('define', function() {
 	});
 });
 
+suite('set!', function() {
+	test('simple variable, atom', function() {
+		var env = {};
+		assert.deepEqual(
+			evalScheem(['begin', ['define', 'x', 2], ['set!', 'x', 3]], env),
+			0
+			);
+		assert.deepEqual(
+			env,
+			{x: 3}
+			);
+	});
+	test('simple variable, list', function() {
+		var env = {};
+		assert.deepEqual(
+			evalScheem(['begin', ['define', 'x', ['quote', [1, 2]]], ['set!', 'x', ['quote', [3, 4]]]], env),
+			0
+			);
+		assert.deepEqual(
+			env,
+			{x: [3, 4]}
+			);
+	});
+	test('variable definition and usage', function() {
+		assert.deepEqual(
+			evalScheem(['begin', ['define', 'x', 0], ['set!', 'x', 2], ['*', ['+', 4, 'x'], ['-', 9, 'x']]], {}),
+			42
+			);
+	});
+	test('an undefined variable', function() {
+		expect(function(){
+			evalScheem(['begin', ['set!', 'x', 2]], {});
+		}).to.throw();
+	});
+});
+
 suite('quote', function() {
 	test('a number', function() {
 		assert.deepEqual(
