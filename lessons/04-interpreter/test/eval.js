@@ -54,3 +54,30 @@ suite('cons', function() {
 			);
 	});
 });
+
+suite('car', function() {
+	test('of a multi-item list (atom)', function() {
+		assert.deepEqual(
+			evalScheem(['car', ['quote', [1, 2, 3]]], {}),
+			1
+			);
+	});
+	test('of a multi-item list (list)', function() {
+		assert.deepEqual(
+			evalScheem(['car', ['quote', [[1,2], 3, 4]]], {}),
+			[1, 2]
+			);
+	});
+	test('of a single-item list', function() {
+		assert.deepEqual(
+			evalScheem(['car', ['quote', [1]]], {}),
+			1
+			);
+	});
+	test('of an empty list', function() {
+		assert.deepEqual(
+			evalScheem(['car', ['quote', []]], {}),
+			undefined
+			);
+	});
+});

@@ -8,6 +8,10 @@ var _func_dispatch = {
 		return [evalScheem(expr[1], env)].concat(evalScheem(expr[2], env));
 	},
 
+	'car': [1, function(expr, env) {
+		return evalScheem(expr[1], env)[0];
+	}],
+
 };
 
 
