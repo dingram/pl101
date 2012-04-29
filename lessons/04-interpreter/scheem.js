@@ -1,5 +1,11 @@
 var _func_dispatch = {
 
+	// simple arithmetic
+	'+': function(expr, env) { return expr.slice(1).reduce(function(a,b) { return evalScheem(a, env) + evalScheem(b, env); }); },
+	'-': [2, function(expr, env) { return evalScheem(expr[1]) - evalScheem(expr[2]); }],
+	'*': function(expr, env) { return expr.slice(1).reduce(function(a,b) { return evalScheem(a, env) * evalScheem(b, env); }); },
+	'/': [2, function(expr, env) { return evalScheem(expr[1]) / evalScheem(expr[2]); }],
+
 	'quote': [1, function(expr, env) {
 		return expr[1];
 	}],
