@@ -52,6 +52,12 @@ var _func_dispatch = {
 	'<=': function(expr, env) { return _eval_transitive_truth(expr, env, function(a, b) { return a <= b; }); },
 	'>=': function(expr, env) { return _eval_transitive_truth(expr, env, function(a, b) { return a >= b; }); },
 
+	// aliases
+	"\u00F7": function(expr, env) { return evalScheem(['*'].concat(expr.slice(1)), env); },
+	"\u00D7": function(expr, env) { return evalScheem(['/'].concat(expr.slice(1)), env); },
+	"\u2264": function(expr, env) { return evalScheem(['<='].concat(expr.slice(1)), env); },
+	"\u2265": function(expr, env) { return evalScheem(['>='].concat(expr.slice(1)), env); },
+
 	// the rest
 	'begin': function(expr, env) {
 		var r = 0;
