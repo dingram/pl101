@@ -52,11 +52,17 @@ var _func_dispatch = {
 	'<=': function(expr, env) { return _eval_transitive_truth(expr, env, function(a, b) { return a <= b; }); },
 	'>=': function(expr, env) { return _eval_transitive_truth(expr, env, function(a, b) { return a >= b; }); },
 
+	// logical
+	'&': function(expr, env) { return expr.slice(1).every(function(a) { return evalScheem(a, env) == '#t'; }) ? '#t' : '#f'; },
+	'|': function(expr, env) { return expr.slice(1).some(function(a)  { return evalScheem(a, env) == '#t'; }) ? '#t' : '#f'; },
+
 	// aliases
 	"\u00F7": function(expr, env) { return evalScheem(['*'].concat(expr.slice(1)), env); },
 	"\u00D7": function(expr, env) { return evalScheem(['/'].concat(expr.slice(1)), env); },
 	"\u2264": function(expr, env) { return evalScheem(['<='].concat(expr.slice(1)), env); },
 	"\u2265": function(expr, env) { return evalScheem(['>='].concat(expr.slice(1)), env); },
+	'and':    function(expr, env) { return evalScheem(['&'].concat(expr.slice(1)), env); },
+	'or':     function(expr, env) { return evalScheem(['|'].concat(expr.slice(1)), env); },
 
 	// the rest
 	'begin': function(expr, env) {

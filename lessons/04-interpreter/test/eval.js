@@ -363,3 +363,69 @@ suite('less-than', function() {
 			);
 	});
 });
+
+suite('and', function() {
+	test('f f = f', function() {
+		assert.deepEqual(
+			evalScheem(['and', '#f', '#f'], {}),
+			'#f'
+			);
+	});
+	test('f t = f', function() {
+		assert.deepEqual(
+			evalScheem(['and', '#f', '#t'], {}),
+			'#f'
+			);
+	});
+	test('t f = f', function() {
+		assert.deepEqual(
+			evalScheem(['and', '#t', '#f'], {}),
+			'#f'
+			);
+	});
+	test('t t = t', function() {
+		assert.deepEqual(
+			evalScheem(['and', '#t', '#t'], {}),
+			'#t'
+			);
+	});
+	test('of two items', function() {
+		assert.deepEqual(
+			evalScheem(['and', ['=', 1, 1], ['=', 2, 2]], {}),
+			'#t'
+			);
+	});
+});
+
+suite('or', function() {
+	test('f f = f', function() {
+		assert.deepEqual(
+			evalScheem(['or', '#f', '#f'], {}),
+			'#f'
+			);
+	});
+	test('f t = t', function() {
+		assert.deepEqual(
+			evalScheem(['or', '#f', '#t'], {}),
+			'#t'
+			);
+	});
+	test('t f = t', function() {
+		assert.deepEqual(
+			evalScheem(['or', '#t', '#f'], {}),
+			'#t'
+			);
+	});
+	test('t t = t', function() {
+		assert.deepEqual(
+			evalScheem(['or', '#t', '#t'], {}),
+			'#t'
+			);
+	});
+	test('of two items', function() {
+		assert.deepEqual(
+			evalScheem(['or', ['=', 2, 1], ['=', 2, 2]], {}),
+			'#t'
+			);
+	});
+});
