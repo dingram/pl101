@@ -7,12 +7,14 @@ var _func_dispatch = {
 
 var evalScheem = function(expr, env) {
 	// the simple cases
-	if (typeof expr === 'number') {
+	if (typeof expr === 'number' || typeof expr === 'boolean') {
 		return expr;
 	}
 
 	if (typeof expr === 'string') {
-		if (expr in env) {
+		if (expr === '#t' || expr === '#f') {
+			return expr;
+		} else if (expr in env) {
 			return env[expr];
 		} else {
 			throw 'Undefined variable: '+expr;
