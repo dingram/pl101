@@ -10,9 +10,9 @@ var _func_dispatch = {
 
 	// simple arithmetic
 	'+': function(expr, env) { return expr.slice(1).reduce(function(a,b) { return evalScheem(a, env) + evalScheem(b, env); }); },
-	'-': [2, function(expr, env) { return evalScheem(expr[1], env) - evalScheem(expr[2], env); }],
+	'-': function(expr, env) { return expr.slice(1).reduce(function(a,b) { return evalScheem(a, env) - evalScheem(b, env); }); },
 	'*': function(expr, env) { return expr.slice(1).reduce(function(a,b) { return evalScheem(a, env) * evalScheem(b, env); }); },
-	'/': [2, function(expr, env) { return evalScheem(expr[1], env) / evalScheem(expr[2], env); }],
+	'/': function(expr, env) { return expr.slice(1).reduce(function(a,b) { return evalScheem(a, env) / evalScheem(b, env); }); },
 
 	'begin': function(expr, env) {
 		var r = 0;
