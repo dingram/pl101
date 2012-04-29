@@ -2,7 +2,9 @@ if (typeof module !== 'undefined') {
 	// In Node load required modules
 	var assert = require('chai').assert;
 	var expect = require('chai').expect;
-	var evalScheem = require('../scheem').evalScheem;
+	var scheem = require('../scheem');
+	var evalScheem = scheem.evalScheem;
+	var evalScheemString = scheem.evalScheemString;
 } else {
 	// In browser assume already loaded by <script> tags
 	var assert = chai.assert;
@@ -453,6 +455,33 @@ suite('not', function() {
 		assert.deepEqual(
 			evalScheem(['not', ['=', 2, 1]], {}),
 			'#t'
+			);
+	});
+});
+
+suite('evalString', function(){
+	test('int', function() {
+		assert.deepEqual(
+			evalScheemString('3', {}),
+			3
+			);
+	});
+	test('quoted list', function() {
+		assert.deepEqual(
+			evalScheemString("'(1 2)", {}),
+			[1, 2]
+			);
+	});
+	test('simple addition', function() {
+		assert.deepEqual(
+			evalScheemString("(+ 1 2)", {}),
+			3
+			);
+	});
+	test('simple nested arithmetic', function() {
+		assert.deepEqual(
+			evalScheemString("(+ 2 (* 3 4))", {}),
+			14
 			);
 	});
 });

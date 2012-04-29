@@ -1,3 +1,7 @@
+if (typeof module !== 'undefined') {
+	var SCHEEM = require('./parser');
+}
+
 var ScheemError = function(message) {
 	this.message = message;
 	this.name = 'ScheemError';
@@ -141,6 +145,12 @@ var evalScheem = function(expr, env) {
 	}
 };
 
+var evalScheemString = function(str, env) {
+	return evalScheem(SCHEEM.parse(str), env);
+};
+
+
 if (typeof module !== 'undefined') {
 	module.exports.evalScheem = evalScheem;
+	module.exports.evalScheemString = evalScheemString;
 }
