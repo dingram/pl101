@@ -374,6 +374,9 @@ pre {
   background: #002b36;
   color: #586e75;
 }
+pre:hover {
+  background: #073642;
+}
 .result {
   color: #dc322f;
 }
@@ -486,8 +489,23 @@ pre {
   font-family: monospace;
   font-weight: bold;
 }
+#examples {
+  clear: both;
+  padding-top: 1px;
+}
+h2 {
+  clear: both;
+}
 pre {
   margin-top: 0.75em;
+  padding: 0.4em;
+  cursor: default;
+  -khtml-border-radius: 0.6em 0.6em 0.6em 0.6em;
+  -moz-border-radius: 0.6em 0.6em 0.6em 0.6em;
+  -ms-border-radius: 0.6em 0.6em 0.6em 0.6em;
+  -o-border-radius: 0.6em 0.6em 0.6em 0.6em;
+  -webkit-border-radius: 0.6em 0.6em 0.6em 0.6em;
+  border-radius: 0.6em 0.6em 0.6em 0.6em;
 }
 #error {
   margin: 0 !important;
