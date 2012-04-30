@@ -38,6 +38,10 @@
 				var o = $('#output');
 				var p, r;
 
+				if ($.trim(v) === '') {
+					return;
+				}
+
 				try {
 					p = SCHEEM.parse(v);
 				} catch (ex) {
