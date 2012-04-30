@@ -62,8 +62,8 @@ var _func_dispatch = {
 	'not': [1, function(expr, env) { return (evalScheem(expr[1], env) == '#t') ? '#f' : '#t'; }],
 
 	// aliases
-	"\u00F7": function(expr, env) { return evalScheem(['*'].concat(expr.slice(1)), env); },
-	"\u00D7": function(expr, env) { return evalScheem(['/'].concat(expr.slice(1)), env); },
+	"\u00D7": function(expr, env) { return evalScheem(['*'].concat(expr.slice(1)), env); },
+	"\u00F7": function(expr, env) { return evalScheem(['/'].concat(expr.slice(1)), env); },
 	"\u2264": function(expr, env) { return evalScheem(['<='].concat(expr.slice(1)), env); },
 	"\u2265": function(expr, env) { return evalScheem(['>='].concat(expr.slice(1)), env); },
 	'and':    function(expr, env) { return evalScheem(['&'].concat(expr.slice(1)), env); },
