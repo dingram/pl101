@@ -68,7 +68,9 @@
 				}
 			});
 			$('.example').click(function(){
-				editor.setValue($(this).text());
+				clearTimeout(t);
+				editor.setValue($(this).find('code').text());
+				compileAndRun(editor.getValue());
 			});
 		</script>
 	</body>
