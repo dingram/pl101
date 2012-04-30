@@ -115,7 +115,7 @@ var _func_dispatch = {
 		if (test === '#t') {
 			return evalScheem(expr[2], env);
 		} else if (test === '#f') {
-			return evalScheem(expr[3], env);
+			return ('3' in expr) ? evalScheem(expr[3], env) : 0;
 		} else {
 			throw new ScheemError('First argument to "if" must evaluate to a boolean (#t or #f)');
 		}
