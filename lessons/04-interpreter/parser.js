@@ -430,13 +430,13 @@ SCHEEM = (function(){
         
         pos0 = clone(pos);
         pos1 = clone(pos);
-        if (input.charCodeAt(pos.offset) === 45) {
-          result0 = "-";
+        if (/^[+\-]/.test(input.charAt(pos.offset))) {
+          result0 = input.charAt(pos.offset);
           advance(pos, 1);
         } else {
           result0 = null;
           if (reportFailures === 0) {
-            matchFailed("\"-\"");
+            matchFailed("[+\\-]");
           }
         }
         result0 = result0 !== null ? result0 : "";
@@ -478,7 +478,7 @@ SCHEEM = (function(){
           pos = clone(pos1);
         }
         if (result0 !== null) {
-          result0 = (function(offset, line, column, intchars) { return parseInt(intchars.join(""), 10); })(pos0.offset, pos0.line, pos0.column, result0);
+          result0 = (function(offset, line, column, sign, intchars) { return parseInt(sign + intchars.join(""), 10); })(pos0.offset, pos0.line, pos0.column, result0[0], result0[1]);
         }
         if (result0 === null) {
           pos = clone(pos0);

@@ -18,6 +18,12 @@ suite('begin', function() {
 			3
 			);
 	});
+	test('simply quote a double-digit number', function() {
+		assert.deepEqual(
+			evalScheem(['begin', ['quote', 42]], {}),
+			42
+			);
+	});
 	test('simple arithmetic', function() {
 		assert.deepEqual(
 			evalScheem(['begin', ['*', ['+', 4, 2], ['-', 10, 3]]], {}),
@@ -523,6 +529,36 @@ suite('evalString', function(){
 		assert.deepEqual(
 			evalScheemString('3', {}),
 			3
+			);
+	});
+	test('double-digit int', function() {
+		assert.deepEqual(
+			evalScheemString('42', {}),
+			42
+			);
+	});
+	test('negative int', function() {
+		assert.deepEqual(
+			evalScheemString('-3', {}),
+			-3
+			);
+	});
+	test('double-digit negative int', function() {
+		assert.deepEqual(
+			evalScheemString('-42', {}),
+			-42
+			);
+	});
+	test('explicitly positive int', function() {
+		assert.deepEqual(
+			evalScheemString('+3', {}),
+			3
+			);
+	});
+	test('double-digit explicitly positive int', function() {
+		assert.deepEqual(
+			evalScheemString('+42', {}),
+			42
 			);
 	});
 	test('quoted list', function() {
