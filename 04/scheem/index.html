@@ -35,31 +35,32 @@
 		<script>
 			var t, compileAndRun = function(v) {
 				var e = $('#error');
+				//var s = $('#preview');
 				var o = $('#output');
 				var p, r;
 
 				e.hide();
 
 				if ($.trim(v) === '') {
-					return;
-				}
+					r = v = '';
+				} else {
+					try {
+						p = SCHEEM.parse(v);
+					} catch (ex) {
+						e.text('Parse error: '+ex).show();
+						return;
+					}
 
-				try {
-					p = SCHEEM.parse(v);
-				} catch (ex) {
-					e.text('Parse error: '+ex).show();
-					return;
-				}
+					try {
+						r = evalScheem(p, {});
+					} catch (ex) {
+						e.text('Runtime error: '+ex).show();
+						return;
+					}
 
-				try {
-					r = evalScheem(p, {});
-				} catch (ex) {
-					e.text('Runtime error: '+ex).show();
-					return;
-				}
-
-				if (typeof r != 'string' && typeof r != 'number') {
-					r = JSON.stringify(r);
+					if (typeof r != 'string' && typeof r != 'number') {
+						r = JSON.stringify(r);
+					}
 				}
 
 				o.html('')
