@@ -352,3 +352,22 @@ textarea:invalid {
     page-break-after: avoid;
   }
 }
+html {
+  background: #fdf6e3;
+  color: #586e75;
+}
+a:link {
+  color: #268bd2;
+}
+a:visited {
+  color: #d33682;
+}
+a:hover {
+  color: #cb4b16;
+}
+a:active {
+  color: #dc322f;
+}
+body {
+  padding: 0.5em;
+}
