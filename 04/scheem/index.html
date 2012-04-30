@@ -38,6 +38,8 @@
 				var o = $('#output');
 				var p, r;
 
+				e.hide();
+
 				if ($.trim(v) === '') {
 					return;
 				}
@@ -60,7 +62,6 @@
 					r = JSON.stringify(r);
 				}
 
-				e.hide();
 				o.html('')
 					.append($('<span class="">').text($.trim(v).replace("\t", '  ')))
 					.append('<span class="result"> =&gt; </span>')
