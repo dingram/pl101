@@ -391,9 +391,22 @@ pre:hover {
 }
 .var {
   color: #93a1a1;
+  border: 1px solid transparent;
 }
-.rep {
-  color: #dc322f;
+.rep,
+.rep * {
+  color: #dc322f !important;
+  cursor: default;
+}
+.hover {
+  background: #073642;
+  border-color: #dc322f;
+  -khtml-border-radius: 2px 2px 2px 2px;
+  -moz-border-radius: 2px 2px 2px 2px;
+  -ms-border-radius: 2px 2px 2px 2px;
+  -o-border-radius: 2px 2px 2px 2px;
+  -webkit-border-radius: 2px 2px 2px 2px;
+  border-radius: 2px 2px 2px 2px;
 }
 #error {
   background: #900;

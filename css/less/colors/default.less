@@ -28,12 +28,17 @@ pre:hover {
 	background: @base02;
 }
 
+#preview {
+	cursor: default;
+}
+
 .result { color: @red; }
 .fn { color: @green; }
 .op { color: @green; }
 .num { color: @blue; }
-.var { color: @base1; }
-.rep { color: @red; }
+.var { color: @base1; border: 1px solid transparent; }
+.rep, .rep * { color: @red !important; }
+.hover { background: @base02; border-color: @red; .border-radius(2px,2px,2px,2px); }
 
 #error {
 	background: #900;
