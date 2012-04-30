@@ -32,7 +32,7 @@ var t, compileAndRun = function(v) {
 	}
 
 	o
-		.append($('<span class="">').text($.trim(v).replace("\t", '  ')))
+		//.append($('<span class="">').text($.trim(v).replace("\t", '  ')))
 		.append('<span class="result"> =&gt; </span>')
 		.append($('<span class="result">').text(r));
 
