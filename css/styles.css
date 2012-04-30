@@ -372,6 +372,24 @@ a:active {
   background: #002b36;
   color: #586e75;
 }
+#results .result {
+  color: #dc322f;
+}
+#results .fn {
+  color: #859900;
+}
+#results .op {
+  color: #859900;
+}
+#results .num {
+  color: #268bd2;
+}
+#results .var {
+  color: #93a1a1;
+}
+#results .rep {
+  color: #dc322f;
+}
 .cm-s-solarized {
   background: #fdf6e3;
   color: #657b83;
@@ -452,4 +470,9 @@ body {
   width: 50%;
   float: left;
   min-height: 302px;
+  font-family: monospace;
+}
+#results section {
+  margin: 0.2em;
+  white-space: pre;
 }

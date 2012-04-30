@@ -4,8 +4,11 @@
 		<title>Scheem interpreter</title>
 		<link rel="stylesheet" type="text/css" href="../../css/styles.css">
 		<link rel="stylesheet" type="text/css" href="../../lib/codemirror/codemirror.css">
+		<script src="../../lib/jquery.min.js"></script>
 		<script src="../../lib/codemirror/codemirror.js"></script>
 		<script src="../../lib/codemirror/mode/scheme.js"></script>
+		<script src="parser.js"></script>
+		<script src="scheem.js"></script>
 	</head>
 	<body>
 		<h1>Scheem interpreter</h1>
@@ -17,12 +20,35 @@
 			<section id="output"></section>
 		</aside>
 		<script>
+			var t, compileAndRun = function(v) {
+				var o = $('#output');
+				var p, r;
+				try {
+					p = SCHEEM.parse(v);
+				} catch (e) {
+					o.text('Parse error: '+e);
+					return;
+				}
+
+				try {
+					r = evalScheem(p, {});
+				} catch (e) {
+					o.text('Runtime error: '+e);
+					return;
+				}
+
+				o.text(r);
+			};
 			var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
 				theme: 'solarized',
 				tabSize: 2,
 				indentWithTabs: true,
 				autoClearEmptyLines: true,
-				matchBrackets: true
+				matchBrackets: true,
+				onChange: function(e) {
+					clearTimeout(t);
+					t = setTimeout(function(){compileAndRun(e.getValue());}, 500);
+				}
 			});
 		</script>
 	</body>
