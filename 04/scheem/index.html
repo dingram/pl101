@@ -20,6 +20,12 @@
 			<section id="preview"></section>
 			<section id="output"></section>
 		</aside>
+		<section id="examples">
+			<h2>Examples</h2>
+			<p>Click an example to load into the editor</p>
+			<pre class="example"><code>(<span class="op">+</span> <span class="num">4</span> <span class="num">2</span>)</code></pre>
+			<pre class="example"><code>(<span class="op">+</span> <span class="num">4</span> <span class="num">2</span> (<span class="op">*</span> <span class="num">6</span> <span class="num">7</span>))</code></pre>
+		</section>
 		<script>
 			var t, compileAndRun = function(v) {
 				var e = $('#error');
@@ -60,6 +66,9 @@
 					clearTimeout(t);
 					t = setTimeout(function(){compileAndRun(e.getValue());}, 500);
 				}
+			});
+			$('.example').click(function(){
+				editor.setValue($(this).text());
 			});
 		</script>
 	</body>

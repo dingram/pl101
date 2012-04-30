@@ -368,27 +368,28 @@ a:hover {
 a:active {
   color: #dc322f;
 }
-#results {
+#results,
+pre {
   position: relative;
   background: #002b36;
   color: #586e75;
 }
-#results .result {
+.result {
   color: #dc322f;
 }
-#results .fn {
+.fn {
   color: #859900;
 }
-#results .op {
+.op {
   color: #859900;
 }
-#results .num {
+.num {
   color: #268bd2;
 }
-#results .var {
+.var {
   color: #93a1a1;
 }
-#results .rep {
+.rep {
   color: #dc322f;
 }
 #error {
@@ -475,12 +476,18 @@ body {
   width: 50%;
   float: left;
   min-height: 302px;
-  font-family: monospace;
-  font-weight: bold;
 }
 #results section {
   margin: 0.4em;
   white-space: pre;
+}
+#results,
+pre {
+  font-family: monospace;
+  font-weight: bold;
+}
+pre {
+  margin-top: 0.75em;
 }
 #error {
   margin: 0 !important;
