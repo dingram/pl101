@@ -16,28 +16,39 @@
 			<textarea id="editor" rows="10" cols="50" autofocus></textarea>
 		</section>
 		<aside id="results">
+			<section id="error"></section>
 			<section id="preview"></section>
 			<section id="output"></section>
 		</aside>
 		<script>
 			var t, compileAndRun = function(v) {
+				var e = $('#error');
 				var o = $('#output');
 				var p, r;
+
 				try {
 					p = SCHEEM.parse(v);
-				} catch (e) {
-					o.text('Parse error: '+e);
+				} catch (ex) {
+					e.text('Parse error: '+ex).show();
 					return;
 				}
 
 				try {
 					r = evalScheem(p, {});
-				} catch (e) {
-					o.text('Runtime error: '+e);
+				} catch (ex) {
+					e.text('Runtime error: '+ex).show();
 					return;
 				}
 
-				o.text(r);
+				if (typeof r != 'string' && typeof r != 'number') {
+					r = JSON.stringify(r);
+				}
+
+				e.hide();
+				o.html('')
+					.append($('<span class="">').text($.trim(v).replace("\t", '  ')))
+					.append('<span class="result"> =&gt; </span>')
+					.append($('<span class="result">').text(r));
 			};
 			var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
 				theme: 'solarized',

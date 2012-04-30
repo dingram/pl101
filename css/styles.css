@@ -369,6 +369,7 @@ a:active {
   color: #dc322f;
 }
 #results {
+  position: relative;
   background: #002b36;
   color: #586e75;
 }
@@ -389,6 +390,10 @@ a:active {
 }
 #results .rep {
   color: #dc322f;
+}
+#error {
+  background: #900;
+  color: #eee;
 }
 .cm-s-solarized {
   background: #fdf6e3;
@@ -471,8 +476,19 @@ body {
   float: left;
   min-height: 302px;
   font-family: monospace;
+  font-weight: bold;
 }
 #results section {
-  margin: 0.2em;
+  margin: 0.4em;
   white-space: pre;
+}
+#error {
+  margin: 0 !important;
+  padding: 0.4em;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: none;
 }
