@@ -25,6 +25,12 @@
 			<p>Click an example to load into the editor</p>
 			<pre class="example"><code>(<span class="op">+</span> <span class="num">4</span> <span class="num">2</span>)</code></pre>
 			<pre class="example"><code>(<span class="op">+</span> <span class="num">4</span> <span class="num">2</span> (<span class="op">*</span> <span class="num">6</span> <span class="num">7</span>))</code></pre>
+			<pre class="example"><code>(<span class="fn">if</span> (<span class="num">=</span> <span class="num">2</span> <span class="num">1</span>) (<span class="op">*</span> <span class="num">6</span> <span class="num">7</span>) (<span class="op">*</span> <span class="num">6</span> <span class="num">9</span>))</code></pre>
+			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x <span class="num">6</span>) (<span class="fn">if</span> (<span class="num">=</span> <span class="num">2</span> <span class="num">1</span>) (<span class="op">*</span> x <span class="num">7</span>) (<span class="op">*</span> x <span class="num">9</span>)))</code></pre>
+			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x '(<span class="num">6</span> <span class="num">7</span>)) (<span class="fn">car</span> x))</code></pre>
+			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x '(<span class="num">6</span> <span class="num">7</span>)) (<span class="fn">cdr</span> x))</code></pre>
+			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x '(<span class="num">6</span> <span class="num">7</span> <span class="num">8</span>)) (<span class="fn">car</span> (<span class="fn">cdr</span> x)))</code></pre>
+			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x '(<span class="num">6</span> <span class="num">7</span> <span class="num">8</span>)) (<span class="fn">define</span> y <span class="num">13</span>) (<span class="fn">cons</span> y (<span class="fn">cdr</span> (<span class="fn">cdr</span> x))))</code></pre>
 		</section>
 		<script>
 			var t, compileAndRun = function(v) {
