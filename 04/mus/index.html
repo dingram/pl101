@@ -28,14 +28,24 @@
 		<section id="examples">
 			<h2>Examples</h2>
 			<p>Click an example to load into the editor</p>
-			<pre class="example"><code>(<span class="op">+</span> <span class="num">4</span> <span class="num">2</span>)</code></pre>
-			<pre class="example"><code>(<span class="op">+</span> <span class="num">4</span> <span class="num">2</span> (<span class="op">*</span> <span class="num">6</span> <span class="num">7</span>))</code></pre>
-			<pre class="example"><code>(<span class="fn">if</span> (<span class="num">=</span> <span class="num">2</span> <span class="num">1</span>) (<span class="op">*</span> <span class="num">6</span> <span class="num">7</span>) (<span class="op">*</span> <span class="num">6</span> <span class="num">9</span>))</code></pre>
-			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x <span class="num">6</span>) (<span class="fn">if</span> (<span class="num">=</span> <span class="num">2</span> <span class="num">1</span>) (<span class="op">*</span> x <span class="num">7</span>) (<span class="op">*</span> x <span class="num">9</span>)))</code></pre>
-			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x '(<span class="num">6</span> <span class="num">7</span>)) (<span class="fn">car</span> x))</code></pre>
-			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x '(<span class="num">6</span> <span class="num">7</span>)) (<span class="fn">cdr</span> x))</code></pre>
-			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x '(<span class="num">6</span> <span class="num">7</span> <span class="num">8</span>)) (<span class="fn">car</span> (<span class="fn">cdr</span> x)))</code></pre>
-			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x '(<span class="num">6</span> <span class="num">7</span> <span class="num">8</span>)) (<span class="fn">define</span> y <span class="num">13</span>) (<span class="fn">cons</span> y (<span class="fn">cdr</span> (<span class="fn">cdr</span> x))))</code></pre>
+			<pre class="example"><code>&lt; c4 e4 d4 &gt;/4</code></pre>
+			<pre class="example"><code>\tempo 130
+\instrument "accordion"
+|: d4/4 \triplet{g/8 g g} g/4 \triplet{g/8 g g} g/4 \swung{b/8 g} \swung{b d5} \swung{g d} \swung{b4 g}
+\triplet{d4/8 d d} d/4 \triplet{d/8 d d} d/4 \swung{f#/8 d} \swung{f# a} \swung{c5 a4} \swung{f# a}
+\triplet{g4/8 g g} g/4 \triplet{g/8 g g} g/4 \swung{b/8 g} \swung{b d5} g/4 g
+\swung{f#/8 a} \swung{g f#} \swung{e g} \swung{f# e} d/4 d d :|</code></pre>
+			<pre class="example"><code>\tempo 130
+&lt;&lt;
+  {
+    &lt;db4 gb bb db5&gt;/4. &lt;eb4 ab c5 eb&gt; &lt;eb4 gb ab&gt;/4
+    &lt;c4 f ab c5 eb&gt;/4. &lt;f4 bb db5 f&gt; ab5/16 gb f
+  }
+  {
+    bb2/16 r bb bb bb f3 eb r eb r ab r ab bb ab gb2
+    f r f f f c3 bb2 r/8 bb/16 bb c3 r bb2 f3/8
+  }
+&gt;&gt;</code></pre>
 		</section>
 		<script src="keyboard.js"></script>
 		<script src="interaction.js"></script>
