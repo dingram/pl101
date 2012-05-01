@@ -11,6 +11,18 @@ $pvw
 
 var kbd = new Keyboard($kbd[0]);
 kbd.draw();
+kbd.drawPitchHighlight(5, 0, 'c4', '#f00');
+kbd.drawPitchHighlight(5, 0, 'd4', '#f70');
+kbd.drawPitchHighlight(5, 0, 'e4', '#ff0');
+kbd.drawPitchHighlight(5, 0, 'f4', '#0f0');
+kbd.drawPitchHighlight(5, 0, 'g4', '#0ff');
+kbd.drawPitchHighlight(5, 0, 'a4', '#00f');
+kbd.drawPitchHighlight(5, 0, 'b4', '#f0f');
+kbd.drawPitchHighlight(5, -20, 'c#4', '#000');
+kbd.drawPitchHighlight(5, -20, 'd#4', '#000');
+kbd.drawPitchHighlight(5, -20, 'f#4', '#000');
+kbd.drawPitchHighlight(5, -20, 'g#4', '#000');
+kbd.drawPitchHighlight(5, -20, 'a#4', '#000');
 
 var t, compileAndRun = function(v) {
 	var e = $('#error');
