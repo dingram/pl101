@@ -143,11 +143,11 @@ rest =
 	/ rest_nolen
 
 rest_len =
-	'r' ':'? len:int
+	'r' '/'? len:int
 		{ last_duration = durFromLen(len); last_len = len; return { tag: 'rest', dur: last_duration, len: last_len }; }
 
 rest_dur =
-	'r/' dur:float
+	'r:' dur:float
 		{ last_duration = dur; last_len = null; return { tag: 'rest', dur: last_duration }; }
 
 rest_nolen =
@@ -160,11 +160,11 @@ note =
 	/ note_nolen
 
 note_len =
-	pitch:pitch ':' len:length
+	pitch:pitch '/' len:length
 		{ last_duration = durFromLen(len); last_len = len; return { tag: 'note', pitch: pitch, dur: last_duration, len: last_len }; }
 
 note_dur =
-	pitch:pitch '/' dur:float
+	pitch:pitch ':' dur:float
 		{ last_duration = dur; last_len = null; return { tag: 'note', pitch: pitch, dur: last_duration }; }
 
 note_nolen =
@@ -191,9 +191,9 @@ power_ii = '128' / '64' / '32' / '16' / '8' / '4' / '2' / '1'
 
 
 pargroup =
-	p:parblock ':' len:length
+	p:parblock '/' len:length
 		{ last_duration = durFromLen(len); last_len = len; return pargen(p, last_duration, last_len); }
-	/ p:parblock '/' dur:float
+	/ p:parblock ':' dur:float
 		{ last_duration = dur; last_len = null; return pargen(p, last_duration, null); }
 	/ p:parblock
 		{ return pargen(p, last_duration, last_len); }

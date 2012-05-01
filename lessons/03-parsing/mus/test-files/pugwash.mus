@@ -1,6 +1,6 @@
 \tempo 130
 \instrument "accordion"
-|: d4:4 \triplet{g:8 g g} g:4 \triplet{g:8 g g} g:4 \swung{b:8 g} \swung{b d5} \swung{g d} \swung{b4 g}
-\triplet{d4:8 d d} d:4 \triplet{d:8 d d} d:4 \swung{f#:8 d} \swung{f# a} \swung{c5 a4} \swung{f# a}
-\triplet{g4:8 g g} g:4 \triplet{g:8 g g} g:4 \swung{b:8 g} \swung{b d5} g:4 g
-\swung{f#:8 a} \swung{g f#} \swung{e g} \swung{f# e} d:4 d d :|
+|: d4/4 \triplet{g/8 g g} g/4 \triplet{g/8 g g} g/4 \swung{b/8 g} \swung{b d5} \swung{g d} \swung{b4 g}
+\triplet{d4/8 d d} d/4 \triplet{d/8 d d} d/4 \swung{f#/8 d} \swung{f# a} \swung{c5 a4} \swung{f# a}
+\triplet{g4/8 g g} g/4 \triplet{g/8 g g} g/4 \swung{b/8 g} \swung{b d5} g/4 g
+\swung{f#/8 a} \swung{g f#} \swung{e g} \swung{f# e} d/4 d d :|
