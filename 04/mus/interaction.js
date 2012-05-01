@@ -34,8 +34,6 @@ var t, compileAndRun = function(v) {
 		return;
 	}
 
-	kbd.draw();
-
 	try {
 		//r = evalScheem(p, {});
 	} catch (ex) {
