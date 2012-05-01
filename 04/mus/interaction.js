@@ -3,6 +3,12 @@ $kbd
 	.prop('width', $kbd.width())
 	.prop('height', $kbd.height());
 
+var $pvw = $('#music-preview');
+$pvw
+	.prop('width', $pvw.width())
+	.prop('height', $pvw.height());
+
+
 var kbd = new Keyboard($kbd[0]);
 kbd.draw();
 
