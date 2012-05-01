@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MUS interpreter</title>
+		<link rel="stylesheet" type="text/css" href="../../css/styles.css">
+		<link rel="stylesheet" type="text/css" href="../../lib/codemirror/codemirror.css">
+		<script src="../../lib/jquery.min.js"></script>
+		<script src="../../lib/codemirror/codemirror.js"></script>
+		<script src="../../lib/codemirror/mode/scheme.js"></script>
+		<script src="parser.js"></script>
+		<!--script src="mus.js"></script-->
+<style>
+#keyboard { width: 990px; height: 270px; padding: 0; margin: 0; }
+#keyboard-holder { width: 100%; height: 302px; padding: 0; margin: 0; overflow: auto; background: #fff; }
+</style>
+	</head>
+	<body>
+		<h1>MUS interpreter</h1>
+		<section id="editor-holder">
+			<textarea id="editor" rows="10" cols="50" autofocus></textarea>
+		</section>
+		<aside id="results">
+			<section id="error"></section>
+			<div id="keyboard-holder">
+				<canvas id="keyboard"></canvas>
+			</div>
+		</aside>
+		<section id="examples">
+			<h2>Examples</h2>
+			<p>Click an example to load into the editor</p>
+			<pre class="example"><code>(<span class="op">+</span> <span class="num">4</span> <span class="num">2</span>)</code></pre>
+			<pre class="example"><code>(<span class="op">+</span> <span class="num">4</span> <span class="num">2</span> (<span class="op">*</span> <span class="num">6</span> <span class="num">7</span>))</code></pre>
+			<pre class="example"><code>(<span class="fn">if</span> (<span class="num">=</span> <span class="num">2</span> <span class="num">1</span>) (<span class="op">*</span> <span class="num">6</span> <span class="num">7</span>) (<span class="op">*</span> <span class="num">6</span> <span class="num">9</span>))</code></pre>
+			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x <span class="num">6</span>) (<span class="fn">if</span> (<span class="num">=</span> <span class="num">2</span> <span class="num">1</span>) (<span class="op">*</span> x <span class="num">7</span>) (<span class="op">*</span> x <span class="num">9</span>)))</code></pre>
+			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x '(<span class="num">6</span> <span class="num">7</span>)) (<span class="fn">car</span> x))</code></pre>
+			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x '(<span class="num">6</span> <span class="num">7</span>)) (<span class="fn">cdr</span> x))</code></pre>
+			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x '(<span class="num">6</span> <span class="num">7</span> <span class="num">8</span>)) (<span class="fn">car</span> (<span class="fn">cdr</span> x)))</code></pre>
+			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x '(<span class="num">6</span> <span class="num">7</span> <span class="num">8</span>)) (<span class="fn">define</span> y <span class="num">13</span>) (<span class="fn">cons</span> y (<span class="fn">cdr</span> (<span class="fn">cdr</span> x))))</code></pre>
+		</section>
+		<script src="keyboard.js"></script>
+		<script src="interaction.js"></script>
+	</body>
+</html>
