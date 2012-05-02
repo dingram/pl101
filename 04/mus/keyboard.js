@@ -168,12 +168,13 @@ Sthesia.Droplets.prototype.add = function(pitch, start, dur, color) {
 
 Sthesia.Droplets.prototype.draw = function(pitch, start, dur, color) {
 	var lastDroplet, height;
+	var magicHeight = 302;
 
 	if (!this.droplets.length) {
 		height = 16;
 	} else {
 		lastDroplet = this.droplets[this.droplets.length-1];
-		height = Math.floor((lastDroplet.start + lastDroplet.dur) / 10);
+		height = Math.floor((lastDroplet.start + lastDroplet.dur) / 10) + magicHeight;
 	}
 
 	this.cvs.height = height;
@@ -201,5 +202,7 @@ Sthesia.Droplets.prototype.draw = function(pitch, start, dur, color) {
 		this.ctx.fill();
 		this.ctx.stroke();
 	}
+
+	this.cvs.parentNode.scrollTop = height;
 
 };

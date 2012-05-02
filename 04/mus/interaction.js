@@ -31,9 +31,12 @@ var pvw = new Sthesia.Droplets($pvw[0]);
 pvw.add('c4', 0, 250, '#f00');
 pvw.add('e4', 250, 250, '#ff0');
 pvw.add('g4', 500, 250, '#0ff');
-pvw.add('c4', 1000, 500, '#f00');
-pvw.add('e4', 1000, 500, '#ff0');
-pvw.add('g4', 1000, 500, '#0ff');
+pvw.add('c4', 1000, 125, '#f00');
+pvw.add('e4', 1000, 125, '#ff0');
+pvw.add('g4', 1000, 125, '#0ff');
+pvw.add('c4', 1250, 1500, '#f00');
+pvw.add('e4', 1250, 1500, '#ff0');
+pvw.add('g4', 1250, 1500, '#0ff');
 pvw.draw();
 
 var t, compileAndRun = function(v) {
