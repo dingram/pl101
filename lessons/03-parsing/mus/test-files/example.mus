@@ -1,11 +1,17 @@
+% see http://xkcd.com/389/
+
 \tempo 130
 <<
 	{
 		<db4 gb bb db5>/4. <eb4 ab c5 eb> <eb4 gb ab>/4
-		<c4 f ab c5 eb>/4. <f4 bb db5 f> ab5/16 gb f
+		<c4 f ab c5 eb>/4. <f4 bb db5 f> ab5/16 gb f/8
+		<db4 gb bb db5>/4. <eb4 ab c5 eb> <c4 eb gb ab>/2.
+		r/8 <ab3 ab4>/16 <ab3 ab4> <bb3 bb4> <db4 db5> <bb3 bb4> <db4 db5>
 	}
 	{
 		bb2/16 r bb bb bb f3 eb r eb r ab r ab bb ab gb2
-		f r f f f c3 bb2 r/8 bb/16 bb c3 r bb2 f3/8
+		f r f f f c3 bb2 r bb bb c3 r bb2/8 r
+		bb2/16 r bb bb bb f3 eb r eb r eb r eb eb r eb
+		ab2/16 r ab ab f c3 bb2 ab bb r/8 bb/16 c3 bb2 ab r
 	}
 >>
