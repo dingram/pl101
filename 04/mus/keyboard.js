@@ -1,5 +1,10 @@
 var Sthesia = {
 
+	whiteKeyWidth: 14,
+	whiteKeyHeight: 45,
+	blackKeyWidth: 10,
+	blackKeyHeight: 28,
+
 	Keyboard: function(cvs) {
 		if (!this) return new Sthesia.Keyboard(cvs);
 		this.cvs = cvs;
@@ -30,14 +35,14 @@ Sthesia.keyPositionFromPitch = function(pitch, forDroplets) {
 
 	if (blacknote) {
 		notenum = Math.floor(notenum / 2);
-		x = 9 + (14 * notenum);
-		w = 10;
-		h = 28;
+		x = 9 + (Sthesia.whiteNoteWidth * notenum);
+		w = Sthesia.blackNoteWidth;
+		h = Sthesia.blackNoteHeight;
 	} else {
 		notenum = Math.floor(notenum / 2) + (notenum > 4 ? 1 : 0);
-		x = (14 * notenum);
-		w = 14;
-		h = 45;
+		x = (Sthesia.whiteNoteWidth * notenum);
+		w = Sthesia.whiteNoteWidth;
+		h = Sthesia.whiteNoteHeight;
 	}
 
 	if (forDroplets) {
@@ -45,7 +50,7 @@ Sthesia.keyPositionFromPitch = function(pitch, forDroplets) {
 		x += 1;
 	}
 
-	x += (98 * octave);
+	x += (7 * Sthesia.whiteNoteWidth * octave);
 
 	return {x: x, y: y, w: w, h: h};
 };
@@ -97,12 +102,7 @@ Sthesia.Keyboard.prototype.drawKeyHighlight = function(x, y, w, h, fill) {
 }
 
 Sthesia.Keyboard.prototype.drawOctave = function(octave, x, y, whiteFill, blackFill) {
-	var whiteKeyWidth = 14;
-	var whiteKeyHeight = 45;
-	var blackKeyWidth = 10;
-	var blackKeyHeight = 28;
-
-	var startX = x + (7 * whiteKeyWidth * octave);
+	var startX = x + (7 * Sthesia.whiteKeyWidth * octave);
 
 	this.ctx.lineWidth = 1;
 	this.ctx.lineJoin = 'round';
@@ -112,18 +112,18 @@ Sthesia.Keyboard.prototype.drawOctave = function(octave, x, y, whiteFill, blackF
 	if (whiteFill) {
 		this.ctx.fillStyle = whiteFill;
 		this.ctx.beginPath();
-		this.ctx.rect(startX, y, (7 * whiteKeyWidth), whiteKeyHeight);
+		this.ctx.rect(startX, y, (7 * Sthesia.whiteKeyWidth), Sthesia.whiteKeyHeight);
 		this.ctx.fill();
 	}
 
 	this.ctx.beginPath();
 
 	for (var i = 0; i < 7; ++i) {
-		this.ctx.moveTo(startX + (i * whiteKeyWidth), y + ((i==0 || i==3) ? 0 : blackKeyHeight));
-		this.ctx.lineTo(startX + (i * whiteKeyWidth), y + whiteKeyHeight);
-		this.ctx.lineTo(startX + ((i+1) * whiteKeyWidth), y + whiteKeyHeight);
+		this.ctx.moveTo(startX + (i * Sthesia.whiteKeyWidth), y + ((i==0 || i==3) ? 0 : Sthesia.blackKeyHeight));
+		this.ctx.lineTo(startX + (i * Sthesia.whiteKeyWidth), y + Sthesia.whiteKeyHeight);
+		this.ctx.lineTo(startX + ((i+1) * Sthesia.whiteKeyWidth), y + Sthesia.whiteKeyHeight);
 	}
-	this.ctx[octave == 9 ? 'lineTo' : 'moveTo'](startX + (7 * whiteKeyWidth), y + 0);
+	this.ctx[octave == 9 ? 'lineTo' : 'moveTo'](startX + (7 * Sthesia.whiteKeyWidth), y + 0);
 	this.ctx.lineTo(startX, y);
 
 	this.ctx.stroke();
@@ -136,7 +136,7 @@ Sthesia.Keyboard.prototype.drawOctave = function(octave, x, y, whiteFill, blackF
 	this.ctx.beginPath();
 	for (var i = 0; i < 6; ++i) {
 		if (i == 2) continue;
-		this.ctx.rect(x + whiteKeyWidth - (blackFill ? 5 : 4) + (i * whiteKeyWidth) + (7 * whiteKeyWidth * octave), y, blackKeyWidth - (blackFill ? 0 : 2), blackKeyHeight);
+		this.ctx.rect(x + Sthesia.whiteKeyWidth - (blackFill ? 5 : 4) + (i * Sthesia.whiteKeyWidth) + (7 * Sthesia.whiteKeyWidth * octave), y, Sthesia.blackKeyWidth - (blackFill ? 0 : 2), Sthesia.blackKeyHeight);
 	}
 
 	if (blackFill) {
