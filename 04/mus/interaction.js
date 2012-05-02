@@ -64,7 +64,14 @@ var t, compileAndRun = function(v) {
 	}
 
 	try {
-		//r = evalScheem(p, {});
+		r = MusCompiler.compile(p);
+		pvw.clear();
+		for (var i=0, l=r.length; i < l; ++i) {
+			if (r[i].tag == 'note') {
+				pvw.add(r[i].pitch, r[i].start, r[i].dur, '#0cf');
+			}
+		}
+		pvw.draw();
 	} catch (ex) {
 		e.text('Runtime error: '+ex).show();
 		return;

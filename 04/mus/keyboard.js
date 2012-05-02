@@ -187,7 +187,7 @@ Sthesia.Droplets.prototype.draw = function(pitch, start, dur, color) {
 
 	this.ctx.lineWidth = 1;
 	this.ctx.lineJoin = 'round';
-	this.ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+	this.ctx.strokeStyle = 'rgba(0,0,0,0.9)';
 
 	for (var i = 0, l = this.droplets.length; i < l; ++i) {
 		var d = this.droplets[i];
