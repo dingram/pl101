@@ -93,23 +93,38 @@ Sthesia.Keyboard.prototype.drawKeyHighlight = function(x, y, w, h, fill) {
 }
 
 Sthesia.Keyboard.prototype.drawOctave = function(octave, x, y, whiteFill, blackFill) {
+	var whiteKeyWidth = 14;
+	var whiteKeyHeight = 45;
+	var blackKeyWidth = 10;
+	var blackKeyHeight = 28;
+
+	var startX = x + (7 * whiteKeyWidth * octave);
+
 	this.ctx.lineWidth = 1;
 	this.ctx.lineJoin = 'round';
 
+	// draw the white keys
 	this.ctx.strokeStyle = '#000000';
 	if (whiteFill) {
 		this.ctx.fillStyle = whiteFill;
+		this.ctx.beginPath();
+		this.ctx.rect(startX, y, (7 * whiteKeyWidth), whiteKeyHeight);
+		this.ctx.fill();
 	}
 
 	this.ctx.beginPath();
+
 	for (var i = 0; i < 7; ++i) {
-		this.ctx.rect(x + (14*i) + (98*octave), y, 14, 45);
+		this.ctx.moveTo(startX + (i * whiteKeyWidth), y + ((i==0 || i==3) ? 0 : blackKeyHeight));
+		this.ctx.lineTo(startX + (i * whiteKeyWidth), y + whiteKeyHeight);
+		this.ctx.lineTo(startX + ((i+1) * whiteKeyWidth), y + whiteKeyHeight);
 	}
-	if (whiteFill) {
-		this.ctx.fill();
-	}
+	this.ctx[octave == 9 ? 'lineTo' : 'moveTo'](startX + (7 * whiteKeyWidth), y + 0);
+	this.ctx.lineTo(startX, y);
+
 	this.ctx.stroke();
 
+	// draw the black keys
 	if (blackFill) {
 		this.ctx.fillStyle = blackFill;
 	}
@@ -117,7 +132,7 @@ Sthesia.Keyboard.prototype.drawOctave = function(octave, x, y, whiteFill, blackF
 	this.ctx.beginPath();
 	for (var i = 0; i < 6; ++i) {
 		if (i == 2) continue;
-		this.ctx.rect(x+ (blackFill ? 9 : 10) + (14*i) + (98*octave), y, blackFill ? 10 : 8, 28);
+		this.ctx.rect(x + whiteKeyWidth - (blackFill ? 5 : 4) + (i * whiteKeyWidth) + (7 * whiteKeyWidth * octave), y, blackKeyWidth - (blackFill ? 0 : 2), blackKeyHeight);
 	}
 
 	if (blackFill) {
