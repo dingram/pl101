@@ -1,5 +1,6 @@
 var Sthesia = {
 
+	offsetX: 5,
 	whiteKeyWidth: 14,
 	whiteKeyHeight: 45,
 	blackKeyWidth: 10,
@@ -45,14 +46,14 @@ Sthesia.keyPositionFromPitch = function(pitch, forDroplets) {
 
 	if (blacknote) {
 		notenum = Math.floor(notenum / 2);
-		x = 9 + (Sthesia.whiteNoteWidth * notenum);
-		w = Sthesia.blackNoteWidth;
-		h = Sthesia.blackNoteHeight;
+		x = 9 + (Sthesia.whiteKeyWidth * notenum);
+		w = Sthesia.blackKeyWidth;
+		h = Sthesia.blackKeyHeight;
 	} else {
 		notenum = Math.floor(notenum / 2) + (notenum > 4 ? 1 : 0);
-		x = (Sthesia.whiteNoteWidth * notenum);
-		w = Sthesia.whiteNoteWidth;
-		h = Sthesia.whiteNoteHeight;
+		x = (Sthesia.whiteKeyWidth * notenum);
+		w = Sthesia.whiteKeyWidth;
+		h = Sthesia.whiteKeyHeight;
 	}
 
 	if (forDroplets) {
@@ -60,7 +61,7 @@ Sthesia.keyPositionFromPitch = function(pitch, forDroplets) {
 		x += 1;
 	}
 
-	x += (7 * Sthesia.whiteNoteWidth * octave);
+	x += (7 * Sthesia.whiteKeyWidth * octave);
 
 	return {x: x, y: y, w: w, h: h};
 };
@@ -77,14 +78,14 @@ Sthesia.Keyboard.prototype.draw = function(fill) {
 	}
 
 	for (var i = 0; i < 10; ++i) {
-		this.drawOctave(i, 5, this.cvs.height - 45, fill ? ((i==4)?'#ff9':'#fff') : null, fill ? ((i==4)?'#111':'#000') : null);
+		this.drawOctave(i, Sthesia.offsetX, this.cvs.height - Sthesia.whiteKeyHeight, fill ? ((i==4)?'#ff9':'#fff') : null, fill ? ((i==4)?'#111':'#000') : null);
 	}
 };
 
 Sthesia.Keyboard.prototype.drawPitchHighlight = function(x, y, pitch, fill) {
 	var pos = Sthesia.keyPositionFromPitch(pitch);
 	this.drawKeyHighlight(x + pos.x, y, pos.w, pos.h, fill);
-}
+};
 
 Sthesia.Keyboard.prototype.drawKeyHighlight = function(x, y, w, h, fill) {
 	this.ctx.lineWidth = 1;
@@ -95,7 +96,7 @@ Sthesia.Keyboard.prototype.drawKeyHighlight = function(x, y, w, h, fill) {
 	this.ctx.beginPath();
 	this.ctx.rect(x, y, w, h);
 	this.ctx.fill();
-}
+};
 
 Sthesia.Keyboard.prototype.drawOctave = function(octave, x, y, whiteFill, blackFill) {
 	var startX = x + (7 * Sthesia.whiteKeyWidth * octave);
