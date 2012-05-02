@@ -6,7 +6,6 @@ $kbd
 var $pvw = $('#music-preview');
 $pvw
 	.prop('width', $pvw.width())
-	.height(500)
 	.prop('height', $pvw.height());
 
 
