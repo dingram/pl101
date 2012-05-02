@@ -13,6 +13,10 @@ var Sthesia = {
 
 };
 
+/* ************************************************************************
+ * Shared functions                                                       *
+ ************************************************************************ */
+
 Sthesia.ensureNumericPitch = function(pitch) {
 	var midi_letter_pitches = { a:21, b:23, c:12, d:14, e:16, f:17, g:19 };
 	var midipitch;
@@ -54,6 +58,10 @@ Sthesia.keyPositionFromPitch = function(pitch, forDroplets) {
 
 	return {x: x, y: y, w: w, h: h};
 };
+
+/* ************************************************************************
+ * Keyboard library                                                       *
+ ************************************************************************ */
 
 Sthesia.Keyboard.prototype.draw = function(fill) {
 	if (fill === undefined || fill === null) fill = true;
