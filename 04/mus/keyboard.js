@@ -17,6 +17,20 @@ var Sthesia = {
 		this.cvs = cvs;
 		this.ctx = cvs.getContext('2d');
 		this.clear();
+	},
+
+	play_timer: null,
+	play: function(kbd, pvw) {
+		clearTimeout(Sthesia.play_timer);
+		pvw.cvs.parentNode.scrollTop = pvw.cvs.height;
+		Sthesia.play_timer = setTimeout(Sthesia.animateFrame, 10, kbd, pvw);
+	},
+
+	animateFrame: function(kbd, pvw) {
+		pvw.cvs.parentNode.scrollTop -= 1;
+		if (pvw.cvs.parentNode.scrollTop > 0) {
+			Sthesia.play_timer = setTimeout(Sthesia.animateFrame, 10, kbd, pvw);
+		}
 	}
 
 };

@@ -10,36 +10,14 @@ $pvw
 
 
 var kbd = new Sthesia.Keyboard($kbd[0]);
-/*
-kbd.drawPitchHighlight(5, 0, 'c4', '#f00');
-kbd.drawPitchHighlight(5, 0, 'd4', '#fc0');
-kbd.drawPitchHighlight(5, 0, 'e4', '#ff0');
-kbd.drawPitchHighlight(5, 0, 'f4', '#0f0');
-kbd.drawPitchHighlight(5, 0, 'g4', '#0ff');
-kbd.drawPitchHighlight(5, 0, 'a4', '#00f');
-kbd.drawPitchHighlight(5, 0, 'b4', '#f0f');
-kbd.drawPitchHighlight(5, 0, 'c#4', '#f60');
-kbd.drawPitchHighlight(5, 0, 'd#4', '#fd0');
-kbd.drawPitchHighlight(5, 0, 'f#4', '#0f7');
-kbd.drawPitchHighlight(5, 0, 'g#4', '#07f');
-kbd.drawPitchHighlight(5, 0, 'a#4', '#70f');
-kbd.draw(false);
-*/
 kbd.draw();
 
 var pvw = new Sthesia.Droplets($pvw[0]);
-/*
-pvw.add('c4', 0, 250, '#f00');
-pvw.add('e4', 250, 250, '#ff0');
-pvw.add('g4', 500, 250, '#0ff');
-pvw.add('c4', 1000, 125, '#f00');
-pvw.add('e4', 1000, 125, '#ff0');
-pvw.add('g4', 1000, 125, '#0ff');
-pvw.add('c4', 1250, 1500, '#f00');
-pvw.add('e4', 1250, 1500, '#ff0');
-pvw.add('g4', 1250, 1500, '#0ff');
-*/
 pvw.draw();
+
+$('#play').click(function(){
+	Sthesia.play(kbd, pvw);
+});
 
 var t, compileAndRun = function(v) {
 	var e = $('#error');

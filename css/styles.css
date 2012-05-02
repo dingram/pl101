@@ -377,6 +377,9 @@ pre {
 pre:hover {
   background: #073642;
 }
+#preview {
+  cursor: default;
+}
 .result {
   color: #dc322f;
 }
@@ -396,7 +399,6 @@ pre:hover {
 .rep,
 .rep * {
   color: #dc322f !important;
-  cursor: default;
 }
 .hover {
   background: #073642;
@@ -529,4 +531,9 @@ pre {
   left: 0;
   right: 0;
   display: none;
+}
+#actions {
+  clear: both;
+  padding: 1em 1em;
+  text-align: right;
 }
