@@ -28,12 +28,13 @@ kbd.draw(false);
 kbd.draw();
 
 var pvw = new Sthesia.Droplets($pvw[0]);
-pvw.drawPitchDroplet(5, 215, 'c4', 250, '#f00');
-pvw.drawPitchDroplet(5, 190, 'e4', 250, '#ff0');
-pvw.drawPitchDroplet(5, 165, 'g4', 250, '#0ff');
-pvw.drawPitchDroplet(5,  90, 'c4', 500, '#f00');
-pvw.drawPitchDroplet(5,  90, 'e4', 500, '#ff0');
-pvw.drawPitchDroplet(5,  90, 'g4', 500, '#0ff');
+pvw.add('c4', 0, 250, '#f00');
+pvw.add('e4', 250, 250, '#ff0');
+pvw.add('g4', 500, 250, '#0ff');
+pvw.add('c4', 1000, 500, '#f00');
+pvw.add('e4', 1000, 500, '#ff0');
+pvw.add('g4', 1000, 500, '#0ff');
+pvw.draw();
 
 var t, compileAndRun = function(v) {
 	var e = $('#error');

@@ -16,6 +16,7 @@ var Sthesia = {
 		if (!this) return new Sthesia.Droplets(cvs);
 		this.cvs = cvs;
 		this.ctx = cvs.getContext('2d');
+		this.clear();
 	}
 
 };
@@ -148,20 +149,57 @@ Sthesia.Keyboard.prototype.drawOctave = function(octave, x, y, whiteFill, blackF
  * Droplets library                                                       *
  ************************************************************************ */
 
-Sthesia.Droplets.prototype.drawPitchDroplet = function(x, y, pitch, dur, fill) {
-	var pos = Sthesia.keyPositionFromPitch(pitch, true);
-	this.drawDropletHighlight(x + pos.x, y, pos.w, Math.floor(dur/10), fill);
-}
+Sthesia.Droplets.prototype.clear = function() {
+	this.droplets = [];
+};
 
-Sthesia.Droplets.prototype.drawDropletHighlight = function(x, y, w, h, fill) {
+Sthesia.Droplets.prototype.add = function(pitch, start, dur, color) {
+	this.droplets.push({
+		pitch: pitch,
+		start: start,
+		dur: dur,
+		color: color
+	});
+	// sort NOTE output in increasing order of time
+	this.droplets.sort(function($a, $b) {
+		return $a.start - $b.start;
+	});
+};
+
+Sthesia.Droplets.prototype.draw = function(pitch, start, dur, color) {
+	var lastDroplet, height;
+
+	if (!this.droplets.length) {
+		height = 16;
+	} else {
+		lastDroplet = this.droplets[this.droplets.length-1];
+		height = Math.floor((lastDroplet.start + lastDroplet.dur) / 10);
+	}
+
+	this.cvs.height = height;
+	this.cvs.setAttribute('height', ""+height);
+	this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
+
+	if (!this.droplets.length) {
+		return;
+	}
+
 	this.ctx.lineWidth = 1;
 	this.ctx.lineJoin = 'round';
-
 	this.ctx.strokeStyle = 'rgba(0,0,0,0.3)';
-	this.ctx.fillStyle = fill;
 
-	this.ctx.beginPath();
-	this.ctx.rect(x, y, w, h);
-	this.ctx.fill();
-	this.ctx.stroke();
-}
+	for (var i = 0, l = this.droplets.length; i < l; ++i) {
+		var d = this.droplets[i];
+
+		var pos = Sthesia.keyPositionFromPitch(d.pitch, true);
+		pos.h = Math.floor(d.dur / 10);
+		pos.y = height - Math.floor((d.dur + d.start) / 10);
+
+		this.ctx.fillStyle = d.color;
+		this.ctx.beginPath();
+		this.ctx.rect(Sthesia.offsetX + pos.x, pos.y, pos.w, pos.h);
+		this.ctx.fill();
+		this.ctx.stroke();
+	}
+
+};
