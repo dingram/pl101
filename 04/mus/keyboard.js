@@ -8,18 +8,22 @@ var Sthesia = {
 
 };
 
-Sthesia.keyPositionFromPitch = function(pitch, forDroplets) {
+Sthesia.ensureNumericPitch = function(pitch) {
 	var midi_letter_pitches = { a:21, b:23, c:12, d:14, e:16, f:17, g:19 };
 	var midipitch;
 
 	if (typeof pitch === 'number' || !/[^0-9]/.test(pitch)) {
-		midipitch = parseInt(pitch, 10);
-	} else {
-		var matches = /([a-g])(#+|b+)?([0-9]+)$/i.exec(pitch);
-		var note = matches[1].toLowerCase(), accidental = matches[2] || '', octave = parseInt(matches[3], 10);
-		midipitch = (12 * octave) + midi_letter_pitches[note] + (accidental.substr(0,1)=='#'?1:-1) * accidental.length;
+		return parseInt(pitch, 10);
 	}
 
+	var matches = /([a-g])(#+|b+)?([0-9]+)$/i.exec(pitch);
+	var note = matches[1].toLowerCase(), accidental = matches[2] || '', octave = parseInt(matches[3], 10);
+	return (12 * octave) + midi_letter_pitches[note] + (accidental.substr(0,1)=='#'?1:-1) * accidental.length;
+};
+
+Sthesia.keyPositionFromPitch = function(pitch, forDroplets) {
+	var midipitch = Sthesia.ensureNumericPitch(pitch);
+	var octave = Math.floor(midipitch / 12) - 1;
 	var notenum = (midipitch % 12);
 	var blacknote = (notenum in {1:true, 3:true, 6:true, 8:true, 10:true});
 	var x, y, w, h;
