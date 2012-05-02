@@ -58,9 +58,27 @@ Sthesia.Keyboard.prototype.draw = function(fill) {
 	}
 };
 
+Sthesia.Keyboard.prototype.drawPitchDroplet = function(x, y, pitch, dur, fill) {
+	var pos = Sthesia.keyPositionFromPitch(pitch, true);
+	this.drawDropletHighlight(x + pos.x, y, pos.w, Math.floor(dur/10), fill);
+}
+
 Sthesia.Keyboard.prototype.drawPitchHighlight = function(x, y, pitch, fill) {
 	var pos = Sthesia.keyPositionFromPitch(pitch);
 	this.drawKeyHighlight(x + pos.x, y, pos.w, pos.h, fill);
+}
+
+Sthesia.Keyboard.prototype.drawDropletHighlight = function(x, y, w, h, fill) {
+	this.ctx.lineWidth = 1;
+	this.ctx.lineJoin = 'round';
+
+	this.ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+	this.ctx.fillStyle = fill;
+
+	this.ctx.beginPath();
+	this.ctx.rect(x, y, w, h);
+	this.ctx.fill();
+	this.ctx.stroke();
 }
 
 Sthesia.Keyboard.prototype.drawKeyHighlight = function(x, y, w, h, fill) {
@@ -99,7 +117,7 @@ Sthesia.Keyboard.prototype.drawOctave = function(octave, x, y, whiteFill, blackF
 	this.ctx.beginPath();
 	for (var i = 0; i < 6; ++i) {
 		if (i == 2) continue;
-		this.ctx.rect(x+ 9 + (14*i) + (98*octave), y, 10, 28);
+		this.ctx.rect(x+ (blackFill ? 9 : 10) + (14*i) + (98*octave), y, blackFill ? 10 : 8, 28);
 	}
 
 	if (blackFill) {

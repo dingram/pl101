@@ -6,23 +6,32 @@ $kbd
 var $pvw = $('#music-preview');
 $pvw
 	.prop('width', $pvw.width())
+	.height(500)
 	.prop('height', $pvw.height());
 
 
 var kbd = new Sthesia.Keyboard($kbd[0]);
-kbd.drawPitchHighlight(5, 5, 'c4', '#f00');
-kbd.drawPitchHighlight(5, 5, 'd4', '#fc0');
-kbd.drawPitchHighlight(5, 5, 'e4', '#ff0');
-kbd.drawPitchHighlight(5, 5, 'f4', '#0f0');
-kbd.drawPitchHighlight(5, 5, 'g4', '#0ff');
-kbd.drawPitchHighlight(5, 5, 'a4', '#00f');
-kbd.drawPitchHighlight(5, 5, 'b4', '#f0f');
-kbd.drawPitchHighlight(5, 5, 'c#4', '#f60');
-kbd.drawPitchHighlight(5, 5, 'd#4', '#fd0');
-kbd.drawPitchHighlight(5, 5, 'f#4', '#0f7');
-kbd.drawPitchHighlight(5, 5, 'g#4', '#07f');
-kbd.drawPitchHighlight(5, 5, 'a#4', '#70f');
+kbd.drawPitchHighlight(5, 0, 'c4', '#f00');
+kbd.drawPitchHighlight(5, 0, 'd4', '#fc0');
+kbd.drawPitchHighlight(5, 0, 'e4', '#ff0');
+kbd.drawPitchHighlight(5, 0, 'f4', '#0f0');
+kbd.drawPitchHighlight(5, 0, 'g4', '#0ff');
+kbd.drawPitchHighlight(5, 0, 'a4', '#00f');
+kbd.drawPitchHighlight(5, 0, 'b4', '#f0f');
+kbd.drawPitchHighlight(5, 0, 'c#4', '#f60');
+kbd.drawPitchHighlight(5, 0, 'd#4', '#fd0');
+kbd.drawPitchHighlight(5, 0, 'f#4', '#0f7');
+kbd.drawPitchHighlight(5, 0, 'g#4', '#07f');
+kbd.drawPitchHighlight(5, 0, 'a#4', '#70f');
 kbd.draw(false);
+
+var pvw = new Sthesia.Keyboard($pvw[0]);
+pvw.drawPitchDroplet(5, 215, 'c4', 250, '#f00');
+pvw.drawPitchDroplet(5, 190, 'e4', 250, '#ff0');
+pvw.drawPitchDroplet(5, 165, 'g4', 250, '#0ff');
+pvw.drawPitchDroplet(5,  90, 'c4', 500, '#f00');
+pvw.drawPitchDroplet(5,  90, 'e4', 500, '#ff0');
+pvw.drawPitchDroplet(5,  90, 'g4', 500, '#0ff');
 
 var t, compileAndRun = function(v) {
 	var e = $('#error');
