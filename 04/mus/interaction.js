@@ -25,7 +25,7 @@ kbd.drawPitchHighlight(5, 0, 'g#4', '#07f');
 kbd.drawPitchHighlight(5, 0, 'a#4', '#70f');
 kbd.draw(false);
 
-var pvw = new Sthesia.Keyboard($pvw[0]);
+var pvw = new Sthesia.Droplets($pvw[0]);
 pvw.drawPitchDroplet(5, 215, 'c4', 250, '#f00');
 pvw.drawPitchDroplet(5, 190, 'e4', 250, '#ff0');
 pvw.drawPitchDroplet(5, 165, 'g4', 250, '#0ff');
