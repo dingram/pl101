@@ -15,66 +15,6 @@ var ScheemError = function(message) {
 };
 
 /* ********************************************************************
- * Environment functions
- ******************************************************************** */
-
-// add a new binding
-var add_binding = function (env, v, val) {
-	var newOuter = null;
-	if (env.outer) {
-		newOuter = {
-			name: env.name,
-			value: env.value,
-			outer: env.outer
-		};
-	}
-	env.name = v;
-	env.value = val;
-	env.outer = newOuter;
-};
-
-// update a variable in the environment
-var envUpdate = function (env, v, val) {
-	if (!env) {
-		throw new ScheemError('Undefined variable: ' + v);
-	}
-	if (env.name == v) {
-		env.value = val;
-		return env;
-	}
-	return envUpdate(env.outer, v, val);
-};
-
-// create an initial environment
-var initialEnv = (function() {
-	var env = {};
-	add_binding(env, 'identity', function(args) { return args[0]; });
-	return env;
-})();
-
-var initialEnvLookup = function (env, v) {
-	if (!env) {
-		throw new ScheemError('Undefined variable: ' + v);
-	}
-	if (env.name == v) {
-		return env.value;
-	}
-	return envLookup(env.outer, v);
-};
-
-var envLookup = function (env, v) {
-	if (!env) {
-		// look up in initial environment
-		return initialEnvLookup(initialEnv, v);
-	}
-	if (env.name == v) {
-		return env.value;
-	}
-	return envLookup(env.outer, v);
-};
-
-
-/* ********************************************************************
  * Utility functions
  ******************************************************************** */
 
@@ -110,6 +50,122 @@ var _eval_transitive_truth = function(expr, env, func) {
 };
 
 /* ********************************************************************
+ * Environment functions
+ ******************************************************************** */
+
+// add a new binding
+var add_binding = function (env, v, val) {
+	var newOuter = null;
+	if (env.name !== undefined) {
+		newOuter = {
+			name: env.name,
+			value: env.value,
+			outer: env.outer
+		};
+	}
+	env.name = v;
+	env.value = val;
+	env.outer = newOuter;
+};
+
+// update a variable in the environment
+var envUpdate = function (env, v, val) {
+	if (!env) {
+		throw new ScheemError('Undefined variable: ' + v);
+	}
+	if (env.name == v) {
+		env.value = val;
+		return env;
+	}
+	return envUpdate(env.outer, v, val);
+};
+
+// NB: populated below
+var initialEnv;
+
+var initialEnvLookup = function (v, env) {
+	if (typeof env == 'undefined') {
+		env = initialEnv;
+	} else if (!env) {
+		throw new ScheemError('Undefined variable: ' + v);
+	}
+	if (env.name == v) {
+		return env.value;
+	}
+	return initialEnvLookup(v, env.outer);
+};
+
+// create an initial environment (defined above)
+initialEnv = (function() {
+	var initEnv = {};
+	var lambda;
+
+	add_binding(initEnv, 'identity', function(args) { return args[0]; });
+
+	// simple arithmetic
+	add_binding(initEnv, '+', function(args, env) { return args.reduce(function(a,b) { return evalScheem(a, env) + evalScheem(b, env); }); });
+	add_binding(initEnv, '-', function(args, env) { return args.reduce(function(a,b) { return evalScheem(a, env) - evalScheem(b, env); }); });
+	add_binding(initEnv, '*', function(args, env) { return args.reduce(function(a,b) { return evalScheem(a, env) * evalScheem(b, env); }); });
+	add_binding(initEnv, '/', function(args, env) { return args.reduce(function(a,b) { return evalScheem(a, env) / evalScheem(b, env); }); });
+
+	// conditionals
+	add_binding(initEnv, '=',  function(args, env) { return _eval_transitive_truth(args, env, function(a, b) { return a == b; }); });
+	add_binding(initEnv, '<',  function(args, env) { return _eval_transitive_truth(args, env, function(a, b) { return a < b; }); });
+	add_binding(initEnv, '>',  function(args, env) { return _eval_transitive_truth(args, env, function(a, b) { return a > b; }); });
+	add_binding(initEnv, '<=', function(args, env) { return _eval_transitive_truth(args, env, function(a, b) { return a <= b; }); });
+	add_binding(initEnv, '>=', function(args, env) { return _eval_transitive_truth(args, env, function(a, b) { return a >= b; }); });
+
+	// logical
+	add_binding(initEnv, '&&',  function(args, env) { return args.every(function(a) { return evalScheem(a, env) == '#t'; }) ? '#t' : '#f'; });
+	add_binding(initEnv, '||',  function(args, env) { return args.some(function(a)  { return evalScheem(a, env) == '#t'; }) ? '#t' : '#f'; });
+
+	lambda = function(args, env) { return (evalScheem(args[0], env) == '#t') ? '#f' : '#t'; };
+	lambda.argsMin = lambda.argsMax = 1;
+	add_binding(initEnv, 'not', lambda);
+
+	// array functions
+	lambda = function(args, env) {
+		return [evalScheem(args[0], env)].concat(evalScheem(args[1], env));
+	};
+	lambda.argsMin = lambda.argsMax = 2;
+	add_binding(initEnv, 'cons', lambda);
+
+	lambda = function(args, env) {
+		return evalScheem(args[0], env)[0];
+	};
+	lambda.argsMin = lambda.argsMax = 1;
+	add_binding(initEnv, 'car', lambda);
+
+	lambda = function(args, env) {
+		return evalScheem(args[0], env).slice(1);
+	};
+	lambda.argsMin = lambda.argsMax = 1;
+	add_binding(initEnv, 'cdr', lambda);
+
+	// aliases
+	add_binding(initEnv, "\u00D7", initialEnvLookup('*', initEnv));
+	add_binding(initEnv, "\u00F7", initialEnvLookup('/', initEnv));
+	add_binding(initEnv, "\u2264", initialEnvLookup('<=', initEnv));
+	add_binding(initEnv, "\u2265", initialEnvLookup('>=', initEnv));
+	add_binding(initEnv, 'and',    initialEnvLookup('&&', initEnv));
+	add_binding(initEnv, 'or',     initialEnvLookup('||', initEnv));
+
+	return initEnv;
+})();
+
+var envLookup = function (env, v) {
+	if (!env) {
+		// look up in initial environment
+		return initialEnvLookup(v);
+	}
+	if (env.name == v) {
+		return env.value;
+	}
+	return envLookup(env.outer, v);
+};
+
+
+/* ********************************************************************
  * Built-in functionality
  ******************************************************************** */
 
@@ -121,45 +177,6 @@ var builtin = function(fn, argsMin, argsMax) {
 };
 
 var _builtin_dispatch = {
-
-	// simple arithmetic
-	'+': function(expr, env) { return expr.reduce(function(a,b) { return evalScheem(a, env) + evalScheem(b, env); }); },
-	'-': function(expr, env) { return expr.reduce(function(a,b) { return evalScheem(a, env) - evalScheem(b, env); }); },
-	'*': function(expr, env) { return expr.reduce(function(a,b) { return evalScheem(a, env) * evalScheem(b, env); }); },
-	'/': function(expr, env) { return expr.reduce(function(a,b) { return evalScheem(a, env) / evalScheem(b, env); }); },
-
-	// conditionals
-	'=':  function(expr, env) { return _eval_transitive_truth(expr, env, function(a, b) { return a == b; }); },
-	'<':  function(expr, env) { return _eval_transitive_truth(expr, env, function(a, b) { return a < b; }); },
-	'>':  function(expr, env) { return _eval_transitive_truth(expr, env, function(a, b) { return a > b; }); },
-	'<=': function(expr, env) { return _eval_transitive_truth(expr, env, function(a, b) { return a <= b; }); },
-	'>=': function(expr, env) { return _eval_transitive_truth(expr, env, function(a, b) { return a >= b; }); },
-
-	// logical
-	'&': function(expr, env) { return expr.every(function(a) { return evalScheem(a, env) == '#t'; }) ? '#t' : '#f'; },
-	'|': function(expr, env) { return expr.some(function(a)  { return evalScheem(a, env) == '#t'; }) ? '#t' : '#f'; },
-	'not': builtin(function(expr, env) { return (evalScheem(expr[0], env) == '#t') ? '#f' : '#t'; }, 1, 1),
-
-	// aliases
-	"\u00D7": function(expr, env) { return evalScheem(['*'].concat(expr), env); },
-	"\u00F7": function(expr, env) { return evalScheem(['/'].concat(expr), env); },
-	"\u2264": function(expr, env) { return evalScheem(['<='].concat(expr), env); },
-	"\u2265": function(expr, env) { return evalScheem(['>='].concat(expr), env); },
-	'and':    function(expr, env) { return evalScheem(['&'].concat(expr), env); },
-	'or':     function(expr, env) { return evalScheem(['|'].concat(expr), env); },
-
-	// array functions
-	'cons': builtin(function(expr, env) {
-		return [evalScheem(expr[0], env)].concat(evalScheem(expr[1], env));
-	}, 2, 2),
-
-	'car': builtin(function(expr, env) {
-		return evalScheem(expr[0], env)[0];
-	}, 1, 1),
-
-	'cdr': builtin(function(expr, env) {
-		return evalScheem(expr[0], env).slice(1);
-	}, 1, 1),
 
 	// the rest
 	'begin': function(expr, env) {
