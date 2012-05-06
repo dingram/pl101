@@ -55,7 +55,7 @@ var LightTable = {
 				r += ')';
 
 				if (t[0] == 'define' || t[0] == 'set!') {
-					env[t[1]] = LightTable.parseTreeToHtml(t[2]);
+					env[t[1]] = LightTable.parseTreeToHtml(t[2], env);
 				}
 				return r;
 		}
