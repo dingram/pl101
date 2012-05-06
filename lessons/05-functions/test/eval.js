@@ -1115,3 +1115,18 @@ suite('fibonacci', function(){
 		);
 	});
 });
+
+suite('reversing a list:', function(){
+	test('builtin', function(){
+		assert.deepEqual(
+			evalScheemString("(reverse '(1 2 3 4))"),
+			[4, 3, 2, 1]
+		);
+	});
+	test('foldl and cons', function(){
+		assert.deepEqual(
+			evalScheemString("(foldl cons '() '(1 2 3 4))"),
+			[4, 3, 2, 1]
+		);
+	});
+});
