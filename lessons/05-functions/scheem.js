@@ -486,4 +486,5 @@ if (typeof module !== 'undefined') {
 	module.exports.evalScheem = evalScheem;
 	module.exports.evalScheemString = evalScheemString;
 	module.exports.stringify = stringify;
+	module.exports.add_binding = add_binding;
 }

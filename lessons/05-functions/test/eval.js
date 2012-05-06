@@ -6,6 +6,7 @@ if (typeof module !== 'undefined') {
 	var evalScheem = scheem.evalScheem;
 	var evalScheemString = scheem.evalScheemString;
 	var scheemToString = scheem.stringify;
+	var add_binding = scheem.add_binding;
 } else {
 	// In browser assume already loaded by <script> tags
 	var assert = chai.assert;
@@ -979,3 +980,99 @@ suite('alert', function(){
 	});
 });
 */
+
+suite('factorial', function(){
+	var factorial_func = '(begin (define factorial (lambda (x) (if (<= x 1) 1 (* x (factorial (- x 1))))))    (factorial in) )';
+	test('0', function(){
+		var env = {};
+		add_binding(env, 'in', 0);
+		assert.deepEqual(
+			evalScheemString(factorial_func, env),
+			1
+		);
+	});
+	test('1', function(){
+		var env = {};
+		add_binding(env, 'in', 1);
+		assert.deepEqual(
+			evalScheemString(factorial_func, env),
+			1
+		);
+	});
+	test('2', function(){
+		var env = {};
+		add_binding(env, 'in', 2);
+		assert.deepEqual(
+			evalScheemString(factorial_func, env),
+			2
+		);
+	});
+	test('3', function(){
+		var env = {};
+		add_binding(env, 'in', 3);
+		assert.deepEqual(
+			evalScheemString(factorial_func, env),
+			6
+		);
+	});
+	test('4', function(){
+		var env = {};
+		add_binding(env, 'in', 4);
+		assert.deepEqual(
+			evalScheemString(factorial_func, env),
+			24
+		);
+	});
+});
+
+suite('fibonacci', function(){
+	var factorial_func = '(begin (define fibonacci (lambda (x) (if (<= x 1) 1 (+ (fibonacci (- x 1)) (fibonacci (- x 2))))))    (fibonacci in) )';
+	test('0', function(){
+		var env = {};
+		add_binding(env, 'in', 0);
+		assert.deepEqual(
+			evalScheemString(factorial_func, env),
+			1
+		);
+	});
+	test('1', function(){
+		var env = {};
+		add_binding(env, 'in', 1);
+		assert.deepEqual(
+			evalScheemString(factorial_func, env),
+			1
+		);
+	});
+	test('2', function(){
+		var env = {};
+		add_binding(env, 'in', 2);
+		assert.deepEqual(
+			evalScheemString(factorial_func, env),
+			2
+		);
+	});
+	test('3', function(){
+		var env = {};
+		add_binding(env, 'in', 3);
+		assert.deepEqual(
+			evalScheemString(factorial_func, env),
+			3
+		);
+	});
+	test('4', function(){
+		var env = {};
+		add_binding(env, 'in', 4);
+		assert.deepEqual(
+			evalScheemString(factorial_func, env),
+			5
+		);
+	});
+	test('5', function(){
+		var env = {};
+		add_binding(env, 'in', 5);
+		assert.deepEqual(
+			evalScheemString(factorial_func, env),
+			8
+		);
+	});
+});
