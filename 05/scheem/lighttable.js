@@ -50,7 +50,7 @@ var LightTable = {
 				}
 				r += '">'+t[0]+'</span>';
 				for (var i = 1, l = t.length; i < l; ++i) {
-					r += ' ' + LightTable.parseTreeToHtml(t[i], env);
+					r += ((t[0] === 'begin' || t[0] === 'if') ? "\n       " : ' ') + LightTable.parseTreeToHtml(t[i], env);
 				}
 				r += ')';
 
