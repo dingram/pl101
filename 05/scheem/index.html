@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scheem interpreter</title>
+		<link rel="stylesheet" type="text/css" href="../../css/styles.css">
+		<link rel="stylesheet" type="text/css" href="../../lib/codemirror/codemirror.css">
+		<script src="../../lib/jquery.min.js"></script>
+		<script src="../../lib/codemirror/codemirror.js"></script>
+		<script src="../../lib/codemirror/mode/scheme.js"></script>
+		<script src="parser.js"></script>
+		<script src="scheem.js"></script>
+	</head>
+	<body>
+		<h1>Scheem interpreter</h1>
+		<section id="editor-holder">
+			<textarea id="editor" rows="10" cols="50" autofocus></textarea>
+		</section>
+		<aside id="results">
+			<section id="error"></section>
+			<section id="preview"></section>
+			<section id="output"></section>
+		</aside>
+		<section id="examples">
+			<h2>Examples</h2>
+			<p>Click an example to load into the editor</p>
+			<pre class="example"><code>(<span class="op">+</span> <span class="num">4</span> <span class="num">2</span>)</code></pre>
+			<pre class="example"><code>(<span class="op">+</span> <span class="num">4</span> <span class="num">2</span> (<span class="op">*</span> <span class="num">6</span> <span class="num">7</span>))</code></pre>
+			<pre class="example"><code>(<span class="fn">if</span> (<span class="num">=</span> <span class="num">2</span> <span class="num">1</span>) (<span class="op">*</span> <span class="num">6</span> <span class="num">7</span>) (<span class="op">*</span> <span class="num">6</span> <span class="num">9</span>))</code></pre>
+			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x <span class="num">6</span>) (<span class="fn">if</span> (<span class="num">=</span> <span class="num">2</span> <span class="num">1</span>) (<span class="op">*</span> x <span class="num">7</span>) (<span class="op">*</span> x <span class="num">9</span>)))</code></pre>
+			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x '(<span class="num">6</span> <span class="num">7</span>)) (<span class="fn">car</span> x))</code></pre>
+			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x '(<span class="num">6</span> <span class="num">7</span>)) (<span class="fn">cdr</span> x))</code></pre>
+			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x '(<span class="num">6</span> <span class="num">7</span> <span class="num">8</span>)) (<span class="fn">car</span> (<span class="fn">cdr</span> x)))</code></pre>
+			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x '(<span class="num">6</span> <span class="num">7</span> <span class="num">8</span>)) (<span class="fn">define</span> y <span class="num">13</span>) (<span class="fn">cons</span> y (<span class="fn">cdr</span> (<span class="fn">cdr</span> x))))</code></pre>
+		</section>
+		<script src="lighttable.js"></script>
+		<script src="interaction.js"></script>
+	</body>
+</html>
