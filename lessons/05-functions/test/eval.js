@@ -608,7 +608,7 @@ suite('function application:', function(){
 
 suite('lambda-one', function(){
 	test('function definition throws no error and sets up arginfo', function() {
-		var fn = evalScheem(['lambda-one', 'x', '(+ 1 x)']);
+		var fn = evalScheem(['lambda-one', ['x'], ['+', 1, 'x']]);
 		assert.deepEqual(
 			fn.argsMax,
 			1
