@@ -7,11 +7,11 @@ if (typeof module !== 'undefined') {
  ******************************************************************** */
 
 var ScheemError = function(message) {
-	this.message = message;
+	this.constructor.prototype.__proto__ = Error.prototype;
+	if (Error.captureStackTrace)
+		Error.captureStackTrace(this, this.constructor);
 	this.name = 'ScheemError';
-	this.toString = function() {
-		return this.message;
-	};
+	this.message = message;
 };
 
 /* ********************************************************************
