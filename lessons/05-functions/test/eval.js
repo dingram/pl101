@@ -576,6 +576,45 @@ suite('length', function(){
 	});
 });
 
+suite('reverse', function(){
+	test('zero', function(){
+		assert.deepEqual(
+			evalScheem(['reverse', ['quote', []]]),
+			[]
+			);
+	});
+	test('one [a]', function(){
+		assert.deepEqual(
+			evalScheem(['reverse', ['quote', [1]]]),
+			[1]
+			);
+	});
+	test('one [b]', function(){
+		assert.deepEqual(
+			evalScheem(['reverse', ['quote', [[1]]]]),
+			[[1]]
+			);
+	});
+	test('two [a]', function(){
+		assert.deepEqual(
+			evalScheem(['reverse', ['quote', [1, 2]]]),
+			[2, 1]
+			);
+	});
+	test('two [b]', function(){
+		assert.deepEqual(
+			evalScheem(['reverse', ['quote', [[1, 2], [3, 4]]]]),
+			[[3, 4], [1, 2]]
+			);
+	});
+	test('two [c]', function(){
+		assert.deepEqual(
+			evalScheem(['reverse', ['quote', [[1, 2], 3]]]),
+			[3, [1, 2]]
+			);
+	});
+});
+
 suite('list-ref', function(){
 	test('zeroth of many', function(){
 		assert.deepEqual(

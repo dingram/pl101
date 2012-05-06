@@ -165,6 +165,7 @@ initialEnv = (function() {
 	add_func_binding(initEnv, 'car',    1, 1, function(args, env) { return evalScheem(args[0], env)[0]; });
 	add_func_binding(initEnv, 'cdr',    1, 1, function(args, env) { return evalScheem(args[0], env).slice(1); });
 	add_func_binding(initEnv, 'length', 1, 1, function(args, env) { return evalScheem(args[0], env).length; });
+	add_func_binding(initEnv, 'reverse', 1, 1, function(args, env) { return evalScheem(args[0], env).reverse(); });
 
 	add_func_binding(
 		initEnv,
