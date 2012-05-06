@@ -130,6 +130,11 @@ var initialEnvLookup = function (v, env) {
 initialEnv = (function() {
 	var initEnv = {};
 
+	// global "variable"s
+	add_binding(initEnv, 'null', []);
+	add_binding(initEnv, 'nil',  []);
+
+	// identity function
 	add_binding(initEnv, 'identity', function(args) { return args[0]; });
 
 	// simple arithmetic
