@@ -327,6 +327,7 @@ var evalFunction = function(expr, env) {
 	// try for a built-in function
 	if (typeof func_name == 'function') {
 		func = func_name;
+		func_name = '<lambda>';
 	} else if (func_name in _builtin_dispatch) {
 		func = _builtin_dispatch[func_name];
 	} else {
