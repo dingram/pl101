@@ -237,6 +237,24 @@ initialEnv = (function() {
 		}
 	);
 
+	add_func_binding(
+		initEnv,
+		'filter',
+		2, 2,
+		function(args, env) {
+			var fn = evalScheem(args[0], env);
+			var list = evalScheem(args[1], env);
+			var result = [];
+			for (var i=0, l=list.length; i < l; ++i) {
+				var fargs = [fn, list[i]];
+				if (evalScheem(fargs, env) === '#t') {
+					result.push(list[i]);
+				}
+			}
+			return result;
+		}
+	);
+
 	// alerts
 	add_func_binding(
 		initEnv,

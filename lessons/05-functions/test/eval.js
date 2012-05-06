@@ -694,6 +694,33 @@ suite('foldr', function(){
 	});
 });
 
+suite('filter', function(){
+	test('filter an empty list', function(){
+		assert.deepEqual(
+			evalScheem(['filter', ['lambda', ['x'], ['=', 'x', 1]], ['quote', []]]),
+			[]
+			);
+	});
+	test('filter one item from a one-item list', function(){
+		assert.deepEqual(
+			evalScheem(['filter', ['lambda', ['x'], ['=', 'x', 1]], ['quote', [1]]]),
+			[1]
+			);
+	});
+	test('filter a multi-item list', function(){
+		assert.deepEqual(
+			evalScheem(['filter', ['lambda', ['x'], ['>=', 'x', 0]], ['quote', [1, -2, 3, 4, -5]]]),
+			[1, 3, 4]
+			);
+	});
+	test('filter a multi-item list', function(){
+		assert.deepEqual(
+			evalScheem(['filter', ['lambda', ['x'], ['not', ['>=', 'x', 0]]], ['quote', [1, -2, 3, 4, -5]]]),
+			[-2, -5]
+			);
+	});
+});
+
 suite('evalString', function(){
 	test('int', function() {
 		assert.deepEqual(
