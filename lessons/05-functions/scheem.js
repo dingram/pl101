@@ -171,6 +171,25 @@ initialEnv = (function() {
 		}
 	);
 
+	add_func_binding(
+		initEnv,
+		'map',
+		2, undefined,
+		function(args, env) {
+			var fn = evalScheem(args[0], env);
+			var lists = args.slice(1).map(function(a) { return evalScheem(a, env); });
+			var result = [];
+			for (var i=0, l=lists[0].length; i < l; ++i) {
+				var fargs = [fn];
+				for (var j = 0, ll = lists.length; j < ll; ++j) {
+					fargs.push(lists[j][i]);
+				}
+				result.push(evalScheem(fargs, env));
+			}
+			return result;
+		}
+	);
+
 	// alerts
 	add_func_binding(
 		initEnv,

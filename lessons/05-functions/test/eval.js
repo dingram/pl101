@@ -596,6 +596,27 @@ suite('list-ref', function(){
 	});
 });
 
+suite('map', function(){
+	test('add one across a zero-element list', function(){
+		assert.deepEqual(
+			evalScheem(['map', ['lambda', ['x'], ['+', 'x', 1]], ['quote', []]]),
+			[]
+			);
+	});
+	test('add one across a one-element list', function(){
+		assert.deepEqual(
+			evalScheem(['map', ['lambda', ['x'], ['+', 'x', 1]], ['quote', [1]]]),
+			[2]
+			);
+	});
+	test('add one across a many-element list', function(){
+		assert.deepEqual(
+			evalScheem(['map', ['lambda', ['x'], ['+', 'x', 1]], ['quote', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]]]),
+			[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+			);
+	});
+});
+
 suite('evalString', function(){
 	test('int', function() {
 		assert.deepEqual(
