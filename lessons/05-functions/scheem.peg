@@ -1,0 +1,29 @@
+start =
+    ws* expr:expression ws*
+			{return expr;}
+
+expression =
+    atom
+    / '(' ws* a:atomlist ws* ')'
+    	{ return a; }
+    / "'" expr:expression
+    	{ return ['quote', expr]; }
+
+atomlist =
+    a:expression ws+ al:atomlist
+    	{ return [a].concat(al); }
+	/ a:expression
+    	{ return [a]; }
+
+ws =
+	[ \t\n\r]+
+	/ ";;" [^\r\n]*
+
+validchar
+    = [0-9a-zA-Z_?!+\=@#$%^&*/.<>|×÷≤≥-]
+
+atom =
+    ( sign:[+-]? intchars:[0-9]+ )
+        { return parseInt(sign + intchars.join(""), 10); }
+    / chars:validchar+
+        { return chars.join(""); }
