@@ -155,6 +155,12 @@ initialEnv = (function() {
 	add_binding(initEnv, '<=', function(args, env) { return _eval_transitive_truth(args, env, function(a, b) { return a <= b; }); });
 	add_binding(initEnv, '>=', function(args, env) { return _eval_transitive_truth(args, env, function(a, b) { return a >= b; }); });
 
+	// type checks
+	add_func_binding(initEnv, 'boolean?', 1, 1, function(args, env) { var val = evalScheem(args[0], env); return (val == '#t' || val == '#f') ? '#t' : '#f'; });
+	add_func_binding(initEnv, 'number?',  1, 1, function(args, env) { return typeof evalScheem(args[0], env) == 'number' ? '#t' : '#f'; });
+	add_func_binding(initEnv, 'symbol?',  1, 1, function(args, env) { var val = evalScheem(args[0], env); return (typeof val == 'string' && val != '#t' && val != '#f') ? '#t' : '#f'; });
+	add_func_binding(initEnv, 'list?',    1, 1, function(args, env) { return Array.isArray(evalScheem(args[0], env)) ? '#t' : '#f'; });
+
 	// logical
 	add_binding(initEnv, '&&',  function(args, env) { return args.every(function(a) { return evalScheem(a, env) == '#t'; }) ? '#t' : '#f'; });
 	add_binding(initEnv, '||',  function(args, env) { return args.some(function(a)  { return evalScheem(a, env) == '#t'; }) ? '#t' : '#f'; });

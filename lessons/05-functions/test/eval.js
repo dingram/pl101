@@ -385,6 +385,186 @@ suite('less-than', function() {
 	});
 });
 
+suite('boolean?', function() {
+	test('#t', function() {
+		assert.deepEqual(
+			evalScheem(['boolean?', '#t']),
+			'#t'
+			);
+	});
+	test('#f', function() {
+		assert.deepEqual(
+			evalScheem(['boolean?', '#f']),
+			'#t'
+			);
+	});
+	test('0', function() {
+		assert.deepEqual(
+			evalScheem(['boolean?', 0]),
+			'#f'
+			);
+	});
+	test('1', function() {
+		assert.deepEqual(
+			evalScheem(['boolean?', 1]),
+			'#f'
+			);
+	});
+	test('x', function() {
+		assert.deepEqual(
+			evalScheem(['boolean?', ['quote', 'x']]),
+			'#f'
+			);
+	});
+	test('\'()', function() {
+		assert.deepEqual(
+			evalScheem(['boolean?', ['quote', []]]),
+			'#f'
+			);
+	});
+	test('\'(#t #f 1 x)', function() {
+		assert.deepEqual(
+			evalScheem(['boolean?', ['quote', ['#t', '#f', 1, 'x', []]]]),
+			'#f'
+			);
+	});
+});
+
+suite('number?', function() {
+	test('#t', function() {
+		assert.deepEqual(
+			evalScheem(['number?', '#t']),
+			'#f'
+			);
+	});
+	test('#f', function() {
+		assert.deepEqual(
+			evalScheem(['number?', '#f']),
+			'#f'
+			);
+	});
+	test('0', function() {
+		assert.deepEqual(
+			evalScheem(['number?', 0]),
+			'#t'
+			);
+	});
+	test('1', function() {
+		assert.deepEqual(
+			evalScheem(['number?', 1]),
+			'#t'
+			);
+	});
+	test('x', function() {
+		assert.deepEqual(
+			evalScheem(['number?', ['quote', 'x']]),
+			'#f'
+			);
+	});
+	test('\'()', function() {
+		assert.deepEqual(
+			evalScheem(['number?', ['quote', []]]),
+			'#f'
+			);
+	});
+	test('\'(#t #f 1 x)', function() {
+		assert.deepEqual(
+			evalScheem(['number?', ['quote', ['#t', '#f', 1, 'x', []]]]),
+			'#f'
+			);
+	});
+});
+
+suite('symbol?', function() {
+	test('#t', function() {
+		assert.deepEqual(
+			evalScheem(['symbol?', '#t']),
+			'#f'
+			);
+	});
+	test('#f', function() {
+		assert.deepEqual(
+			evalScheem(['symbol?', '#f']),
+			'#f'
+			);
+	});
+	test('0', function() {
+		assert.deepEqual(
+			evalScheem(['symbol?', 0]),
+			'#f'
+			);
+	});
+	test('1', function() {
+		assert.deepEqual(
+			evalScheem(['symbol?', 1]),
+			'#f'
+			);
+	});
+	test('x', function() {
+		assert.deepEqual(
+			evalScheem(['symbol?', ['quote', 'x']]),
+			'#t'
+			);
+	});
+	test('\'()', function() {
+		assert.deepEqual(
+			evalScheem(['symbol?', ['quote', []]]),
+			'#f'
+			);
+	});
+	test('\'(#t #f 1 x)', function() {
+		assert.deepEqual(
+			evalScheem(['symbol?', ['quote', ['#t', '#f', 1, 'x', []]]]),
+			'#f'
+			);
+	});
+});
+
+suite('list?', function() {
+	test('#t', function() {
+		assert.deepEqual(
+			evalScheem(['list?', '#t']),
+			'#f'
+			);
+	});
+	test('#f', function() {
+		assert.deepEqual(
+			evalScheem(['list?', '#f']),
+			'#f'
+			);
+	});
+	test('0', function() {
+		assert.deepEqual(
+			evalScheem(['list?', 0]),
+			'#f'
+			);
+	});
+	test('1', function() {
+		assert.deepEqual(
+			evalScheem(['list?', 1]),
+			'#f'
+			);
+	});
+	test('x', function() {
+		assert.deepEqual(
+			evalScheem(['list?', ['quote', 'x']]),
+			'#f'
+			);
+	});
+	test('\'()', function() {
+		assert.deepEqual(
+			evalScheem(['list?', ['quote', []]]),
+			'#t'
+			);
+	});
+	test('\'(#t #f 1 x)', function() {
+		assert.deepEqual(
+			evalScheem(['list?', ['quote', ['#t', '#f', 1, 'x', []]]]),
+			'#t'
+			);
+	});
+});
+
 suite('and', function() {
 	test('f f = f', function() {
 		assert.deepEqual(
