@@ -49,10 +49,15 @@ var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
 		t = setTimeout(function(){compileAndRun(e.getValue());}, 500);
 	}
 });
+
 $('.example').click(function(){
 	clearTimeout(t);
 	editor.setValue($(this).find('code').text());
 	compileAndRun(editor.getValue());
+});
+
+$('.group h3').click(function(){
+	$(this).closest('.group').toggleClass('hidechildren');
 });
 
 $('#preview').on('hover', '.var', function(){

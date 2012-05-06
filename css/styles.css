@@ -537,3 +537,15 @@ pre {
   padding: 1em 1em;
   text-align: right;
 }
+.group > h3 {
+	cursor: pointer;
+}
+.group > h3:before {
+	content: '\25BE\A0';
+}
+.group.hidechildren > h3:before {
+	content: '\25B8\A0';
+}
+.hidechildren > pre, .hidechildren > h4 {
+	display: none;
+}

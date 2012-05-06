@@ -23,7 +23,10 @@
 		</aside>
 		<section id="examples">
 			<h2>Examples</h2>
-			<p>Click an example to load into the editor</p>
+			<p>Click a heading to expand/collapse, and click an example to load into the editor.</p>
+
+			<div class="group hidechildren">
+			<h3>Simple examples</h3>
 			<pre class="example"><code>(<span class="op">+</span> <span class="num">4</span> <span class="num">2</span>)</code></pre>
 			<pre class="example"><code>(<span class="op">+</span> <span class="num">4</span> <span class="num">2</span> (<span class="op">*</span> <span class="num">6</span> <span class="num">7</span>))</code></pre>
 			<pre class="example"><code>(<span class="fn">if</span> (<span class="num">=</span> <span class="num">2</span> <span class="num">1</span>) (<span class="op">*</span> <span class="num">6</span> <span class="num">7</span>) (<span class="op">*</span> <span class="num">6</span> <span class="num">9</span>))</code></pre>
@@ -32,6 +35,19 @@
 			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x '(<span class="num">6</span> <span class="num">7</span>)) (<span class="fn">cdr</span> x))</code></pre>
 			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x '(<span class="num">6</span> <span class="num">7</span> <span class="num">8</span>)) (<span class="fn">car</span> (<span class="fn">cdr</span> x)))</code></pre>
 			<pre class="example"><code>(<span class="fn">begin</span> (<span class="fn">define</span> x '(<span class="num">6</span> <span class="num">7</span> <span class="num">8</span>)) (<span class="fn">define</span> y <span class="num">13</span>) (<span class="fn">cons</span> y (<span class="fn">cdr</span> (<span class="fn">cdr</span> x))))</code></pre>
+			</div>
+
+			<div class="group hidechildren">
+			<h3>Complex examples</h3>
+
+			<h4>Factorial</h4>
+			<pre class="example"><code>(begin (define factorial (lambda (x) (if (<= x 1) 1 (* x (factorial (- x 1))))))    (factorial 5) )</code></pre>
+
+			<h4>Fibonacci</h4>
+			<pre class="example"><code>(begin (define fibonacci (lambda (x) (if (<= x 1) 1 (+ (fibonacci (- x 1)) (fibonacci (- x 2))))))    (fibonacci 10) )</code></pre>
+
+			</div>
+
 		</section>
 		<script src="lighttable.js"></script>
 		<script src="interaction.js"></script>
