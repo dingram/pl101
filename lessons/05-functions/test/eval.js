@@ -621,13 +621,13 @@ suite('lambda-one', function(){
 			!fn.builtin
 			);
 	});
-	test('simple plusone works', function() {
+	test('simple plusone', function() {
 		assert.deepEqual(
 			evalScheem(['begin', ['define', 'plusone', ['lambda-one', 'x', ['+', 1, 'x']]], ['plusone', 1]]),
 			2
 			);
 	});
-	test('nested plusone works', function() {
+	test('nested plusone', function() {
 		assert.deepEqual(
 			evalScheem(['begin', ['define', 'plusone', ['lambda-one', 'x', ['+', 1, 'x']]], ['plusone', ['plusone', 1]]]),
 			3
@@ -650,13 +650,13 @@ suite('lambda', function(){
 			!fn.builtin
 			);
 	});
-	test('simple plusone works', function() {
+	test('simple 1-arg plusone', function() {
 		assert.deepEqual(
 			evalScheem(['begin', ['define', 'plusone', ['lambda', ['x'], ['+', 1, 'x']]], ['plusone', 1]]),
 			2
 			);
 	});
-	test('nested plusone works', function() {
+	test('nested 1-arg plusone', function() {
 		assert.deepEqual(
 			evalScheem(['begin', ['define', 'plusone', ['lambda', ['x'], ['+', 1, 'x']]], ['plusone', ['plusone', 1]]]),
 			3
