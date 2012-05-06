@@ -137,6 +137,19 @@ var _builtin_dispatch = {
 	'and':    function(expr, env) { return evalScheem(['&'].concat(expr), env); },
 	'or':     function(expr, env) { return evalScheem(['|'].concat(expr), env); },
 
+	// array functions
+	'cons': builtin(function(expr, env) {
+		return [evalScheem(expr[0], env)].concat(evalScheem(expr[1], env));
+	}, 2, 2),
+
+	'car': builtin(function(expr, env) {
+		return evalScheem(expr[0], env)[0];
+	}, 1, 1),
+
+	'cdr': builtin(function(expr, env) {
+		return evalScheem(expr[0], env).slice(1);
+	}, 1, 1),
+
 	// the rest
 	'begin': function(expr, env) {
 		var r = 0;
@@ -158,18 +171,6 @@ var _builtin_dispatch = {
 
 	'quote': builtin(function(expr, env) {
 		return expr[0];
-	}, 1, 1),
-
-	'cons': builtin(function(expr, env) {
-		return [evalScheem(expr[0], env)].concat(evalScheem(expr[1], env));
-	}, 2, 2),
-
-	'car': builtin(function(expr, env) {
-		return evalScheem(expr[0], env)[0];
-	}, 1, 1),
-
-	'cdr': builtin(function(expr, env) {
-		return evalScheem(expr[0], env).slice(1);
 	}, 1, 1),
 
 	'if': builtin(function(expr, env) {
