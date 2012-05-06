@@ -216,6 +216,27 @@ initialEnv = (function() {
 		}
 	);
 
+	add_func_binding(
+		initEnv,
+		'foldr',
+		3, undefined,
+		function(args, env) {
+			var fn = evalScheem(args[0], env);
+			var init = evalScheem(args[1], env);
+			var lists = args.slice(2).map(function(a) { return evalScheem(a, env); });
+			var result = init;
+			for (var i=lists[0].length-1; i >= 0; --i) {
+				var fargs = [fn];
+				for (var j = 0, ll = lists.length; j < ll; ++j) {
+					fargs.push(lists[j][i]);
+				}
+				fargs.push(['quote', result]);
+				result = evalScheem(fargs, env);
+			}
+			return result;
+		}
+	);
+
 	// alerts
 	add_func_binding(
 		initEnv,

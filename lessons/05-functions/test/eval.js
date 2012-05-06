@@ -667,6 +667,33 @@ suite('foldl', function(){
 	});
 });
 
+suite('foldr', function(){
+	test('add zero across a zero-element list', function(){
+		assert.deepEqual(
+			evalScheem(['foldr', '+', 0, ['quote', []]]),
+			0
+			);
+	});
+	test('add zero across a one-element list', function(){
+		assert.deepEqual(
+			evalScheem(['foldr', '+', 0, ['quote', [1]]]),
+			1
+			);
+	});
+	test('add zero across a many-element list', function(){
+		assert.deepEqual(
+			evalScheem(['foldr', '+', 0, ['quote', [1, 2, 3, 4]]]),
+			10
+			);
+	});
+	test('cons (copy a list)', function(){
+		assert.deepEqual(
+			evalScheem(['foldr', 'cons', ['quote', []], ['quote', [1, 2, 3, 4]]]),
+			[1, 2, 3, 4]
+			);
+	});
+});
+
 suite('evalString', function(){
 	test('int', function() {
 		assert.deepEqual(
