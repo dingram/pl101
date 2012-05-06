@@ -662,6 +662,12 @@ suite('lambda', function(){
 			3
 			);
 	});
+	test('deeply nested 1-arg plusone', function() {
+		assert.deepEqual(
+			evalScheem(['begin', ['define', 'plusone', ['lambda', ['x'], ['+', 1, 'x']]], ['plusone', ['plusone', ['plusone', 1]]]]),
+			4
+			);
+	});
 	test('simple 2-arg plus', function() {
 		assert.deepEqual(
 			evalScheem(['begin', ['define', 'plus', ['lambda', ['x', 'y'], ['+', 'y', 'x']]], ['plus', 1, 2]]),
