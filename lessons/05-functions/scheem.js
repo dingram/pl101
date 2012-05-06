@@ -25,7 +25,7 @@ var deepCopy = function(x) {
 
 var _compare_items = function(a, b, comparator) {
 	if (typeof a != typeof b) {
-		throw new ScheemError('Cannot compare two items with different types');
+		throw new ScheemError('Cannot compare two items with different types ('+(typeof a)+' and '+(typeof b)+')');
 	}
 	if (Array.isArray(a)) {
 		if (a.length != b.length) {
