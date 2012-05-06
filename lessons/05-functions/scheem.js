@@ -148,6 +148,18 @@ initialEnv = (function() {
 	lambda.argsMin = lambda.argsMax = 1;
 	add_binding(initEnv, 'length', lambda);
 
+	lambda = function(args, env) {
+		var val = evalScheem(args[0], env);
+		var idx = evalScheem(args[1], env);
+		if (idx in val) {
+			return val[idx];
+		} else {
+			throw new ScheemError('Input list is too short');
+		}
+	};
+	lambda.argsMin = lambda.argsMax = 2;
+	add_binding(initEnv, 'list-ref', lambda);
+
 	// aliases
 	add_binding(initEnv, "\u00D7", initialEnvLookup('*', initEnv));
 	add_binding(initEnv, "\u00F7", initialEnvLookup('/', initEnv));

@@ -785,3 +785,24 @@ suite('length', function(){
 			);
 	});
 });
+
+suite('list-ref', function(){
+	test('zeroth of many', function(){
+		assert.deepEqual(
+			evalScheem(['list-ref', ['quote', [1, 2, 3, 4]], 0]),
+			1
+			);
+	});
+	test('oneth of many', function(){
+		assert.deepEqual(
+			evalScheem(['list-ref', ['quote', [1, 2, 3, 4]], 1]),
+			2
+			);
+	});
+	test('twoth of many', function(){
+		assert.deepEqual(
+			evalScheem(['list-ref', ['quote', [1, 2, 3, 4]], 2]),
+			3
+			);
+	});
+});
