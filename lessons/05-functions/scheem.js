@@ -300,30 +300,15 @@ var _builtin_dispatch = {
  * Core interpreter
  ******************************************************************** */
 
-// evaluate a Scheem expression
-var evalScheem = function(expr, env) {
-	if (typeof env == 'undefined') {
-		env = {};
-	}
-
-	// the simple cases
-	if (typeof expr === 'number' || typeof expr === 'boolean') {
-		return expr;
-	}
-
-	if (typeof expr === 'string') {
-		if (expr === '#t' || expr === '#f') {
-			return expr;
-		}
-		return envLookup(env, expr);
-	}
-
+var evalFunction = function(expr, env) {
 	var func_name = expr[0];
 	var called_arg_count = expr.length - 1;
 	var func;
 
 	// try for a built-in function
-	if (func_name in _builtin_dispatch) {
+	if (typeof func_name == 'function') {
+		func = func_name;
+	} else if (func_name in _builtin_dispatch) {
 		func = _builtin_dispatch[func_name];
 	} else {
 		func = envLookup(env, func_name);
@@ -361,6 +346,27 @@ var evalScheem = function(expr, env) {
 	}
 
 	return func(expr.slice(1), env);
+};
+
+// evaluate a Scheem expression
+var evalScheem = function(expr, env) {
+	if (typeof env == 'undefined') {
+		env = {};
+	}
+
+	// the simple cases
+	if (typeof expr === 'number' || typeof expr === 'boolean') {
+		return expr;
+	}
+
+	if (typeof expr === 'string') {
+		if (expr === '#t' || expr === '#f') {
+			return expr;
+		}
+		return envLookup(env, expr);
+	}
+
+	return evalFunction(expr, env);
 };
 
 var evalScheemString = function(str, env) {
