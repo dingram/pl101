@@ -93,10 +93,10 @@ var add_binding = function (env, v, val) {
 	env.outer = newOuter;
 };
 
-var add_func_binding = function (env, v, minArgs, maxArgs, lambda) {
-	lambda.argsMin = minArgs;
-	lambda.argsMax = maxArgs;
-	return add_binding(env, v, lambda);
+var add_func_binding = function (env, v, minArgs, maxArgs, fn) {
+	fn.argsMin = minArgs;
+	fn.argsMax = maxArgs;
+	return add_binding(env, v, fn);
 };
 
 // update a variable in the environment
@@ -129,7 +129,6 @@ var initialEnvLookup = function (v, env) {
 // create an initial environment (defined above)
 initialEnv = (function() {
 	var initEnv = {};
-	var lambda;
 
 	add_binding(initEnv, 'identity', function(args) { return args[0]; });
 
