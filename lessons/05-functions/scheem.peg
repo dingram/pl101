@@ -4,6 +4,8 @@ start =
 
 expression =
     atom
+    / '(' ws* ')'
+    	{ return []; }
     / '(' ws* a:atomlist ws* ')'
     	{ return a; }
     / "'" expr:expression

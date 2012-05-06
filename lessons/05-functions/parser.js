@@ -197,26 +197,79 @@ SCHEEM = (function(){
               result2 = parse_ws();
             }
             if (result1 !== null) {
-              result2 = parse_atomlist();
-              if (result2 !== null) {
-                result3 = [];
-                result4 = parse_ws();
-                while (result4 !== null) {
-                  result3.push(result4);
-                  result4 = parse_ws();
+              if (input.charCodeAt(pos.offset) === 41) {
+                result2 = ")";
+                advance(pos, 1);
+              } else {
+                result2 = null;
+                if (reportFailures === 0) {
+                  matchFailed("\")\"");
                 }
-                if (result3 !== null) {
-                  if (input.charCodeAt(pos.offset) === 41) {
-                    result4 = ")";
-                    advance(pos, 1);
-                  } else {
-                    result4 = null;
-                    if (reportFailures === 0) {
-                      matchFailed("\")\"");
-                    }
+              }
+              if (result2 !== null) {
+                result0 = [result0, result1, result2];
+              } else {
+                result0 = null;
+                pos = clone(pos1);
+              }
+            } else {
+              result0 = null;
+              pos = clone(pos1);
+            }
+          } else {
+            result0 = null;
+            pos = clone(pos1);
+          }
+          if (result0 !== null) {
+            result0 = (function(offset, line, column) { return []; })(pos0.offset, pos0.line, pos0.column);
+          }
+          if (result0 === null) {
+            pos = clone(pos0);
+          }
+          if (result0 === null) {
+            pos0 = clone(pos);
+            pos1 = clone(pos);
+            if (input.charCodeAt(pos.offset) === 40) {
+              result0 = "(";
+              advance(pos, 1);
+            } else {
+              result0 = null;
+              if (reportFailures === 0) {
+                matchFailed("\"(\"");
+              }
+            }
+            if (result0 !== null) {
+              result1 = [];
+              result2 = parse_ws();
+              while (result2 !== null) {
+                result1.push(result2);
+                result2 = parse_ws();
+              }
+              if (result1 !== null) {
+                result2 = parse_atomlist();
+                if (result2 !== null) {
+                  result3 = [];
+                  result4 = parse_ws();
+                  while (result4 !== null) {
+                    result3.push(result4);
+                    result4 = parse_ws();
                   }
-                  if (result4 !== null) {
-                    result0 = [result0, result1, result2, result3, result4];
+                  if (result3 !== null) {
+                    if (input.charCodeAt(pos.offset) === 41) {
+                      result4 = ")";
+                      advance(pos, 1);
+                    } else {
+                      result4 = null;
+                      if (reportFailures === 0) {
+                        matchFailed("\")\"");
+                      }
+                    }
+                    if (result4 !== null) {
+                      result0 = [result0, result1, result2, result3, result4];
+                    } else {
+                      result0 = null;
+                      pos = clone(pos1);
+                    }
                   } else {
                     result0 = null;
                     pos = clone(pos1);
@@ -233,45 +286,42 @@ SCHEEM = (function(){
               result0 = null;
               pos = clone(pos1);
             }
-          } else {
-            result0 = null;
-            pos = clone(pos1);
-          }
-          if (result0 !== null) {
-            result0 = (function(offset, line, column, a) { return a; })(pos0.offset, pos0.line, pos0.column, result0[2]);
-          }
-          if (result0 === null) {
-            pos = clone(pos0);
-          }
-          if (result0 === null) {
-            pos0 = clone(pos);
-            pos1 = clone(pos);
-            if (input.charCodeAt(pos.offset) === 39) {
-              result0 = "'";
-              advance(pos, 1);
-            } else {
-              result0 = null;
-              if (reportFailures === 0) {
-                matchFailed("\"'\"");
-              }
-            }
             if (result0 !== null) {
-              result1 = parse_expression();
-              if (result1 !== null) {
-                result0 = [result0, result1];
+              result0 = (function(offset, line, column, a) { return a; })(pos0.offset, pos0.line, pos0.column, result0[2]);
+            }
+            if (result0 === null) {
+              pos = clone(pos0);
+            }
+            if (result0 === null) {
+              pos0 = clone(pos);
+              pos1 = clone(pos);
+              if (input.charCodeAt(pos.offset) === 39) {
+                result0 = "'";
+                advance(pos, 1);
+              } else {
+                result0 = null;
+                if (reportFailures === 0) {
+                  matchFailed("\"'\"");
+                }
+              }
+              if (result0 !== null) {
+                result1 = parse_expression();
+                if (result1 !== null) {
+                  result0 = [result0, result1];
+                } else {
+                  result0 = null;
+                  pos = clone(pos1);
+                }
               } else {
                 result0 = null;
                 pos = clone(pos1);
               }
-            } else {
-              result0 = null;
-              pos = clone(pos1);
-            }
-            if (result0 !== null) {
-              result0 = (function(offset, line, column, expr) { return ['quote', expr]; })(pos0.offset, pos0.line, pos0.column, result0[1]);
-            }
-            if (result0 === null) {
-              pos = clone(pos0);
+              if (result0 !== null) {
+                result0 = (function(offset, line, column, expr) { return ['quote', expr]; })(pos0.offset, pos0.line, pos0.column, result0[1]);
+              }
+              if (result0 === null) {
+                pos = clone(pos0);
+              }
             }
           }
         }
