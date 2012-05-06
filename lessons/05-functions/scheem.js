@@ -53,6 +53,31 @@ var _eval_transitive_truth = function(expr, env, func) {
  * Environment functions
  ******************************************************************** */
 
+var dump_environment = function(env) {
+	var e = env;
+	var vars = {};
+	var shadowed = [];
+	while (e && 'name' in e) {
+		if (e.name in vars) {
+			shadowed.push({n: e.name, v: e.value});
+		} else {
+			vars[e.name] = e.value;
+		}
+		e = e.outer;
+	}
+	console.log("");
+	console.log("Current environment:");
+	for (var n in vars) {
+		console.log('  ' + n + ": " + vars[n]);
+	}
+	if (shadowed.length) {
+		console.log("Shadowed variables:");
+		for (var i = 0, l=shadowed.length; i<l; ++i) {
+			console.log('  ' + shadowed[i].n + ": " + shadowed[i].v);
+		}
+	}
+};
+
 // add a new binding
 var add_binding = function (env, v, val) {
 	var newOuter = null;
