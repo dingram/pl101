@@ -382,8 +382,11 @@ var evalScheemString = function(str, env) {
 };
 
 var stringify = function(scheem) {
-	if (typeof scheem === 'number' || typeof scheem === 'boolean' || typeof scheem === 'string') {
-		return scheem;
+	if (typeof scheem === 'number' || typeof scheem === 'string') {
+		return ""+scheem;
+	}
+	if (typeof scheem === 'boolean') {
+		return scheem ? '#t' : '#f';
 	}
 	if (scheem[0] === 'quote') {
 		return "'" + stringify(scheem[1]);

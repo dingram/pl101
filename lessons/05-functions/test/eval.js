@@ -5,6 +5,7 @@ if (typeof module !== 'undefined') {
 	var scheem = require('../scheem');
 	var evalScheem = scheem.evalScheem;
 	var evalScheemString = scheem.evalScheemString;
+	var scheemToString = scheem.stringify;
 } else {
 	// In browser assume already loaded by <script> tags
 	var assert = chai.assert;
@@ -648,6 +649,57 @@ suite('evalString', function(){
 		assert.deepEqual(
 			evalScheemString("(+ 2 (* 3 4))"),
 			14
+			);
+	});
+});
+
+suite('scheemToString', function(){
+	test('int', function() {
+		assert.deepEqual(
+			scheemToString(3),
+			'3'
+			);
+	});
+	test('variable', function() {
+		assert.deepEqual(
+			scheemToString('x'),
+			'x'
+			);
+	});
+	test('quoted variable', function() {
+		assert.deepEqual(
+			scheemToString(['quote', 'x']),
+			'\'x'
+			);
+	});
+	test('quoted empty list', function() {
+		assert.deepEqual(
+			scheemToString(['quote', []]),
+			'\'()'
+			);
+	});
+	test('quoted single-item list', function() {
+		assert.deepEqual(
+			scheemToString(['quote', [1]]),
+			'\'(1)'
+			);
+	});
+	test('quoted multi-item list', function() {
+		assert.deepEqual(
+			scheemToString(['quote', [1, 'x']]),
+			'\'(1 x)'
+			);
+	});
+	test('function call', function() {
+		assert.deepEqual(
+			scheemToString(['length', ['quote', [1, 'x']]]),
+			'(length \'(1 x))'
+			);
+	});
+	test('complex structure', function() {
+		assert.deepEqual(
+			scheemToString(['if', ['<', ['length', ['quote', [1, 'x']]], 3], 42, ['quote', 'some-text']]),
+			'(if (< (length \'(1 x)) 3) 42 \'some-text)'
 			);
 	});
 });
