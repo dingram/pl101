@@ -634,6 +634,33 @@ suite('map', function(){
 	});
 });
 
+suite('foldl', function(){
+	test('add zero across a zero-element list', function(){
+		assert.deepEqual(
+			evalScheem(['foldl', '+', 0, ['quote', []]]),
+			0
+			);
+	});
+	test('add zero across a one-element list', function(){
+		assert.deepEqual(
+			evalScheem(['foldl', '+', 0, ['quote', [1]]]),
+			1
+			);
+	});
+	test('add zero across a many-element list', function(){
+		assert.deepEqual(
+			evalScheem(['foldl', '+', 0, ['quote', [1, 2, 3, 4]]]),
+			10
+			);
+	});
+	test('complex lambda across two many-element lists', function(){
+		assert.deepEqual(
+			evalScheem(['foldl', ['lambda', ['a', 'b', 'result'], ['*', 'result', ['-', 'a', 'b']]], 1, ['quote', [1, 2, 3]], ['quote', [4, 5, 6]]]),
+			-27
+			);
+	});
+});
+
 suite('evalString', function(){
 	test('int', function() {
 		assert.deepEqual(
