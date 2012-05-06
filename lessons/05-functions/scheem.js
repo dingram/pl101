@@ -209,7 +209,7 @@ initialEnv = (function() {
 				for (var j = 0, ll = lists.length; j < ll; ++j) {
 					fargs.push(lists[j][i]);
 				}
-				fargs.push(result);
+				fargs.push(['quote', result]);
 				result = evalScheem(fargs, env);
 			}
 			return result;

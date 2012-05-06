@@ -659,6 +659,12 @@ suite('foldl', function(){
 			-27
 			);
 	});
+	test('cons (reverse a list)', function(){
+		assert.deepEqual(
+			evalScheem(['foldl', 'cons', ['quote', []], ['quote', [1, 2, 3, 4]]]),
+			[4, 3, 2, 1]
+			);
+	});
 });
 
 suite('evalString', function(){
