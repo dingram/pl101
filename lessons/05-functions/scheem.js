@@ -1,5 +1,6 @@
 if (typeof module !== 'undefined') {
 	var SCHEEM = require('./parser');
+	var clone = require('clone');
 }
 
 /* ********************************************************************
@@ -17,6 +18,10 @@ var ScheemError = function(message) {
 /* ********************************************************************
  * Utility functions
  ******************************************************************** */
+
+var deepCopy = function(x) {
+	return clone(x, true);
+};
 
 var _compare_items = function(a, b, comparator) {
 	if (typeof a != typeof b) {
@@ -342,7 +347,7 @@ var _builtin_dispatch = {
 
 	'lambda-one': builtin(function(expr, env) {
 		var fn = function(x, env){
-			var innerEnv = JSON.parse(JSON.stringify(env));
+			var innerEnv = deepCopy(env);
 			add_binding(innerEnv, expr[0], evalScheem(x[0], env));
 			return evalScheem(expr[1], innerEnv);
 		};
@@ -356,7 +361,7 @@ var _builtin_dispatch = {
 		if (typeof arglist == 'string') {
 			// variable arguments getting bound to a list
 			fn = function(x, env){
-				var innerEnv = JSON.parse(JSON.stringify(env));
+				var innerEnv = deepCopy(env);
 				var argvalues = [];
 				for (var i = 0, l = x.length; i < l; ++i) {
 					argvalues.push(evalScheem(x[i], env));
@@ -367,7 +372,7 @@ var _builtin_dispatch = {
 		} else {
 			// exact list of arguments
 			fn = function(x, env){
-				var innerEnv = JSON.parse(JSON.stringify(env));
+				var innerEnv = deepCopy(env);
 				for (var i = 0, l = arglist.length; i < l; ++i) {
 					var argval = evalScheem(x[i], env);
 					add_binding(innerEnv, arglist[i], argval);
