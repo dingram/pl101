@@ -5,7 +5,6 @@ if (typeof module !== 'undefined') {
 	var scheem = require('../scheem');
 	var evalScheem = scheem.evalScheem;
 	var evalScheemString = scheem.evalScheemString;
-	var initialEnv = scheem.initialEnv;
 } else {
 	// In browser assume already loaded by <script> tags
 	var assert = chai.assert;
@@ -41,7 +40,7 @@ suite('begin', function() {
 
 suite('define', function() {
 	test('simple variable, atom', function() {
-		var env = initialEnv();
+		var env = {};
 		assert.deepEqual(
 			evalScheem(['define', 'x', 2], env),
 			0
@@ -56,7 +55,7 @@ suite('define', function() {
 			);
 	});
 	test('simple variable, list', function() {
-		var env = initialEnv();
+		var env = {};
 		assert.deepEqual(
 			evalScheem(['define', 'x', ['quote', [1, 2]]], env),
 			0
@@ -80,7 +79,7 @@ suite('define', function() {
 
 suite('set!', function() {
 	test('simple variable, atom', function() {
-		var env = initialEnv();
+		var env = {};
 		assert.deepEqual(
 			evalScheem(['begin', ['define', 'x', 2], ['set!', 'x', 3]], env),
 			0
@@ -95,7 +94,7 @@ suite('set!', function() {
 			);
 	});
 	test('simple variable, list', function() {
-		var env = initialEnv();
+		var env = {};
 		assert.deepEqual(
 			evalScheem(['begin', ['define', 'x', ['quote', [1, 2]]], ['set!', 'x', ['quote', [3, 4]]]], env),
 			0

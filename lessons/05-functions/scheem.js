@@ -15,7 +15,7 @@ var ScheemError = function(message) {
 };
 
 /* ********************************************************************
- * Utility functions
+ * Environment functions
  ******************************************************************** */
 
 // add a new binding
@@ -45,7 +45,14 @@ var envUpdate = function (env, v, val) {
 	return envUpdate(env.outer, v, val);
 };
 
-var envLookup = function (env, v) {
+// create an initial environment
+var initialEnv = (function() {
+	var env = {};
+	add_binding(env, 'identity', function(args) { return args[0]; });
+	return env;
+})();
+
+var initialEnvLookup = function (env, v) {
 	if (!env) {
 		throw new ScheemError('Undefined variable: ' + v);
 	}
@@ -55,11 +62,15 @@ var envLookup = function (env, v) {
 	return envLookup(env.outer, v);
 };
 
-// create an initial environment
-var initialEnv = function() {
-	var env = {};
-	add_binding(env, 'identity', function(args) { return args[0]; });
-	return env;
+var envLookup = function (env, v) {
+	if (!env) {
+		// look up in initial environment
+		return initialEnvLookup(initialEnv, v);
+	}
+	if (env.name == v) {
+		return env.value;
+	}
+	return envLookup(env.outer, v);
 };
 
 
@@ -204,7 +215,7 @@ var _builtin_dispatch = {
 // evaluate a Scheem expression
 var evalScheem = function(expr, env) {
 	if (typeof env == 'undefined') {
-		env = initialEnv();
+		env = {};
 	}
 
 	// the simple cases
@@ -266,7 +277,7 @@ var evalScheem = function(expr, env) {
 
 var evalScheemString = function(str, env) {
 	if (typeof env == 'undefined') {
-		env = initialEnv();
+		env = {};
 	}
 	return evalScheem(SCHEEM.parse(str), env);
 };
@@ -275,5 +286,4 @@ var evalScheemString = function(str, env) {
 if (typeof module !== 'undefined') {
 	module.exports.evalScheem = evalScheem;
 	module.exports.evalScheemString = evalScheemString;
-	module.exports.initialEnv = initialEnv;
 }
