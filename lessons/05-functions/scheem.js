@@ -217,9 +217,34 @@ var _builtin_dispatch = {
 			add_binding(env, expr[0], evalScheem(x[0], env));
 			return evalScheem(expr[1], env);
 		};
-		fn.argsMin = 1;
-		fn.argsMax = 1;
+		fn.argsMin = fn.argsMax = 1;
+		return fn;
+	}, 2, 2),
 
+	'lambda': builtin(function(expr, env) {
+		var fn;
+		var arglist = expr[0];
+		if (typeof arglist == 'string') {
+			// variable arguments getting bound to a list
+			fn = function(x, env){
+				var argvalues = [];
+				for (var i = 0, l = x.length; i < l; ++i) {
+					argvalues.push(evalScheem(x[i], env));
+				}
+				add_binding(env, arglist, argvalues);
+				return evalScheem(expr[1], env);
+			};
+		} else {
+			// exact list of arguments
+			fn = function(x, env){
+				for (var i = 0, l = arglist.length; i < l; ++i) {
+					add_binding(env, arglist[i], evalScheem(x[i], env));
+				}
+				return evalScheem(expr[1], env);
+			};
+			fn.argsMin = arglist.length;
+			fn.argsMax = arglist.length;
+		}
 		return fn;
 	}, 2, 2),
 
