@@ -57,6 +57,13 @@
 
 			<h4>Sum via foldr</h4>
 			<pre class="example"><code>(foldr + 0 '(1 2 3 4 5))</code></pre>
+
+			<h4>Lambda with variable argument list</h4>
+			<pre class="example"><code>(begin
+  (define sum (lambda x (foldl + 0 x)))
+
+  (sum 1 2 3 4)
+)</code></pre>
 			</div>
 
 			</div>
