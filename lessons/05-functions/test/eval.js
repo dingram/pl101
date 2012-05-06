@@ -606,3 +606,32 @@ suite('function application:', function(){
 			);
 	});
 });
+
+suite('lambda-one', function(){
+	test('function definition throws no error and sets up arginfo', function() {
+		var fn = evalScheem(['lambda-one', 'x', '(+ 1 x)']);
+		assert.deepEqual(
+			fn.argsMax,
+			1
+			);
+		assert.deepEqual(
+			fn.argsMin,
+			1
+			);
+		assert.ok(
+			!fn.builtin
+			);
+	});
+	test('simple plusone works', function() {
+		assert.deepEqual(
+			evalScheem(['begin', ['define', 'plusone', ['lambda-one', 'x', ['+', 1, 'x']]], ['plusone', 1]]),
+			2
+			);
+	});
+	test('nested plusone works', function() {
+		assert.deepEqual(
+			evalScheem(['begin', ['define', 'plusone', ['lambda-one', 'x', ['+', 1, 'x']]], ['plusone', ['plusone', 1]]]),
+			3
+			);
+	});
+});

@@ -183,6 +183,17 @@ var _builtin_dispatch = {
 		}
 	}, 2, 3),
 
+	'lambda-one': builtin(function(expr, env) {
+		var fn = function(x, env){
+			add_binding(env, expr[0], evalScheem(x[0], env));
+			return evalScheem(expr[1], env);
+		};
+		fn.argsMin = 1;
+		fn.argsMax = 1;
+
+		return fn;
+	}, 2, 2),
+
 };
 
 /* ********************************************************************
