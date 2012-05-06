@@ -123,7 +123,7 @@ initialEnv = (function() {
 	lambda.argsMin = lambda.argsMax = 1;
 	add_binding(initEnv, 'not', lambda);
 
-	// array functions
+	// list functions
 	lambda = function(args, env) {
 		return [evalScheem(args[0], env)].concat(evalScheem(args[1], env));
 	};
@@ -141,6 +141,12 @@ initialEnv = (function() {
 	};
 	lambda.argsMin = lambda.argsMax = 1;
 	add_binding(initEnv, 'cdr', lambda);
+
+	lambda = function(args, env) {
+		return evalScheem(args[0], env).length;
+	};
+	lambda.argsMin = lambda.argsMax = 1;
+	add_binding(initEnv, 'length', lambda);
 
 	// aliases
 	add_binding(initEnv, "\u00D7", initialEnvLookup('*', initEnv));

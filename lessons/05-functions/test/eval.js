@@ -746,3 +746,42 @@ suite('alert', function(){
 	});
 });
 */
+
+suite('length', function(){
+	test('zero', function(){
+		assert.deepEqual(
+			evalScheem(['length', ['quote', []]]),
+			0
+			);
+	});
+	test('one [a]', function(){
+		assert.deepEqual(
+			evalScheem(['length', ['quote', [1]]]),
+			1
+			);
+	});
+	test('one [b]', function(){
+		assert.deepEqual(
+			evalScheem(['length', ['quote', [[1]]]]),
+			1
+			);
+	});
+	test('two [a]', function(){
+		assert.deepEqual(
+			evalScheem(['length', ['quote', [1, 2]]]),
+			2
+			);
+	});
+	test('two [b]', function(){
+		assert.deepEqual(
+			evalScheem(['length', ['quote', [[1, 2], [3, 4]]]]),
+			2
+			);
+	});
+	test('two [c]', function(){
+		assert.deepEqual(
+			evalScheem(['length', ['quote', [[1, 2], 3]]]),
+			2
+			);
+	});
+});
