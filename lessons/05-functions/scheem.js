@@ -351,8 +351,18 @@ var evalScheemString = function(str, env) {
 	return evalScheem(SCHEEM.parse(str), env);
 };
 
+var stringify = function(scheem) {
+	if (typeof scheem === 'number' || typeof scheem === 'boolean' || typeof scheem === 'string') {
+		return scheem;
+	}
+	if (scheem[0] === 'quote') {
+		return "'" + stringify(scheem[1]);
+	}
+	return '(' + scheem.map(stringify).join(' ') + ')';
+};
 
 if (typeof module !== 'undefined') {
 	module.exports.evalScheem = evalScheem;
 	module.exports.evalScheemString = evalScheemString;
+	module.exports.stringify = stringify;
 }
