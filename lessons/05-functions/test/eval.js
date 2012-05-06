@@ -592,3 +592,17 @@ suite('evalString', function(){
 			);
 	});
 });
+
+suite('function application:', function(){
+	test('undefined function', function() {
+		expect(function(){
+			evalScheem(['undefined-function-name', 1]);
+		}).to.throw();
+	});
+	test('identity of atom', function() {
+		assert.deepEqual(
+			evalScheem(['identity', 1]),
+			1
+			);
+	});
+});

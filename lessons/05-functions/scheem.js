@@ -58,6 +58,7 @@ var envLookup = function (env, v) {
 // create an initial environment
 var initialEnv = function() {
 	var env = {};
+	add_binding(env, 'identity', function(x) { return x; });
 	return env;
 };
 
@@ -199,29 +200,33 @@ var evalScheem = function(expr, env) {
 		return envLookup(env, expr);
 	}
 
-	if (!(expr[0] in _builtin_dispatch)) {
-		throw new ScheemError('Unrecognised Scheem function "' + expr[0] + '"');
+	// try for a built-in function
+	if (expr[0] in _builtin_dispatch) {
+		var func_info = _builtin_dispatch[expr[0]];
+		if (typeof func_info === 'function') {
+			// unlimited args
+			return func_info(expr, env);
+		} else if (func_info.length == 2) {
+			// specific argcount
+			if ((expr.length - 1) !== func_info[0]) {
+				throw new ScheemError('Scheem function "' + expr[0] + '" requires exactly ' + func_info[0] + ' arguments; ' + (expr.length - 1) + ' given.');
+			}
+			return func_info[1](expr, env);
+		} else if (func_info.length == 3) {
+			// variable argcount, with min/max
+			if (func_info[0] !== null && (expr.length - 1) < func_info[0]) {
+				throw new ScheemError('Scheem function "' + expr[0] + '" requires at least ' + func_info[0] + ' arguments; ' + (expr.length - 1) + ' given.');
+			}
+			if (func_info[1] !== null && (expr.length - 1) > func_info[1]) {
+				throw new ScheemError('Scheem function "' + expr[0] + '" requires no more than ' + func_info[1] + ' arguments; ' + (expr.length - 1) + ' given.');
+			}
+			return func_info[2](expr, env);
+		}
 	}
-	var func_info = _builtin_dispatch[expr[0]];
-	if (typeof func_info === 'function') {
-		// unlimited args
-		return func_info(expr, env);
-	} else if (func_info.length == 2) {
-		// specific argcount
-		if ((expr.length - 1) !== func_info[0]) {
-			throw new ScheemError('Scheem function "' + expr[0] + '" requires exactly ' + func_info[0] + ' arguments; ' + (expr.length - 1) + ' given.');
-		}
-		return func_info[1](expr, env);
-	} else if (func_info.length == 3) {
-		// variable argcount, with min/max
-		if (func_info[0] !== null && (expr.length - 1) < func_info[0]) {
-			throw new ScheemError('Scheem function "' + expr[0] + '" requires at least ' + func_info[0] + ' arguments; ' + (expr.length - 1) + ' given.');
-		}
-		if (func_info[1] !== null && (expr.length - 1) > func_info[1]) {
-			throw new ScheemError('Scheem function "' + expr[0] + '" requires no more than ' + func_info[1] + ' arguments; ' + (expr.length - 1) + ' given.');
-		}
-		return func_info[2](expr, env);
-	}
+
+	// not a built-in
+	var fn = envLookup(env, expr[0]);
+	return fn(expr[1]);
 };
 
 var evalScheemString = function(str, env) {
