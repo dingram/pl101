@@ -172,14 +172,6 @@ initialEnv = (function() {
 		}
 	);
 
-	// aliases
-	add_binding(initEnv, "\u00D7", initialEnvLookup('*', initEnv));
-	add_binding(initEnv, "\u00F7", initialEnvLookup('/', initEnv));
-	add_binding(initEnv, "\u2264", initialEnvLookup('<=', initEnv));
-	add_binding(initEnv, "\u2265", initialEnvLookup('>=', initEnv));
-	add_binding(initEnv, 'and',    initialEnvLookup('&&', initEnv));
-	add_binding(initEnv, 'or',     initialEnvLookup('||', initEnv));
-
 	// alerts
 	add_func_binding(
 		initEnv,
@@ -191,6 +183,14 @@ initialEnv = (function() {
 			return val;
 		}
 	);
+
+	// aliases
+	add_binding(initEnv, "\u00D7", initialEnvLookup('*', initEnv));
+	add_binding(initEnv, "\u00F7", initialEnvLookup('/', initEnv));
+	add_binding(initEnv, "\u2264", initialEnvLookup('<=', initEnv));
+	add_binding(initEnv, "\u2265", initialEnvLookup('>=', initEnv));
+	add_binding(initEnv, 'and',    initialEnvLookup('&&', initEnv));
+	add_binding(initEnv, 'or',     initialEnvLookup('||', initEnv));
 
 	return initEnv;
 })();
