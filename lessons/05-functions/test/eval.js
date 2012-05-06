@@ -615,6 +615,23 @@ suite('map', function(){
 			[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 			);
 	});
+	test('two-argument add across a single many-element list (error)', function(){
+		expect(function(){
+			evalScheem(['map', ['lambda', ['x', 'y'], ['+', 'x', 'y']], ['quote', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]]]);
+		}).to.throw();
+	});
+	test('two-argument add across two many-element lists', function(){
+		assert.deepEqual(
+			evalScheem(['map', ['lambda', ['x', 'y'], ['+', 'x', 'y']], ['quote', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]], ['quote', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]]]),
+			[0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
+			);
+	});
+	test('return pair across a many-element list', function(){
+		assert.deepEqual(
+			evalScheem(['map', ['lambda', ['x'], ['cons', 'x', 'x']], ['quote', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]]]),
+			[[0,0], [1,1], [2,2], [3,3], [4,4], [5,5], [6,6], [7,7], [8,8], [9,9]]
+			);
+	});
 });
 
 suite('evalString', function(){
