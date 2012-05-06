@@ -662,4 +662,37 @@ suite('lambda', function(){
 			3
 			);
 	});
+	test('simple 2-arg plus', function() {
+		assert.deepEqual(
+			evalScheem(['begin', ['define', 'plus', ['lambda', ['x', 'y'], ['+', 'y', 'x']]], ['plus', 1, 2]]),
+			3
+			);
+	});
+	test('simple 2-arg plus fails with 0 args', function() {
+		expect(function(){
+			evalScheem(['begin', ['define', 'plus', ['lambda', ['x', 'y'], ['+', 'y', 'x']]], ['plus']]);
+		}).to.throw();
+	});
+	test('simple 2-arg plus fails with 1 arg', function() {
+		expect(function(){
+			evalScheem(['begin', ['define', 'plus', ['lambda', ['x', 'y'], ['+', 'y', 'x']]], ['plus', 1]]);
+		}).to.throw();
+	});
+	test('simple 2-arg plus fails with 3 args', function() {
+		expect(function(){
+			evalScheem(['begin', ['define', 'plus', ['lambda', ['x', 'y'], ['+', 'y', 'x']]], ['plus', 1, 2, 3]]);
+		}).to.throw();
+	});
+	test('nested 2-arg plus', function() {
+		assert.deepEqual(
+			evalScheem(['begin', ['define', 'plus', ['lambda', ['x', 'y'], ['+', 'y', 'x']]], ['plus', ['plus', 1, 2], ['plus', 3, 4]]]),
+			10
+			);
+	});
+	test('deeply nested 2-arg plus', function() {
+		assert.deepEqual(
+			evalScheem(['begin', ['define', 'plus', ['lambda', ['x', 'y'], ['+', 'y', 'x']]], ['plus', ['plus', 1, 2], ['plus', ['plus', 2, 1], ['plus', 2, 2]]]]),
+			10
+			);
+	});
 });
