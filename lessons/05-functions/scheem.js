@@ -93,6 +93,12 @@ var add_binding = function (env, v, val) {
 	env.outer = newOuter;
 };
 
+var add_func_binding = function (env, v, minArgs, maxArgs, lambda) {
+	lambda.argsMin = minArgs;
+	lambda.argsMax = maxArgs;
+	return add_binding(env, v, lambda);
+};
+
 // update a variable in the environment
 var envUpdate = function (env, v, val) {
 	if (!env) {
@@ -143,47 +149,28 @@ initialEnv = (function() {
 	// logical
 	add_binding(initEnv, '&&',  function(args, env) { return args.every(function(a) { return evalScheem(a, env) == '#t'; }) ? '#t' : '#f'; });
 	add_binding(initEnv, '||',  function(args, env) { return args.some(function(a)  { return evalScheem(a, env) == '#t'; }) ? '#t' : '#f'; });
-
-	lambda = function(args, env) { return (evalScheem(args[0], env) == '#t') ? '#f' : '#t'; };
-	lambda.argsMin = lambda.argsMax = 1;
-	add_binding(initEnv, 'not', lambda);
+	add_func_binding(initEnv, 'not', 1, 1, function(args, env) { return (evalScheem(args[0], env) == '#t') ? '#f' : '#t'; });
 
 	// list functions
-	lambda = function(args, env) {
-		return [evalScheem(args[0], env)].concat(evalScheem(args[1], env));
-	};
-	lambda.argsMin = lambda.argsMax = 2;
-	add_binding(initEnv, 'cons', lambda);
+	add_func_binding(initEnv, 'cons',   2, 2, function(args, env) { return [evalScheem(args[0], env)].concat(evalScheem(args[1], env)); });
+	add_func_binding(initEnv, 'car',    1, 1, function(args, env) { return evalScheem(args[0], env)[0]; });
+	add_func_binding(initEnv, 'cdr',    1, 1, function(args, env) { return evalScheem(args[0], env).slice(1); });
+	add_func_binding(initEnv, 'length', 1, 1, function(args, env) { return evalScheem(args[0], env).length; });
 
-	lambda = function(args, env) {
-		return evalScheem(args[0], env)[0];
-	};
-	lambda.argsMin = lambda.argsMax = 1;
-	add_binding(initEnv, 'car', lambda);
-
-	lambda = function(args, env) {
-		return evalScheem(args[0], env).slice(1);
-	};
-	lambda.argsMin = lambda.argsMax = 1;
-	add_binding(initEnv, 'cdr', lambda);
-
-	lambda = function(args, env) {
-		return evalScheem(args[0], env).length;
-	};
-	lambda.argsMin = lambda.argsMax = 1;
-	add_binding(initEnv, 'length', lambda);
-
-	lambda = function(args, env) {
-		var val = evalScheem(args[0], env);
-		var idx = evalScheem(args[1], env);
-		if (idx in val) {
-			return val[idx];
-		} else {
-			throw new ScheemError('Input list is too short');
+	add_func_binding(
+		initEnv,
+		'list-ref',
+		2, 2,
+		function(args, env) {
+			var val = evalScheem(args[0], env);
+			var idx = evalScheem(args[1], env);
+			if (idx in val) {
+				return val[idx];
+			} else {
+				throw new ScheemError('Input list is too short');
+			}
 		}
-	};
-	lambda.argsMin = lambda.argsMax = 2;
-	add_binding(initEnv, 'list-ref', lambda);
+	);
 
 	// aliases
 	add_binding(initEnv, "\u00D7", initialEnvLookup('*', initEnv));
@@ -194,13 +181,16 @@ initialEnv = (function() {
 	add_binding(initEnv, 'or',     initialEnvLookup('||', initEnv));
 
 	// alerts
-	lambda = function(args, env) {
-		var val = evalScheem(args[0], env);
-		(typeof alert != 'undefined' ? alert : console.log)(val);
-		return val;
-	};
-	lambda.argsMin = lambda.argsMax = 1;
-	add_binding(initEnv, 'alert', lambda);
+	add_func_binding(
+		initEnv,
+		'alert',
+		1, 1,
+		function(args, env) {
+			var val = evalScheem(args[0], env);
+			(typeof alert != 'undefined' ? alert : console.log)(val);
+			return val;
+		}
+	);
 
 	return initEnv;
 })();
