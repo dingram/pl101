@@ -150,6 +150,15 @@ initialEnv = (function() {
 	add_binding(initEnv, 'and',    initialEnvLookup('&&', initEnv));
 	add_binding(initEnv, 'or',     initialEnvLookup('||', initEnv));
 
+	// alerts
+	lambda = function(args, env) {
+		var val = evalScheem(args[0], env);
+		(typeof alert != 'undefined' ? alert : console.log)(val);
+		return val;
+	};
+	lambda.argsMin = lambda.argsMax = 1;
+	add_binding(initEnv, 'alert', lambda);
+
 	return initEnv;
 })();
 

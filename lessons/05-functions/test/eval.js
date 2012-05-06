@@ -702,3 +702,35 @@ suite('lambda', function(){
 			);
 	});
 });
+
+suite('alert', function(){
+	test('test', function() {
+		evalScheem(['begin', ['alert', ['quote', 'test']], ['alert', ['quote', 'another test']]]);
+		evalScheem(
+			['begin',
+				['define', 'plus',
+					['lambda', ['x', 'y'],
+						['begin',
+							['alert', ['quote', 'x:']],
+							['alert', 'x'],
+							['alert', ['quote', 'y:']],
+							['alert', 'y'],
+							['alert', ['quote', 'result:']],
+							['alert', ['+', 'y', 'x']]
+						]
+					]
+				],
+
+				['plus',
+					['begin', ['alert', ['quote', '(']], ['plus', 1, 2]],
+					['begin', ['alert', ['quote', '((']],
+						['plus',
+							['begin', ['alert', ['quote', '(((']], ['plus', 2, 1]],
+							['begin', ['alert', ['quote', '((((']], ['plus', 2, 2]]
+						]
+					]
+				]
+
+			]);
+	});
+});
