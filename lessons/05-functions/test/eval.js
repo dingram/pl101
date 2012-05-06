@@ -1065,12 +1065,12 @@ suite('factorial', function(){
 });
 
 suite('fibonacci', function(){
-	var factorial_func = '(begin (define fibonacci (lambda (x) (if (<= x 1) 1 (+ (fibonacci (- x 1)) (fibonacci (- x 2))))))    (fibonacci in) )';
+	var fibonacci_func = '(begin (define fibonacci (lambda (x) (if (<= x 1) 1 (+ (fibonacci (- x 1)) (fibonacci (- x 2))))))    (fibonacci in) )';
 	test('0', function(){
 		var env = {};
 		add_binding(env, 'in', 0);
 		assert.deepEqual(
-			evalScheemString(factorial_func, env),
+			evalScheemString(fibonacci_func, env),
 			1
 		);
 	});
@@ -1078,7 +1078,7 @@ suite('fibonacci', function(){
 		var env = {};
 		add_binding(env, 'in', 1);
 		assert.deepEqual(
-			evalScheemString(factorial_func, env),
+			evalScheemString(fibonacci_func, env),
 			1
 		);
 	});
@@ -1086,7 +1086,7 @@ suite('fibonacci', function(){
 		var env = {};
 		add_binding(env, 'in', 2);
 		assert.deepEqual(
-			evalScheemString(factorial_func, env),
+			evalScheemString(fibonacci_func, env),
 			2
 		);
 	});
@@ -1094,7 +1094,7 @@ suite('fibonacci', function(){
 		var env = {};
 		add_binding(env, 'in', 3);
 		assert.deepEqual(
-			evalScheemString(factorial_func, env),
+			evalScheemString(fibonacci_func, env),
 			3
 		);
 	});
@@ -1102,7 +1102,7 @@ suite('fibonacci', function(){
 		var env = {};
 		add_binding(env, 'in', 4);
 		assert.deepEqual(
-			evalScheemString(factorial_func, env),
+			evalScheemString(fibonacci_func, env),
 			5
 		);
 	});
@@ -1110,7 +1110,7 @@ suite('fibonacci', function(){
 		var env = {};
 		add_binding(env, 'in', 5);
 		assert.deepEqual(
-			evalScheemString(factorial_func, env),
+			evalScheemString(fibonacci_func, env),
 			8
 		);
 	});
