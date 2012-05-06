@@ -284,6 +284,9 @@ var envLookup = function (env, v) {
 		return initialEnvLookup(v);
 	}
 	if (env.name == v) {
+		if (env.value === undefined) {
+			throw new ScheemError('Variable "'+v+'" found, but value is undefined?!');
+		}
 		return env.value;
 	}
 	return envLookup(env.outer, v);
