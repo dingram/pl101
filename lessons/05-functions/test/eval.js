@@ -537,6 +537,67 @@ suite('if', function() {
 	});
 });
 
+suite('cond', function() {
+	test('zero arguments fail', function() {
+		expect(function(){
+			evalScheem(['cond']);
+		}).to.throw();
+	});
+	test('true then atom a', function() {
+		assert.deepEqual(
+			evalScheem(['cond', ['#t', 1], ['else', 2]]),
+			1
+			);
+	});
+	test('false then atom b', function() {
+		assert.deepEqual(
+			evalScheem(['cond', ['#f', 1], ['else', 2]]),
+			2
+			);
+	});
+	test('true then result a', function() {
+		assert.deepEqual(
+			evalScheem(['cond', ['#t', ['+', 1, 2]], ['else', ['-', 2, 1]]]),
+			3
+			);
+	});
+	test('false then result b', function() {
+		assert.deepEqual(
+			evalScheem(['cond', ['#f', ['+', 1, 2]], ['else', ['-', 2, 1]]]),
+			1
+			);
+	});
+	test('true expr then result a', function() {
+		assert.deepEqual(
+			evalScheem(['cond', [['<', 1, 2], ['+', 1, 2]], ['else', ['-', 2, 1]]]),
+			3
+			);
+	});
+	test('false expr then result b', function() {
+		assert.deepEqual(
+			evalScheem(['cond', [['<', 2, 1], ['+', 1, 2]], ['else', ['-', 2, 1]]]),
+			1
+			);
+	});
+	test('result 3', function() {
+		assert.deepEqual(
+			evalScheem(['cond', [['<', 2, 1], ['+', 1, 2]], [['<', 3, 2], ['+', 2, 4]], [['=', 1, 1], ['-', 2, 1]]]),
+			1
+			);
+	});
+	test('result 3 [else]', function() {
+		assert.deepEqual(
+			evalScheem(['cond', [['<', 2, 1], ['+', 1, 2]], [['<', 3, 2], ['+', 2, 4]], ['else', ['-', 2, 1]]]),
+			1
+			);
+	});
+	test('else failure (not last)', function() {
+		expect(function(){
+			evalScheem(['cond', [['<', 2, 1], ['+', 1, 2]], ['else', ['-', 2, 1]], [['<', 3, 2], ['+', 2, 4]]]);
+		}).to.throw();
+	});
+});
+
 suite('length', function(){
 	test('zero', function(){
 		assert.deepEqual(

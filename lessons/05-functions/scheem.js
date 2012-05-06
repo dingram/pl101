@@ -335,6 +335,33 @@ var _builtin_dispatch = {
 		return expr[0];
 	}, 1, 1),
 
+	'cond': builtin(function(expr, env) {
+		for (var i = 0, l = expr.length; i < l; ++i) {
+			if (expr[i].length != 2) {
+				throw new ScheemError('Tests in a "cond" group must have exactly two elements');
+			}
+			var test;
+			if (expr[i][0] === 'else') {
+				if (i === l - 1) {
+					test = '#t';
+				} else {
+					throw new ScheemError('"else" is only allowed as the last test in a "cond" group');
+				}
+			} else {
+				test = evalScheem(expr[i][0], env);
+			}
+
+			if (test === '#t') {
+				return evalScheem(expr[i][1], env);
+			} else if (test === '#f') {
+				// continue...
+			} else {
+				throw new ScheemError('First argument to "cond" test must evaluate to a boolean (#t or #f)');
+			}
+		}
+		return 0;
+	}, 1, undefined),
+
 	'if': builtin(function(expr, env) {
 		var test = evalScheem(expr[0], env);
 		if (test === '#t') {
