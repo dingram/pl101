@@ -1130,3 +1130,52 @@ suite('reversing a list:', function(){
 		);
 	});
 });
+
+suite('member of a list', function(){
+	var member_func = '(begin (define member? (lambda (n h) (if (= 0 (length h)) #f (if (= n (car h)) #t (member? n (cdr h)) ) ) ))    (member? needle haystack) )';
+	test('0 [a]', function(){
+		var env = {};
+		add_binding(env, 'needle', 0);
+		add_binding(env, 'haystack', []);
+		assert.deepEqual(
+			evalScheemString(member_func, env),
+			'#f'
+		);
+	});
+	test('0 [b]', function(){
+		var env = {};
+		add_binding(env, 'needle', 0);
+		add_binding(env, 'haystack', [1, 2, 3, 4]);
+		assert.deepEqual(
+			evalScheemString(member_func, env),
+			'#f'
+		);
+	});
+	test('1', function(){
+		var env = {};
+		add_binding(env, 'needle', 1);
+		add_binding(env, 'haystack', [1, 2, 3, 4]);
+		assert.deepEqual(
+			evalScheemString(member_func, env),
+			'#t'
+		);
+	});
+	test('3', function(){
+		var env = {};
+		add_binding(env, 'needle', 3);
+		add_binding(env, 'haystack', [1, 2, 3, 4]);
+		assert.deepEqual(
+			evalScheemString(member_func, env),
+			'#t'
+		);
+	});
+	test('5', function(){
+		var env = {};
+		add_binding(env, 'needle', 5);
+		add_binding(env, 'haystack', [1, 2, 3, 4]);
+		assert.deepEqual(
+			evalScheemString(member_func, env),
+			'#f'
+		);
+	});
+});
