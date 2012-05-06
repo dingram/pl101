@@ -58,7 +58,7 @@ var envLookup = function (env, v) {
 // create an initial environment
 var initialEnv = function() {
 	var env = {};
-	add_binding(env, 'identity', function(x) { return x; });
+	add_binding(env, 'identity', function(args) { return args[0]; });
 	return env;
 };
 
@@ -87,8 +87,8 @@ var _compare_items = function(a, b, comparator) {
 };
 
 var _eval_transitive_truth = function(expr, env, func) {
-	var last = evalScheem(expr[1], env);
-	for (var i = 2, l = expr.length; i < l; ++i) {
+	var last = evalScheem(expr[0], env);
+	for (var i = 1, l = expr.length; i < l; ++i) {
 		var cur = evalScheem(expr[i], env);
 		if (!_compare_items(last, cur, func)) {
 			return '#f';
@@ -102,13 +102,20 @@ var _eval_transitive_truth = function(expr, env, func) {
  * Built-in functionality
  ******************************************************************** */
 
+var builtin = function(fn, argsMin, argsMax) {
+	fn.builtin = true;
+	fn.argsMin = argsMin;
+	fn.argsMax = argsMax;
+	return fn;
+};
+
 var _builtin_dispatch = {
 
 	// simple arithmetic
-	'+': function(expr, env) { return expr.slice(1).reduce(function(a,b) { return evalScheem(a, env) + evalScheem(b, env); }); },
-	'-': function(expr, env) { return expr.slice(1).reduce(function(a,b) { return evalScheem(a, env) - evalScheem(b, env); }); },
-	'*': function(expr, env) { return expr.slice(1).reduce(function(a,b) { return evalScheem(a, env) * evalScheem(b, env); }); },
-	'/': function(expr, env) { return expr.slice(1).reduce(function(a,b) { return evalScheem(a, env) / evalScheem(b, env); }); },
+	'+': function(expr, env) { return expr.reduce(function(a,b) { return evalScheem(a, env) + evalScheem(b, env); }); },
+	'-': function(expr, env) { return expr.reduce(function(a,b) { return evalScheem(a, env) - evalScheem(b, env); }); },
+	'*': function(expr, env) { return expr.reduce(function(a,b) { return evalScheem(a, env) * evalScheem(b, env); }); },
+	'/': function(expr, env) { return expr.reduce(function(a,b) { return evalScheem(a, env) / evalScheem(b, env); }); },
 
 	// conditionals
 	'=':  function(expr, env) { return _eval_transitive_truth(expr, env, function(a, b) { return a == b; }); },
@@ -118,63 +125,63 @@ var _builtin_dispatch = {
 	'>=': function(expr, env) { return _eval_transitive_truth(expr, env, function(a, b) { return a >= b; }); },
 
 	// logical
-	'&': function(expr, env) { return expr.slice(1).every(function(a) { return evalScheem(a, env) == '#t'; }) ? '#t' : '#f'; },
-	'|': function(expr, env) { return expr.slice(1).some(function(a)  { return evalScheem(a, env) == '#t'; }) ? '#t' : '#f'; },
-	'not': [1, function(expr, env) { return (evalScheem(expr[1], env) == '#t') ? '#f' : '#t'; }],
+	'&': function(expr, env) { return expr.every(function(a) { return evalScheem(a, env) == '#t'; }) ? '#t' : '#f'; },
+	'|': function(expr, env) { return expr.some(function(a)  { return evalScheem(a, env) == '#t'; }) ? '#t' : '#f'; },
+	'not': builtin(function(expr, env) { return (evalScheem(expr[0], env) == '#t') ? '#f' : '#t'; }, 1, 1),
 
 	// aliases
-	"\u00D7": function(expr, env) { return evalScheem(['*'].concat(expr.slice(1)), env); },
-	"\u00F7": function(expr, env) { return evalScheem(['/'].concat(expr.slice(1)), env); },
-	"\u2264": function(expr, env) { return evalScheem(['<='].concat(expr.slice(1)), env); },
-	"\u2265": function(expr, env) { return evalScheem(['>='].concat(expr.slice(1)), env); },
-	'and':    function(expr, env) { return evalScheem(['&'].concat(expr.slice(1)), env); },
-	'or':     function(expr, env) { return evalScheem(['|'].concat(expr.slice(1)), env); },
+	"\u00D7": function(expr, env) { return evalScheem(['*'].concat(expr), env); },
+	"\u00F7": function(expr, env) { return evalScheem(['/'].concat(expr), env); },
+	"\u2264": function(expr, env) { return evalScheem(['<='].concat(expr), env); },
+	"\u2265": function(expr, env) { return evalScheem(['>='].concat(expr), env); },
+	'and':    function(expr, env) { return evalScheem(['&'].concat(expr), env); },
+	'or':     function(expr, env) { return evalScheem(['|'].concat(expr), env); },
 
 	// the rest
 	'begin': function(expr, env) {
 		var r = 0;
-		for (var i = 1, l = expr.length; i<l; ++i) {
+		for (var i = 0, l = expr.length; i<l; ++i) {
 			r = evalScheem(expr[i], env);
 		}
 		return r;
 	},
 
-	'define': [2, function(expr, env) {
-		add_binding(env, expr[1], evalScheem(expr[2], env));
+	'define': builtin(function(expr, env) {
+		add_binding(env, expr[0], evalScheem(expr[1], env));
 		return 0;
-	}],
+	}, 2, 2),
 
-	'set!': [2, function(expr, env) {
-		envUpdate(env, expr[1], evalScheem(expr[2], env));
+	'set!': builtin(function(expr, env) {
+		envUpdate(env, expr[0], evalScheem(expr[1], env));
 		return 0;
-	}],
+	}, 2, 2),
 
-	'quote': [1, function(expr, env) {
-		return expr[1];
-	}],
+	'quote': builtin(function(expr, env) {
+		return expr[0];
+	}, 1, 1),
 
-	'cons': function(expr, env) {
-		return [evalScheem(expr[1], env)].concat(evalScheem(expr[2], env));
-	},
+	'cons': builtin(function(expr, env) {
+		return [evalScheem(expr[0], env)].concat(evalScheem(expr[1], env));
+	}, 2, 2),
 
-	'car': [1, function(expr, env) {
-		return evalScheem(expr[1], env)[0];
-	}],
+	'car': builtin(function(expr, env) {
+		return evalScheem(expr[0], env)[0];
+	}, 1, 1),
 
-	'cdr': [1, function(expr, env) {
-		return evalScheem(expr[1], env).slice(1);
-	}],
+	'cdr': builtin(function(expr, env) {
+		return evalScheem(expr[0], env).slice(1);
+	}, 1, 1),
 
-	'if': [2, 3, function(expr, env) {
-		var test = evalScheem(expr[1], env);
+	'if': builtin(function(expr, env) {
+		var test = evalScheem(expr[0], env);
 		if (test === '#t') {
-			return evalScheem(expr[2], env);
+			return evalScheem(expr[1], env);
 		} else if (test === '#f') {
-			return ('3' in expr) ? evalScheem(expr[3], env) : 0;
+			return ('2' in expr) ? evalScheem(expr[2], env) : 0;
 		} else {
 			throw new ScheemError('First argument to "if" must evaluate to a boolean (#t or #f)');
 		}
-	}],
+	}, 2, 3),
 
 };
 
@@ -200,33 +207,49 @@ var evalScheem = function(expr, env) {
 		return envLookup(env, expr);
 	}
 
+	var func_name = expr[0];
+	var called_arg_count = expr.length - 1;
+	var func;
+
 	// try for a built-in function
-	if (expr[0] in _builtin_dispatch) {
-		var func_info = _builtin_dispatch[expr[0]];
-		if (typeof func_info === 'function') {
-			// unlimited args
-			return func_info(expr, env);
-		} else if (func_info.length == 2) {
-			// specific argcount
-			if ((expr.length - 1) !== func_info[0]) {
-				throw new ScheemError('Scheem function "' + expr[0] + '" requires exactly ' + func_info[0] + ' arguments; ' + (expr.length - 1) + ' given.');
-			}
-			return func_info[1](expr, env);
-		} else if (func_info.length == 3) {
-			// variable argcount, with min/max
-			if (func_info[0] !== null && (expr.length - 1) < func_info[0]) {
-				throw new ScheemError('Scheem function "' + expr[0] + '" requires at least ' + func_info[0] + ' arguments; ' + (expr.length - 1) + ' given.');
-			}
-			if (func_info[1] !== null && (expr.length - 1) > func_info[1]) {
-				throw new ScheemError('Scheem function "' + expr[0] + '" requires no more than ' + func_info[1] + ' arguments; ' + (expr.length - 1) + ' given.');
-			}
-			return func_info[2](expr, env);
+	if (func_name in _builtin_dispatch) {
+		func = _builtin_dispatch[func_name];
+	} else {
+		func = envLookup(env, func_name);
+	}
+
+	if (typeof func.argsMin == 'undefined' && typeof func.argsMax == 'undefined') {
+		// no limit on args
+
+	} else if (typeof func.argsMin == 'undefined') {
+		// no minimum arg count
+		if (called_arg_count > func.argsMax) {
+			throw new ScheemError('Scheem function "' + func_name + '" requires no more than ' + func.argsMax + ' arguments; ' + called_arg_count + ' given.');
+		}
+
+	} else if (typeof func.argsMax == 'undefined') {
+		// no maximum arg count
+		if (called_arg_count < func.argsMin) {
+			throw new ScheemError('Scheem function "' + func_name + '" requires at least ' + func.argsMin + ' arguments; ' + called_arg_count + ' given.');
+		}
+
+	} else if (func.argsMin == func.argsMax) {
+		// exact arg count
+		if (called_arg_count != func.argsMax) {
+			throw new ScheemError('Scheem function "' + func_name + '" requires exactly ' + func.argsMax + ' arguments; ' + called_arg_count + ' given.');
+		}
+
+	} else {
+		// arg count range
+		if (called_arg_count < func.argsMin) {
+			throw new ScheemError('Scheem function "' + func_name + '" requires at least ' + func.argsMin + ' arguments; ' + called_arg_count + ' given.');
+		}
+		if (called_arg_count > func.argsMax) {
+			throw new ScheemError('Scheem function "' + func_name + '" requires no more than ' + func.argsMax + ' arguments; ' + called_arg_count + ' given.');
 		}
 	}
 
-	// not a built-in
-	var fn = envLookup(env, expr[0]);
-	return fn(expr[1]);
+	return func(expr.slice(1), env);
 };
 
 var evalScheemString = function(str, env) {
