@@ -701,14 +701,12 @@ suite('lambda', function(){
 			10
 			);
 	});
-	/*
 	test('deeply nested 2-arg plus', function() {
 		assert.deepEqual(
 			evalScheem(['begin', ['define', 'plus', ['lambda', ['x', 'y'], ['+', 'y', 'x']]], ['plus', ['plus', 1, 2], ['plus', ['plus', 2, 1], ['plus', 2, 2]]]]),
 			10
 			);
 	});
-	*/
 });
 
 /*

@@ -241,8 +241,9 @@ var _builtin_dispatch = {
 
 	'lambda-one': builtin(function(expr, env) {
 		var fn = function(x, env){
-			add_binding(env, expr[0], evalScheem(x[0], env));
-			return evalScheem(expr[1], env);
+			var innerEnv = JSON.parse(JSON.stringify(env));
+			add_binding(innerEnv, expr[0], evalScheem(x[0], env));
+			return evalScheem(expr[1], innerEnv);
 		};
 		fn.argsMin = fn.argsMax = 1;
 		return fn;
@@ -254,20 +255,24 @@ var _builtin_dispatch = {
 		if (typeof arglist == 'string') {
 			// variable arguments getting bound to a list
 			fn = function(x, env){
+				var innerEnv = JSON.parse(JSON.stringify(env));
 				var argvalues = [];
 				for (var i = 0, l = x.length; i < l; ++i) {
 					argvalues.push(evalScheem(x[i], env));
 				}
-				add_binding(env, arglist, argvalues);
-				return evalScheem(expr[1], env);
+				add_binding(innerEnv, arglist, argvalues);
+				return evalScheem(expr[1], innerEnv);
 			};
 		} else {
 			// exact list of arguments
 			fn = function(x, env){
+				var innerEnv = JSON.parse(JSON.stringify(env));
 				for (var i = 0, l = arglist.length; i < l; ++i) {
-					add_binding(env, arglist[i], evalScheem(x[i], env));
+					var argval = evalScheem(x[i], env);
+					add_binding(innerEnv, arglist[i], argval);
 				}
-				return evalScheem(expr[1], env);
+				var ret = evalScheem(expr[1], innerEnv);
+				return ret;
 			};
 			fn.argsMin = arglist.length;
 			fn.argsMax = arglist.length;
