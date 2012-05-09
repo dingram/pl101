@@ -28,7 +28,7 @@ var t, compileAndRun = function(v) {
 	}
 
 	if (typeof r != 'string' && typeof r != 'number') {
-		r = JSON.stringify(r);
+		r = stringify(r);
 	}
 
 	o
