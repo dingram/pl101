@@ -561,4 +561,6 @@ pre {
 }
 .group pre {
 	cursor: pointer;
+	max-height: 9em;
+	overflow: auto;
 }
