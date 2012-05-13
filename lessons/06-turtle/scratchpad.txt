@@ -1,0 +1,31 @@
+start
+    = number
+
+number_frac
+    = "." chars:[0-9]*
+        { return "." + chars.join(''); }
+
+number
+    = sign:"-"? chars:[0-9]+ frac:number_frac?
+        { return parseFloat(sign + chars.join('') + frac); }
+
+------------------------------------------------------------------------------
+
+expression = v:identifier { return { tag:"ident", name: v }; } / primary
+
+number
+    = chars:[0-9]+
+        { return parseFloat(chars.join('')); }
+
+identifier
+    = chars:[a-z]+
+        { return chars.join(''); }
+
+primary
+    = number
+    / "(" expr:expression ")"
+        { return expr; }
+
+------------------------------------------------------------------------------
+
+
