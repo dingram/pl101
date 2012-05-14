@@ -28,7 +28,7 @@ statement
 	/ "define" rws v:identifier ws "(" ws args:ident_list ws ")" ws "{" ws body:statements ws "}" ws
 		{ return { tag:'define', name:v, args:args, body:body }; }
 	/ expr:expression ws ";" ws
-		{ return expr; }
+		{ return { tag:'ignore', body:expr }; }
 
 comma_ident
 	= "," ws v:identifier

@@ -878,7 +878,7 @@ module.exports = (function(){
                       pos = clone(pos1);
                     }
                     if (result0 !== null) {
-                      result0 = (function(offset, line, column, expr) { return expr; })(pos0.offset, pos0.line, pos0.column, result0[0]);
+                      result0 = (function(offset, line, column, expr) { return { tag:'ignore', body:expr }; })(pos0.offset, pos0.line, pos0.column, result0[0]);
                     }
                     if (result0 === null) {
                       pos = clone(pos0);

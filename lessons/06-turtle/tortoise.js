@@ -35,7 +35,12 @@
 	};
 
 	var execStatement = function(stmt, env) {
-		return evalExpr(stmt, env);
+		switch (stmt.tag) {
+			case 'ignore':
+				return evalExpr(stmt.body, env);
+		}
+
+		throw new Error('Undefined opcode: '+stmt.tag);
 	};
 
 	var execStatements = function(stmts, env) {
