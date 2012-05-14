@@ -52,6 +52,42 @@ suite('numbers', function() {
 	});
 });
 
+suite('identifiers', function() {
+	test('name checks', function() {
+		assert.deepEqual(
+			tortoise.parse('x;'),
+			[ { tag:'ident', name:'x' } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('foo;'),
+			[ { tag:'ident', name:'foo' } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('foo42;'),
+			[ { tag:'ident', name:'foo42' } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('foo_42;'),
+			[ { tag:'ident', name:'foo_42' } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('_x;'),
+			[ { tag:'ident', name:'_x' } ]
+		);
+	});
+	test('invalid names', function() {
+		expect(function(){
+			tortoise.parse('42x;');
+		}).to.throw();
+		expect(function(){
+			tortoise.parse('@y;');
+		}).to.throw();
+		expect(function(){
+			tortoise.parse('$z;');
+		}).to.throw();
+	});
+});
+
 suite('expressions', function() {
 	test('addition', function() {
 		assert.deepEqual(
