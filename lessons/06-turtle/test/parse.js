@@ -170,8 +170,19 @@ suite('expression associativity', function(){
 			[ { tag: '+', left: { tag: '+', left: 3, right: 4 }, right: 5 } ]
 		);
 		assert.deepEqual(
-			tortoise.parse('0 + -1 + 2 + 34 + 5.6 + 7.890 + x;'),
-			[ { tag: '/', left: 3, right: -8 } ]
+			tortoise.parse('0 + -1 + 2 + 34 + 5.6 + -7.890 + x;'),
+			[ { tag: '+',
+					left: { tag: '+',
+						left: { tag: '+',
+							left: { tag: '+',
+								left: { tag: '+',
+									left: { tag: '+', left: 0, right: -1},
+									right: 2 },
+								right: 34 },
+							right: 5.6 },
+						right: -7.890 },
+					right: {tag: 'ident', name: 'x'}
+			} ]
 		);
 	});
 });
