@@ -58,6 +58,8 @@
 	};
 
 	var execStatement = function(stmt, env) {
+		var val = 0;
+
 		switch (stmt.tag) {
 			case 'ignore':
 				return evalExpr(stmt.body, env);
@@ -65,8 +67,13 @@
 				add_binding(env, stmt.name, 0);
 				return 0;
 			case ':=':
-				var val = evalExpr(stmt.right, env);
+				val = evalExpr(stmt.right, env);
 				update(env, stmt.left, val);
+				return val;
+			case 'if':
+				if (evalExpr(stmt.expr, env)) {
+					val = execStatements(stmt.body, env);
+				}
 				return val;
 		}
 

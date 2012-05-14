@@ -219,3 +219,26 @@ suite('variable assignment', function() {
 		);
 	});
 });
+
+suite('if', function() {
+	test('simple', function() {
+		assert.deepEqual(
+			tortoise.eval('if (1) { 5; }'),
+			5
+		);
+		assert.deepEqual(
+			tortoise.eval('if (0) { 1; }'),
+			0
+		);
+	});
+	test('simple expression', function() {
+		assert.deepEqual(
+			tortoise.eval('if (1 == 1) { 5; }'),
+			5
+		);
+		assert.deepEqual(
+			tortoise.eval('if (0 > 17) { 1; }'),
+			0
+		);
+	});
+});
