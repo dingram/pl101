@@ -277,4 +277,16 @@ suite('assignment', function(){
 			[ { tag: ':=', left: 'x', right: 1 } ]
 		);
 	});
+	test('simple expression assignment', function() {
+		assert.deepEqual(
+			tortoise.parse('x := 1 + 4;'),
+			[ { tag: ':=', left: 'x', right: { tag: '+', left: 1, right: 4 } } ]
+		);
+	});
+	test('complex expression assignment', function() {
+		assert.deepEqual(
+			tortoise.parse('x := (1 + 4) / (22 - 12);'),
+			[ { tag: ':=', left: 'x', right: { tag: '/', left: { tag: '+', left: 1, right: 4 }, right: { tag: '-', left: 22, right: 12 } } } ]
+		);
+	});
 });
