@@ -242,3 +242,24 @@ suite('if', function() {
 		);
 	});
 });
+
+suite('repeat', function() {
+	test('simple', function() {
+		assert.deepEqual(
+			tortoise.eval('var x; repeat (5) { x := x + 1; } x;'),
+			5
+		);
+	});
+	test('expression', function() {
+		assert.deepEqual(
+			tortoise.eval('var x; repeat (2 * 2 + 1) { x := x + 1; } x;'),
+			5
+		);
+	});
+	test('expression + complex body', function() {
+		assert.deepEqual(
+			tortoise.eval('var x; var y; repeat (2 * 2 + 1) { x := x + 1; y := y + 2; } x + y;'),
+			15
+		);
+	});
+});

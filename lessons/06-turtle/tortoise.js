@@ -75,6 +75,12 @@
 					val = execStatements(stmt.body, env);
 				}
 				return val;
+			case 'repeat':
+				var times = evalExpr(stmt.expr, env);
+				for (var i = 0; i < times; ++i) {
+					val = execStatements(stmt.body, env);
+				}
+				return val;
 		}
 
 		throw new Error('Undefined opcode: '+stmt.tag);
