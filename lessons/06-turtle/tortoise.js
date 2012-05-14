@@ -22,6 +22,12 @@
 			case '*': return evalExpr(expr.left, env) * evalExpr(expr.right, env);
 			case '/': return evalExpr(expr.left, env) / evalExpr(expr.right, env);
 
+			case '==': return evalExpr(expr.left, env) == evalExpr(expr.right, env);
+			case '<':  return evalExpr(expr.left, env) <  evalExpr(expr.right, env);
+			case '<=': return evalExpr(expr.left, env) <= evalExpr(expr.right, env);
+			case '>=': return evalExpr(expr.left, env) >= evalExpr(expr.right, env);
+			case '>':  return evalExpr(expr.left, env) >  evalExpr(expr.right, env);
+
 			case 'ident': return lookup(env, expr.name);
 		}
 
