@@ -40,7 +40,7 @@ multiplicative
 	/ primary
 
 identifier
-	= firstchar:[a-zA-Z_] chars:[0-9a-zA-Z_]+
+	= firstchar:[a-zA-Z_] chars:[0-9a-zA-Z_]*
 		{ return firstchar + chars.join(''); }
 
 primary
