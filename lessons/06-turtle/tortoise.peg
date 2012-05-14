@@ -71,3 +71,28 @@ number
 
 ws
 	= [ \r\n\t]
+
+
+
+/*
+
+Operator Name        | Associativity | Operators
+---------------------+---------------+-------------------------------------------------
+Primary              | left to right | ()  [ ]  .  ->
+Unary                | right to left | ++  --  +  -  !  ~
+Exponentiation       | right to left | **
+Multiplicative       | left to right | *  /  %
+Additive             | left to right | +  -
+Bitwise Shift        | left to right | <<  >>
+Relational           | left to right | <  >  <=  >=
+Equality             | left to right | ==  !=
+Bitwise AND          | left to right | &
+Bitwise Exclusive OR | left to right | ^
+Bitwise Inclusive OR | left to right | |
+Logical AND          | left to right | &&
+Logical OR           | left to right | ||
+Conditional          | right to left | ? :
+Assignment           | right to left | =  +=  -=  *=   /=  <<=  >>=  %=   &=  ^=  |=
+Comma                | left to right | ,
+
+*/
