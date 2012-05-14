@@ -163,6 +163,19 @@ suite('expressions', function() {
 	});
 });
 
+suite('expression associativity', function(){
+	test('addition', function() {
+		assert.deepEqual(
+			tortoise.parse('3 + 4 + 5;'),
+			[ { tag: '+', left: { tag: '+', left: 3, right: 4 }, right: 5 } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('0 + -1 + 2 + 34 + 5.6 + 7.890 + x;'),
+			[ { tag: '/', left: 3, right: -8 } ]
+		);
+	});
+});
+
 suite('expression precedence', function() {
 	test('mul beats add', function() {
 		assert.deepEqual(
@@ -246,12 +259,11 @@ suite('expression precedence', function() {
 	});
 });
 
-/*
-suite('set!', function() {
-	test('an undefined variable', function() {
-		expect(function(){
-			evalScheem(['begin', ['set!', 'x', 2]]);
-		}).to.throw();
+suite('assignment', function(){
+	test('simple assignment', function() {
+		assert.deepEqual(
+			tortoise.parse('x := 1;'),
+			[ { tag: ':=', left: 'x', right: 1 } ]
+		);
 	});
 });
-*/
