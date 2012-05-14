@@ -28,4 +28,65 @@ primary
 
 ------------------------------------------------------------------------------
 
+start = statement
+
+expression = "EXPR"
+
+identifier
+    = chars:[a-z]+
+        { return chars.join(''); }
+
+statements = statement*
+
+statement
+    = v:identifier ":=" expr:expression ";"
+        { return { tag:":=", left:v, right:expr }; }
+    / "var" ws+ v:identifier ";"
+        { return { tag:"var", name: v }; }
+    / "if" "(" expr:expression ")" "{" body:statements "}"
+        { return { tag:"if", expr:expr, body:body }; }
+    / "repeat" ws* "(" ws* expr:expression ws* ")" ws* "{" ws* body:statements ws* "}"
+        { return { tag:"repeat", expr:expr, body:body }; }
+
+
+ws = [ \t\r\n]
+
+------------------------------------------------------------------------------
+
+var evalExpr = function (expr, env) {
+    // Numbers evaluate to themselves
+    if (typeof expr === 'number') {
+        return expr;
+    }
+    // Look at tag to see what to do
+    switch(expr.tag) {
+        case '+':
+            return evalExpr(expr.left, env) +
+                   evalExpr(expr.right, env);
+        case 'ident':
+            return lookup(env, expr.name);
+    }
+};
+
+------------------------------------------------------------------------------
+
+var evalStatement = function (stmt, env) {
+    // Statements always have tags
+    switch(stmt.tag) {
+        // A single expression
+        case 'ignore':
+            return evalExpr(stmt.body, env);
+        // Repeat
+        case 'repeat':
+            var times = evalExpr(stmt.expr, env);
+            var val = 0;
+            for (var i = 0; i < times; ++i) {
+                val = evalStatements(stmt.body, env);
+            }
+            return val;
+    }
+};
+
+------------------------------------------------------------------------------
+
 
