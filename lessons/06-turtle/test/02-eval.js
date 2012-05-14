@@ -169,3 +169,53 @@ suite('expression evaluation (integers and variables)', function() {
 		*/
 	});
 });
+
+suite('variable definition', function() {
+	test('declaration', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('var x;', env),
+			0
+		);
+		assert.deepEqual(
+			env,
+			{ bindings: { x: 0 }, _outer: null }
+		);
+	});
+	test('dual declaration', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('var x; var y;', env),
+			0
+		);
+		assert.deepEqual(
+			env,
+			{ bindings: { x: 0, y: 0 }, _outer: null }
+		);
+	});
+});
+
+suite('variable assignment', function() {
+	test('simple', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('var x; x := 1;', env),
+			1
+		);
+		assert.deepEqual(
+			env,
+			{ bindings: { x: 1 }, _outer: null }
+		);
+	});
+	test('simple expression', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('var x; x := 1 + 2;', env),
+			3
+		);
+		assert.deepEqual(
+			env,
+			{ bindings: { x: 3 }, _outer: null }
+		);
+	});
+});
