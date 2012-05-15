@@ -48,14 +48,14 @@ expression "expression"
 eq_op = "!=" / "=="
 
 equality
-	= left:comparative ws op:eq_op ws right:equality
+	= left:comparative ws op:eq_op ws right:comparative
 		{ return {tag:op, left:left, right:right}; }
 	/ comparative
 
 comp_op = "<=" / ">=" / "<" / ">"
 
 comparative
-	= left:additive ws op:comp_op ws right:comparative
+	= left:additive ws op:comp_op ws right:additive
 		{ return {tag:op, left:left, right:right}; }
 	/ additive
 

@@ -1117,7 +1117,7 @@ module.exports = (function(){
             if (result2 !== null) {
               result3 = parse_ws();
               if (result3 !== null) {
-                result4 = parse_equality();
+                result4 = parse_comparative();
                 if (result4 !== null) {
                   result0 = [result0, result1, result2, result3, result4];
                 } else {
@@ -1214,7 +1214,7 @@ module.exports = (function(){
             if (result2 !== null) {
               result3 = parse_ws();
               if (result3 !== null) {
-                result4 = parse_comparative();
+                result4 = parse_additive();
                 if (result4 !== null) {
                   result0 = [result0, result1, result2, result3, result4];
                 } else {
