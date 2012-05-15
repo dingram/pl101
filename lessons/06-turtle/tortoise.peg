@@ -43,9 +43,16 @@ ident_list "list of identifiers"
 		{ return [head].concat(tail); }
 
 expression "expression"
-	= comparative
+	= equality
 
-comp_op = "<=" / ">=" / "!=" / "==" / "<" / ">"
+eq_op = "!=" / "=="
+
+equality
+	= left:comparative ws op:eq_op ws right:equality
+		{ return {tag:op, left:left, right:right}; }
+	/ comparative
+
+comp_op = "<=" / ">=" / "<" / ">"
 
 comparative
 	= left:additive ws op:comp_op ws right:comparative

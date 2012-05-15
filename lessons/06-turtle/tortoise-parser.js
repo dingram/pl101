@@ -42,6 +42,8 @@ module.exports = (function(){
         "else_block": parse_else_block,
         "comma_ident": parse_comma_ident,
         "ident_list": parse_ident_list,
+        "eq_op": parse_eq_op,
+        "equality": parse_equality,
         "comp_op": parse_comp_op,
         "comparative": parse_comparative,
         "additive_op": parse_additive_op,
@@ -250,7 +252,7 @@ module.exports = (function(){
               if (result2 !== null) {
                 result3 = parse_ws();
                 if (result3 !== null) {
-                  result4 = parse_comparative();
+                  result4 = parse_equality();
                   if (result4 !== null) {
                     result5 = parse_ws();
                     if (result5 !== null) {
@@ -391,7 +393,7 @@ module.exports = (function(){
                 if (result2 !== null) {
                   result3 = parse_ws();
                   if (result3 !== null) {
-                    result4 = parse_comparative();
+                    result4 = parse_equality();
                     if (result4 !== null) {
                       result5 = parse_ws();
                       if (result5 !== null) {
@@ -797,7 +799,7 @@ module.exports = (function(){
                       if (result2 !== null) {
                         result3 = parse_ws();
                         if (result3 !== null) {
-                          result4 = parse_comparative();
+                          result4 = parse_equality();
                           if (result4 !== null) {
                             result5 = parse_ws();
                             if (result5 !== null) {
@@ -855,7 +857,7 @@ module.exports = (function(){
                   if (result0 === null) {
                     pos0 = clone(pos);
                     pos1 = clone(pos);
-                    result0 = parse_comparative();
+                    result0 = parse_equality();
                     if (result0 !== null) {
                       result1 = parse_ws();
                       if (result1 !== null) {
@@ -1075,6 +1077,81 @@ module.exports = (function(){
         return result0;
       }
       
+      function parse_eq_op() {
+        var result0;
+        
+        if (input.substr(pos.offset, 2) === "!=") {
+          result0 = "!=";
+          advance(pos, 2);
+        } else {
+          result0 = null;
+          if (reportFailures === 0) {
+            matchFailed("\"!=\"");
+          }
+        }
+        if (result0 === null) {
+          if (input.substr(pos.offset, 2) === "==") {
+            result0 = "==";
+            advance(pos, 2);
+          } else {
+            result0 = null;
+            if (reportFailures === 0) {
+              matchFailed("\"==\"");
+            }
+          }
+        }
+        return result0;
+      }
+      
+      function parse_equality() {
+        var result0, result1, result2, result3, result4;
+        var pos0, pos1;
+        
+        pos0 = clone(pos);
+        pos1 = clone(pos);
+        result0 = parse_comparative();
+        if (result0 !== null) {
+          result1 = parse_ws();
+          if (result1 !== null) {
+            result2 = parse_eq_op();
+            if (result2 !== null) {
+              result3 = parse_ws();
+              if (result3 !== null) {
+                result4 = parse_equality();
+                if (result4 !== null) {
+                  result0 = [result0, result1, result2, result3, result4];
+                } else {
+                  result0 = null;
+                  pos = clone(pos1);
+                }
+              } else {
+                result0 = null;
+                pos = clone(pos1);
+              }
+            } else {
+              result0 = null;
+              pos = clone(pos1);
+            }
+          } else {
+            result0 = null;
+            pos = clone(pos1);
+          }
+        } else {
+          result0 = null;
+          pos = clone(pos1);
+        }
+        if (result0 !== null) {
+          result0 = (function(offset, line, column, left, op, right) { return {tag:op, left:left, right:right}; })(pos0.offset, pos0.line, pos0.column, result0[0], result0[2], result0[4]);
+        }
+        if (result0 === null) {
+          pos = clone(pos0);
+        }
+        if (result0 === null) {
+          result0 = parse_comparative();
+        }
+        return result0;
+      }
+      
       function parse_comp_op() {
         var result0;
         
@@ -1098,45 +1175,23 @@ module.exports = (function(){
             }
           }
           if (result0 === null) {
-            if (input.substr(pos.offset, 2) === "!=") {
-              result0 = "!=";
-              advance(pos, 2);
+            if (input.charCodeAt(pos.offset) === 60) {
+              result0 = "<";
+              advance(pos, 1);
             } else {
               result0 = null;
               if (reportFailures === 0) {
-                matchFailed("\"!=\"");
+                matchFailed("\"<\"");
               }
             }
             if (result0 === null) {
-              if (input.substr(pos.offset, 2) === "==") {
-                result0 = "==";
-                advance(pos, 2);
+              if (input.charCodeAt(pos.offset) === 62) {
+                result0 = ">";
+                advance(pos, 1);
               } else {
                 result0 = null;
                 if (reportFailures === 0) {
-                  matchFailed("\"==\"");
-                }
-              }
-              if (result0 === null) {
-                if (input.charCodeAt(pos.offset) === 60) {
-                  result0 = "<";
-                  advance(pos, 1);
-                } else {
-                  result0 = null;
-                  if (reportFailures === 0) {
-                    matchFailed("\"<\"");
-                  }
-                }
-                if (result0 === null) {
-                  if (input.charCodeAt(pos.offset) === 62) {
-                    result0 = ">";
-                    advance(pos, 1);
-                  } else {
-                    result0 = null;
-                    if (reportFailures === 0) {
-                      matchFailed("\">\"");
-                    }
-                  }
+                  matchFailed("\">\"");
                 }
               }
             }
@@ -1833,7 +1888,7 @@ module.exports = (function(){
                 if (result0 !== null) {
                   result1 = parse_ws();
                   if (result1 !== null) {
-                    result2 = parse_comparative();
+                    result2 = parse_equality();
                     if (result2 !== null) {
                       result3 = parse_ws();
                       if (result3 !== null) {
@@ -1905,7 +1960,7 @@ module.exports = (function(){
         if (result0 !== null) {
           result1 = parse_ws();
           if (result1 !== null) {
-            result2 = parse_comparative();
+            result2 = parse_equality();
             if (result2 !== null) {
               result0 = [result0, result1, result2];
             } else {
@@ -1936,7 +1991,7 @@ module.exports = (function(){
         reportFailures++;
         pos0 = clone(pos);
         pos1 = clone(pos);
-        result0 = parse_comparative();
+        result0 = parse_equality();
         if (result0 !== null) {
           result1 = [];
           result2 = parse_comma_expression();
