@@ -77,8 +77,13 @@ multiplicative
 		{ return makeLeftAssoc(head, tail); }
 
 exponential
-	= left:primary ws '**' ws right:exponential
+	= left:unary ws '**' ws right:exponential
 		{ return { tag:'**', left:left, right:right }; }
+	/ unary
+
+unary
+	= "-" ws expr:primary
+		{ return (typeof expr == 'number') ? -expr : { tag:'-', left:0, right:expr }; }
 	/ primary
 
 identifier "identifier"
@@ -109,8 +114,8 @@ number_frac
 		{ return "." + chars.join(''); }
 
 number "number"
-	= sign:"-"? chars:[0-9]+ frac:number_frac?
-		{ return parseFloat(sign + chars.join('') + frac); }
+	= chars:[0-9]+ frac:number_frac?
+		{ return parseFloat(chars.join('') + frac); }
 
 rws "whitespace"
 	= [ \r\n\t]+

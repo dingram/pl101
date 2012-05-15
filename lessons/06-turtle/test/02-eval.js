@@ -125,22 +125,18 @@ suite('expression evaluation (integers and variables)', function() {
 			tortoise.eval('3 + x;', {bindings:{x:8}}),
 			11
 		);
-		/*
 		assert.deepEqual(
 			tortoise.eval('3 + -x;', {bindings:{x:8}}),
 			-5
 		);
-		*/
 		assert.deepEqual(
 			tortoise.eval('-3 + x;', {bindings:{x:8}}),
 			5
 		);
-		/*
 		assert.deepEqual(
 			tortoise.eval('-3 + -x;', {bindings:{x:8}}),
 			-11
 		);
-		*/
 	});
 	test('subtraction', function() {
 		assert.deepEqual(
@@ -151,7 +147,6 @@ suite('expression evaluation (integers and variables)', function() {
 			tortoise.eval('x - -8;', {bindings:{x:3}}),
 			11
 		);
-		/*
 		assert.deepEqual(
 			tortoise.eval('-x - 8;', {bindings:{x:3}}),
 			-11
@@ -160,7 +155,6 @@ suite('expression evaluation (integers and variables)', function() {
 			tortoise.eval('-x - -8;', {bindings:{x:3}}),
 			5
 		);
-		*/
 	});
 	test('multiplication', function() {
 		assert.deepEqual(
@@ -175,12 +169,10 @@ suite('expression evaluation (integers and variables)', function() {
 			tortoise.eval('-3 * x;', {bindings:{x:8}}),
 			-24
 		);
-		/*
 		assert.deepEqual(
 			tortoise.eval('-3 * -8;'),
 			24
 		);
-		*/
 	});
 	test('division', function() {
 		assert.deepEqual(
@@ -195,12 +187,10 @@ suite('expression evaluation (integers and variables)', function() {
 			tortoise.eval('-8 / x;', {bindings:{x:4}}),
 			-2
 		);
-		/*
 		assert.deepEqual(
 			tortoise.eval('-8 / -4;'),
 			2
 		);
-		*/
 	});
 });
 
