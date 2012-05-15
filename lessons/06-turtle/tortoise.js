@@ -63,24 +63,29 @@
 		switch (stmt.tag) {
 			case 'ignore':
 				return evalExpr(stmt.body, env);
+
 			case 'var':
 				add_binding(env, stmt.name, 0);
 				return 0;
+
 			case ':=':
 				val = evalExpr(stmt.right, env);
 				update(env, stmt.left, val);
 				return val;
+
 			case 'if':
 				if (evalExpr(stmt.expr, env)) {
 					val = execStatements(stmt.body, env);
 				}
 				return val;
+
 			case 'repeat':
 				var times = evalExpr(stmt.expr, env);
 				for (var i = 0; i < times; ++i) {
 					val = execStatements(stmt.body, env);
 				}
 				return val;
+
 		}
 
 		throw new Error('Undefined opcode: '+stmt.tag);
