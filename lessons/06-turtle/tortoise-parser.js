@@ -1580,7 +1580,7 @@ module.exports = (function(){
           pos = clone(pos1);
         }
         if (result0 !== null) {
-          result0 = (function(offset, line, column, expr) { return (typeof expr == 'number') ? -expr : { tag:'-', left:0, right:expr }; })(pos0.offset, pos0.line, pos0.column, result0[2]);
+          result0 = (function(offset, line, column, expr) { return (typeof expr == 'number') ? -expr : { tag:'*', left:-1, right:expr }; })(pos0.offset, pos0.line, pos0.column, result0[2]);
         }
         if (result0 === null) {
           pos = clone(pos0);
