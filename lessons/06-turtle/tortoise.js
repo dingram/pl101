@@ -80,9 +80,9 @@
 
 			case 'if':
 				if (evalExpr(stmt.expr, env)) {
-					val = execStatements(stmt.body, env);
+					return execStatements(stmt.body, env);
 				}
-				return val;
+				return undefined;
 
 			case 'repeat':
 				var times = evalExpr(stmt.expr, env);
@@ -110,7 +110,8 @@
 	var execStatements = function(stmts, env) {
 		var val = 0;
 		for (var i = 0, l = stmts.length; i < l; ++i) {
-			val = execStatement(stmts[i], env);
+			var tmp = execStatement(stmts[i], env);
+			if (typeof tmp !== 'undefined') val = tmp;
 		}
 		return val;
 	};
