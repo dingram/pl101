@@ -81,6 +81,8 @@
 			case 'if':
 				if (evalExpr(stmt.expr, env)) {
 					return execStatements(stmt.body, env);
+				} else if ('else_body' in stmt && Array.isArray(stmt.else_body)) {
+					return execStatements(stmt.else_body, env);
 				}
 				return undefined;
 

@@ -241,6 +241,26 @@ suite('if', function() {
 			0
 		);
 	});
+	test('simple with else', function() {
+		assert.deepEqual(
+			tortoise.eval('if (1) { 5; } else { -1; }'),
+			5
+		);
+		assert.deepEqual(
+			tortoise.eval('if (0) { 1; } else { 42; }'),
+			42
+		);
+	});
+	test('simple expression with else', function() {
+		assert.deepEqual(
+			tortoise.eval('if (1 == 1) { 5; } else { 19; }'),
+			5
+		);
+		assert.deepEqual(
+			tortoise.eval('if (0 > 17) { 1; } else { 19; }'),
+			19
+		);
+	});
 });
 
 suite('repeat', function() {

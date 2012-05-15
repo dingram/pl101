@@ -17,8 +17,8 @@ statements = statement*
 statement "statement"
 	= "var" rws v:identifier ws ";" ws
 		{ return { tag:"var", name:v }; }
-	/ "if" ws "(" ws expr:expression ws ")" ws "{" ws body:statements ws "}" ws
-		{ return { tag:"if", expr:expr, body:body }; }
+	/ "if" ws "(" ws expr:expression ws ")" ws "{" ws body:statements ws "}" ws else_body:else_block?
+		{ return { tag:"if", expr:expr, body:body, else_body:else_body }; }
 	/ "repeat" ws "(" ws expr:expression ws ")" ws "{" ws body:statements ws "}" ws
 		{ return { tag:"repeat", expr:expr, body:body }; }
 	/ "define" rws v:identifier ws "(" ws ")" ws "{" ws body:statements ws "}" ws
@@ -29,6 +29,10 @@ statement "statement"
 		{ return { tag:":=", left:v, right:expr }; }
 	/ expr:expression ws ";" ws
 		{ return { tag:'ignore', body:expr }; }
+
+else_block
+	= "else" ws "{" ws body:statements ws "}" ws
+		{ return body; }
 
 comma_ident
 	= "," ws v:identifier
