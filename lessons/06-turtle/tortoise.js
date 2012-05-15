@@ -48,11 +48,12 @@
 
 			case '**': return Math.pow(evalExpr(expr.left, env), evalExpr(expr.right, env));
 
-			case '==': return evalExpr(expr.left, env) == evalExpr(expr.right, env);
-			case '<':  return evalExpr(expr.left, env) <  evalExpr(expr.right, env);
-			case '<=': return evalExpr(expr.left, env) <= evalExpr(expr.right, env);
-			case '>=': return evalExpr(expr.left, env) >= evalExpr(expr.right, env);
-			case '>':  return evalExpr(expr.left, env) >  evalExpr(expr.right, env);
+			case '==': return evalExpr(expr.left, env) == evalExpr(expr.right, env) ? 1 : 0;
+			case '!=': return evalExpr(expr.left, env) != evalExpr(expr.right, env) ? 1 : 0;
+			case '<':  return evalExpr(expr.left, env) <  evalExpr(expr.right, env) ? 1 : 0;
+			case '<=': return evalExpr(expr.left, env) <= evalExpr(expr.right, env) ? 1 : 0;
+			case '>=': return evalExpr(expr.left, env) >= evalExpr(expr.right, env) ? 1 : 0;
+			case '>':  return evalExpr(expr.left, env) >  evalExpr(expr.right, env) ? 1 : 0;
 
 			case '!':  return evalExpr(expr.expr, env) ? 0 : 1;
 
