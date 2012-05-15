@@ -86,6 +86,17 @@
 				}
 				return val;
 
+			case 'define':
+				var body = function(){
+					var innerEnv = { bindings: {}, _outer: env };
+					for (var i = 0, l = stmt.args.length; i < l; ++i) {
+						innerEnv.bindings[stmt.args[i]] = arguments[i];
+					}
+					return execStatements(stmt.body, innerEnv);
+				};
+				add_binding(env, stmt.name, body);
+				return 0;
+
 		}
 
 		throw new Error('Undefined opcode: '+stmt.tag);
