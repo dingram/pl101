@@ -345,6 +345,28 @@ suite('if', function() {
 			42
 		);
 	});
+	test('expression with logical operators, with else', function() {
+		assert.deepEqual(
+			tortoise.eval('if (1 == 1 && 2 == 2) { 5; } else { 19; }'),
+			5
+		);
+		assert.deepEqual(
+			tortoise.eval('if (1 <= 0 && 2 == 2) { 5; } else { 19; }'),
+			19
+		);
+		assert.deepEqual(
+			tortoise.eval('if (1 == 1 || 2 == 2) { 5; } else { 19; }'),
+			5
+		);
+		assert.deepEqual(
+			tortoise.eval('if (1 <= 0 || 2 == 2) { 5; } else { 19; }'),
+			5
+		);
+		assert.deepEqual(
+			tortoise.eval('if (1 != 1 || 2 != 2) { 5; } else { 19; }'),
+			19
+		);
+	});
 });
 
 suite('repeat', function() {

@@ -56,6 +56,9 @@
 
 			case '!':  return evalExpr(expr.expr, env) ? 0 : 1;
 
+			case '&&': return evalExpr(expr.left, env) && evalExpr(expr.right, env) ? 1 : 0;
+			case '||': return evalExpr(expr.left, env) || evalExpr(expr.right, env) ? 1 : 0;
+
 			case 'ident': return lookup(env, expr.name);
 
 			case 'call':

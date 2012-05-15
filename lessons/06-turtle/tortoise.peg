@@ -43,7 +43,27 @@ ident_list "list of identifiers"
 		{ return [head].concat(tail); }
 
 expression "expression"
-	= equality
+	= logical_disjunction
+
+logic_disj_term
+	= "||" ws right:equality ws
+		{ return [ "||", right ]; }
+
+logical_disjunction
+	= v:logical_conjunction !logic_disj_term
+		{ return v; }
+	/ head:logical_conjunction tail:logic_disj_term*
+		{ return makeLeftAssoc(head, tail); }
+
+logic_conj_term
+	= "&&" ws right:equality ws
+		{ return [ "&&", right ]; }
+
+logical_conjunction
+	= v:equality !logic_conj_term
+		{ return v; }
+	/ head:equality tail:logic_conj_term*
+		{ return makeLeftAssoc(head, tail); }
 
 eq_op = "!=" / "=="
 

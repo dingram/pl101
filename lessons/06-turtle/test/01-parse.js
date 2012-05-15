@@ -207,6 +207,18 @@ suite('expressions', function() {
 			[ { tag: 'ignore', body: { tag: '**', left: -3, right: -8 } } ]
 		);
 	});
+	test('logical AND', function() {
+		assert.deepEqual(
+			tortoise.parse('1 && 2;'),
+			[ { tag: 'ignore', body: { tag: '&&', left: 1, right: 2 } } ]
+		);
+	});
+	test('logical OR', function() {
+		assert.deepEqual(
+			tortoise.parse('1 || 2;'),
+			[ { tag: 'ignore', body: { tag: '||', left: 1, right: 2 } } ]
+		);
+	});
 });
 
 suite('expression associativity', function(){
@@ -249,6 +261,48 @@ suite('expression associativity', function(){
 							},
 						},
 					}
+			} } ]
+		);
+	});
+	test('logical AND', function() {
+		assert.deepEqual(
+			tortoise.parse('3 && 4 && 5;'),
+			[ { tag: 'ignore', body: { tag: '&&', left: { tag: '&&', left: 3, right: 4 }, right: 5 } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('0 && -1 && 2 && 34 && 5.6 && -7.890 && x;'),
+			[ { tag: 'ignore', body: { tag: '&&',
+					left: { tag: '&&',
+						left: { tag: '&&',
+							left: { tag: '&&',
+								left: { tag: '&&',
+									left: { tag: '&&', left: 0, right: -1},
+									right: 2 },
+								right: 34 },
+							right: 5.6 },
+						right: -7.890 },
+					right: {tag: 'ident', name: 'x'}
+			} } ]
+		);
+	});
+	test('logical OR', function() {
+		assert.deepEqual(
+			tortoise.parse('3 || 4 || 5;'),
+			[ { tag: 'ignore', body: { tag: '||', left: { tag: '||', left: 3, right: 4 }, right: 5 } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('0 || -1 || 2 || 34 || 5.6 || -7.890 || x;'),
+			[ { tag: 'ignore', body: { tag: '||',
+					left: { tag: '||',
+						left: { tag: '||',
+							left: { tag: '||',
+								left: { tag: '||',
+									left: { tag: '||', left: 0, right: -1},
+									right: 2 },
+								right: 34 },
+							right: 5.6 },
+						right: -7.890 },
+					right: {tag: 'ident', name: 'x'}
 			} } ]
 		);
 	});
