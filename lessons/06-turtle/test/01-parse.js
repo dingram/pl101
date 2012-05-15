@@ -52,6 +52,41 @@ suite('numbers', function() {
 	});
 });
 
+suite('strings', function() {
+	test('empty single-quoted', function() {
+		assert.deepEqual(
+			tortoise.parse("'';"),
+			[ { tag: 'ignore', body: { tag:'string', value:'' } } ]
+		);
+	});
+	test('empty double-quoted', function() {
+		assert.deepEqual(
+			tortoise.parse('"";'),
+			[ { tag: 'ignore', body: { tag:'string', value:'' } } ]
+		);
+	});
+	test('non-empty single-quoted', function() {
+		assert.deepEqual(
+			tortoise.parse("'foo';"),
+			[ { tag: 'ignore', body: { tag:'string', value:'foo' } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse("'foo BaR baz:';"),
+			[ { tag: 'ignore', body: { tag:'string', value:'foo BaR baz:' } } ]
+		);
+	});
+	test('non-empty double-quoted', function() {
+		assert.deepEqual(
+			tortoise.parse('"foo";'),
+			[ { tag: 'ignore', body: { tag:'string', value:'foo' } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('"foo BaR baz:";'),
+			[ { tag: 'ignore', body: { tag:'string', value:'foo BaR baz:' } } ]
+		);
+	});
+});
+
 suite('identifiers', function() {
 	test('name checks', function() {
 		assert.deepEqual(

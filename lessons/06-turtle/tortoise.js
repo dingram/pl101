@@ -61,6 +61,7 @@
 			case '||': return evalExpr(expr.left, env) || evalExpr(expr.right, env) ? 1 : 0;
 
 			case 'ident': return lookup(env, expr.name);
+			case 'string': return expr.value;
 
 			case 'call':
 				var func = lookup(env, expr.name);
@@ -135,6 +136,7 @@
 		if (typeof initialEnv._outer == 'undefined') {
 			initialEnv._outer = null;
 		}
+		//add_binding(initialEnv, 'log', function(){ console.log.apply(console, arguments); });
 		return execStatements(program, initialEnv);
 	};
 

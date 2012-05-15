@@ -115,6 +115,39 @@ unary
 		{ return { tag:'!', expr:expr }; }
 	/ primary
 
+sqStrChar
+	= [0-9a-zA-Z _+,:]
+	/ "\u005c\u005c" { return "\u005c"; }
+	/ "\u005c'" { return "'"; }
+
+dqStrChar
+	= [0-9a-zA-Z _+,:]
+	/ escapedChar
+
+escapedChar
+	= "\u005c" char:.
+		{
+			switch (char) {
+				case 'n': return "\n";
+				case 'r': return "\r";
+				case 't': return "\t";
+				case '0': return "\0";
+			}
+			return char;
+		}
+
+sqString "single-quoted string"
+	= "'" chars:sqStrChar* "'"
+		{ return { tag:"string", value:chars.join('') }; }
+
+dqString "double-quoted string"
+	= '"' chars:dqStrChar* '"'
+		{ return { tag:"string", value:chars.join('') }; }
+
+string "string"
+	= sqString
+	/ dqString
+
 identifier "identifier"
 	= firstchar:[a-zA-Z_] chars:[0-9a-zA-Z_]*
 		{ return firstchar + chars.join(''); }
@@ -122,6 +155,8 @@ identifier "identifier"
 primary
 	= n:number ws
 		{ return n; }
+	/ s:string ws
+		{ return s; }
 	/ v:identifier ws "(" ws ")" ws
 		{ return {tag:"call", name:v, args:[]}; }
 	/ v:identifier ws "(" ws args:arglist ws ")" ws
