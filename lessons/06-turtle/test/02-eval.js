@@ -210,6 +210,16 @@ suite('expression evaluation (integers and variables)', function() {
 			Math.pow(-3, -8)
 		);
 	});
+	test('unary minus', function() {
+		assert.deepEqual(
+			tortoise.eval('-x;', {bindings:{x:8}}),
+			-8
+		);
+		assert.deepEqual(
+			tortoise.eval('-x;', {bindings:{x:-8}}),
+			8
+		);
+	});
 });
 
 suite('variable definition', function() {
