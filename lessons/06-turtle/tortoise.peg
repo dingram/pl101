@@ -84,6 +84,8 @@ exponential
 unary
 	= "-" ws expr:primary
 		{ return (typeof expr == 'number') ? -expr : { tag:'-', left:0, right:expr }; }
+	/ "!" ws expr:primary
+		{ return { tag:'!', expr:expr }; }
 	/ primary
 
 identifier "identifier"

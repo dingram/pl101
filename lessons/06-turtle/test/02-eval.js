@@ -220,6 +220,28 @@ suite('expression evaluation (integers and variables)', function() {
 			8
 		);
 	});
+	test('unary negation', function() {
+		assert.deepEqual(
+			tortoise.eval('!x;', {bindings:{x:0}}),
+			1
+		);
+		assert.deepEqual(
+			tortoise.eval('!x;', {bindings:{x:1}}),
+			0
+		);
+		assert.deepEqual(
+			tortoise.eval('!x;', {bindings:{x:-1}}),
+			0
+		);
+		assert.deepEqual(
+			tortoise.eval('!x;', {bindings:{x:8}}),
+			0
+		);
+		assert.deepEqual(
+			tortoise.eval('!x;', {bindings:{x:-8}}),
+			0
+		);
+	});
 });
 
 suite('variable definition', function() {

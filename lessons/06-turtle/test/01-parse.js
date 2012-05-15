@@ -86,6 +86,16 @@ suite('identifiers', function() {
 			tortoise.parse('$z;');
 		}).to.throw();
 	});
+	test('unary negation', function() {
+		assert.deepEqual(
+			tortoise.parse('!x;'),
+			[ { tag: 'ignore', body: { tag: '!', expr: {tag:'ident', name:'x' } } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('!foo;'),
+			[ { tag: 'ignore', body: { tag: '!', expr: {tag:'ident', name:'foo' } } } ]
+		);
+	});
 });
 
 suite('expressions', function() {
