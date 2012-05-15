@@ -50,6 +50,7 @@ module.exports = (function(){
         "mult_op": parse_mult_op,
         "mult_term": parse_mult_term,
         "multiplicative": parse_multiplicative,
+        "exponential": parse_exponential,
         "identifier": parse_identifier,
         "primary": parse_primary,
         "comma_expression": parse_comma_expression,
@@ -1337,7 +1338,7 @@ module.exports = (function(){
         if (result0 !== null) {
           result1 = parse_ws();
           if (result1 !== null) {
-            result2 = parse_primary();
+            result2 = parse_exponential();
             if (result2 !== null) {
               result3 = parse_ws();
               if (result3 !== null) {
@@ -1373,7 +1374,7 @@ module.exports = (function(){
         
         pos0 = clone(pos);
         pos1 = clone(pos);
-        result0 = parse_primary();
+        result0 = parse_exponential();
         if (result0 !== null) {
           pos2 = clone(pos);
           reportFailures++;
@@ -1404,7 +1405,7 @@ module.exports = (function(){
         if (result0 === null) {
           pos0 = clone(pos);
           pos1 = clone(pos);
-          result0 = parse_primary();
+          result0 = parse_exponential();
           if (result0 !== null) {
             result1 = [];
             result2 = parse_mult_term();
@@ -1428,9 +1429,63 @@ module.exports = (function(){
           if (result0 === null) {
             pos = clone(pos0);
           }
-          if (result0 === null) {
-            result0 = parse_primary();
+        }
+        return result0;
+      }
+      
+      function parse_exponential() {
+        var result0, result1, result2, result3, result4;
+        var pos0, pos1;
+        
+        pos0 = clone(pos);
+        pos1 = clone(pos);
+        result0 = parse_primary();
+        if (result0 !== null) {
+          result1 = parse_ws();
+          if (result1 !== null) {
+            if (input.substr(pos.offset, 2) === "**") {
+              result2 = "**";
+              advance(pos, 2);
+            } else {
+              result2 = null;
+              if (reportFailures === 0) {
+                matchFailed("\"**\"");
+              }
+            }
+            if (result2 !== null) {
+              result3 = parse_ws();
+              if (result3 !== null) {
+                result4 = parse_exponential();
+                if (result4 !== null) {
+                  result0 = [result0, result1, result2, result3, result4];
+                } else {
+                  result0 = null;
+                  pos = clone(pos1);
+                }
+              } else {
+                result0 = null;
+                pos = clone(pos1);
+              }
+            } else {
+              result0 = null;
+              pos = clone(pos1);
+            }
+          } else {
+            result0 = null;
+            pos = clone(pos1);
           }
+        } else {
+          result0 = null;
+          pos = clone(pos1);
+        }
+        if (result0 !== null) {
+          result0 = (function(offset, line, column, left, right) { return { tag:'**', left:left, right:right }; })(pos0.offset, pos0.line, pos0.column, result0[0], result0[4]);
+        }
+        if (result0 === null) {
+          pos = clone(pos0);
+        }
+        if (result0 === null) {
+          result0 = parse_primary();
         }
         return result0;
       }

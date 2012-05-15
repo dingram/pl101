@@ -67,14 +67,18 @@ additive
 mult_op = [*/]
 
 mult_term
-	= op:mult_op ws right:primary ws
+	= op:mult_op ws right:exponential ws
 		{ return [ op, right ]; }
 
 multiplicative
-	= v:primary !mult_term
+	= v:exponential !mult_term
 		{ return v; }
-	/ head:primary tail:mult_term*
+	/ head:exponential tail:mult_term*
 		{ return makeLeftAssoc(head, tail); }
+
+exponential
+	= left:primary ws '**' ws right:exponential
+		{ return { tag:'**', left:left, right:right }; }
 	/ primary
 
 identifier "identifier"

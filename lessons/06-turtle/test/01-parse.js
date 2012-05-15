@@ -161,6 +161,24 @@ suite('expressions', function() {
 			[ { tag: 'ignore', body: { tag: '/', left: -3, right: -8 } } ]
 		);
 	});
+	test('exponentiation', function() {
+		assert.deepEqual(
+			tortoise.parse('3 ** 8;'),
+			[ { tag: 'ignore', body: { tag: '**', left: 3, right: 8 } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('3 ** -8;'),
+			[ { tag: 'ignore', body: { tag: '**', left: 3, right: -8 } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('-3 ** 8;'),
+			[ { tag: 'ignore', body: { tag: '**', left: -3, right: 8 } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('-3 ** -8;'),
+			[ { tag: 'ignore', body: { tag: '**', left: -3, right: -8 } } ]
+		);
+	});
 });
 
 suite('expression associativity', function(){
@@ -182,6 +200,27 @@ suite('expression associativity', function(){
 							right: 5.6 },
 						right: -7.890 },
 					right: {tag: 'ident', name: 'x'}
+			} } ]
+		);
+	});
+	test('exponentiation', function() {
+		assert.deepEqual(
+			tortoise.parse('3 ** 4 ** 5;'),
+			[ { tag: 'ignore', body: { tag: '**', left: 3, right: { tag: '**', left: 4, right: 5 } } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('0 ** -1 ** 2 ** 34 ** 5.6 ** -7.890 ** x;'),
+			[ { tag: 'ignore', body: { tag: '**',
+					left: 0, right: { tag: '**',
+						left: -1, right: { tag: '**',
+							left: 2, right: { tag: '**',
+								left: 34, right: { tag: '**',
+									left: 5.6, right: { tag: '**',
+										left: -7.890, right: {tag: 'ident', name: 'x'}},
+								},
+							},
+						},
+					}
 			} } ]
 		);
 	});
