@@ -64,7 +64,7 @@ additive
 	/ head:multiplicative tail:add_term*
 		{ return makeLeftAssoc(head, tail); }
 
-mult_op = [*/]
+mult_op = [*/%]
 
 mult_term
 	= op:mult_op ws right:exponential ws

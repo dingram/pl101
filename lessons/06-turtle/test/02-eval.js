@@ -83,6 +83,40 @@ suite('expression evaluation (integers)', function() {
 			2
 		);
 	});
+	test('modulo', function() {
+		assert.deepEqual(
+			tortoise.eval('8 % 4;'),
+			0
+		);
+		assert.deepEqual(
+			tortoise.eval('8 % -4;'),
+			0
+		);
+		assert.deepEqual(
+			tortoise.eval('-8 % 4;'),
+			0
+		);
+		assert.deepEqual(
+			tortoise.eval('-8 % -4;'),
+			0
+		);
+		assert.deepEqual(
+			tortoise.eval('8 % 3;'),
+			2
+		);
+		assert.deepEqual(
+			tortoise.eval('8 % -3;'),
+			2
+		);
+		assert.deepEqual(
+			tortoise.eval('-8 % 3;'),
+			-2
+		);
+		assert.deepEqual(
+			tortoise.eval('-8 % -3;'),
+			-2
+		);
+	});
 });
 
 suite('expression evaluation (integers and variables)', function() {

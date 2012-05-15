@@ -1316,13 +1316,13 @@ module.exports = (function(){
       function parse_mult_op() {
         var result0;
         
-        if (/^[*\/]/.test(input.charAt(pos.offset))) {
+        if (/^[*\/%]/.test(input.charAt(pos.offset))) {
           result0 = input.charAt(pos.offset);
           advance(pos, 1);
         } else {
           result0 = null;
           if (reportFailures === 0) {
-            matchFailed("[*\\/]");
+            matchFailed("[*\\/%]");
           }
         }
         return result0;

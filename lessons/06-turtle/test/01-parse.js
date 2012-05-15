@@ -161,6 +161,24 @@ suite('expressions', function() {
 			[ { tag: 'ignore', body: { tag: '/', left: -3, right: -8 } } ]
 		);
 	});
+	test('modulo', function() {
+		assert.deepEqual(
+			tortoise.parse('3 % 8;'),
+			[ { tag: 'ignore', body: { tag: '%', left: 3, right: 8 } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('3 % -8;'),
+			[ { tag: 'ignore', body: { tag: '%', left: 3, right: -8 } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('-3 % 8;'),
+			[ { tag: 'ignore', body: { tag: '%', left: -3, right: 8 } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('-3 % -8;'),
+			[ { tag: 'ignore', body: { tag: '%', left: -3, right: -8 } } ]
+		);
+	});
 	test('exponentiation', function() {
 		assert.deepEqual(
 			tortoise.parse('3 ** 8;'),
@@ -267,6 +285,26 @@ suite('expression precedence', function() {
 			[ { tag: 'ignore', body: { tag: '-', left: { tag: '/', left: 2, right: 3 }, right: 4 } } ]
 		);
 	});
+	test('mod beats add', function() {
+		assert.deepEqual(
+			tortoise.parse('2 + 3 % 4;'),
+			[ { tag: 'ignore', body: { tag: '+', left: 2, right: { tag: '%', left: 3, right: 4 } } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('2 % 3 + 4;'),
+			[ { tag: 'ignore', body: { tag: '+', left: { tag: '%', left: 2, right: 3 }, right: 4 } } ]
+		);
+	});
+	test('mod beats sub', function() {
+		assert.deepEqual(
+			tortoise.parse('2 - 3 % 4;'),
+			[ { tag: 'ignore', body: { tag: '-', left: 2, right: { tag: '%', left: 3, right: 4 } } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('2 % 3 - 4;'),
+			[ { tag: 'ignore', body: { tag: '-', left: { tag: '%', left: 2, right: 3 }, right: 4 } } ]
+		);
+	});
 	test('add beats conditional', function() {
 		assert.deepEqual(
 			tortoise.parse('2 != 3 + 4;'),
@@ -305,6 +343,16 @@ suite('expression precedence', function() {
 		assert.deepEqual(
 			tortoise.parse('2 / 3 < 4;'),
 			[ { tag: 'ignore', body: { tag: '<', left: { tag: '/', left: 2, right: 3 }, right: 4 } } ]
+		);
+	});
+	test('mod beats conditional', function() {
+		assert.deepEqual(
+			tortoise.parse('2 >= 3 % 4;'),
+			[ { tag: 'ignore', body: { tag: '>=', left: 2, right: { tag: '%', left: 3, right: 4 } } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('2 % 3 < 4;'),
+			[ { tag: 'ignore', body: { tag: '<', left: { tag: '%', left: 2, right: 3 }, right: 4 } } ]
 		);
 	});
 });
