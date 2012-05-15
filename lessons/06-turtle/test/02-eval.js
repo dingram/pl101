@@ -228,7 +228,7 @@ suite('if', function() {
 		);
 		assert.deepEqual(
 			tortoise.eval('if (0) { 1; }'),
-			0
+			undefined
 		);
 	});
 	test('simple expression', function() {
@@ -238,7 +238,7 @@ suite('if', function() {
 		);
 		assert.deepEqual(
 			tortoise.eval('if (0 > 17) { 1; }'),
-			0
+			undefined
 		);
 	});
 	test('simple with else', function() {
@@ -259,6 +259,16 @@ suite('if', function() {
 		assert.deepEqual(
 			tortoise.eval('if (0 > 17) { 1; } else { 19; }'),
 			19
+		);
+	});
+	test('simple with multi-statement else', function() {
+		assert.deepEqual(
+			tortoise.eval('if (1) { 5; } else { -1; 25; }'),
+			5
+		);
+		assert.deepEqual(
+			tortoise.eval('if (0) { 1; } else { 784.1; 42; }'),
+			42
 		);
 	});
 });

@@ -110,7 +110,7 @@
 	};
 
 	var execStatements = function(stmts, env) {
-		var val = 0;
+		var val = undefined;
 		for (var i = 0, l = stmts.length; i < l; ++i) {
 			var tmp = execStatement(stmts[i], env);
 			if (typeof tmp !== 'undefined') val = tmp;
