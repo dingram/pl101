@@ -245,6 +245,56 @@ suite('expression associativity', function(){
 });
 
 suite('expression precedence', function() {
+	test('exp beats add', function() {
+		assert.deepEqual(
+			tortoise.parse('2 + 3 ** 4;'),
+			[ { tag: 'ignore', body: { tag: '+', left: 2, right: { tag: '**', left: 3, right: 4 } } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('2 ** 3 + 4;'),
+			[ { tag: 'ignore', body: { tag: '+', left: { tag: '**', left: 2, right: 3 }, right: 4 } } ]
+		);
+	});
+	test('exp beats sub', function() {
+		assert.deepEqual(
+			tortoise.parse('2 - 3 ** 4;'),
+			[ { tag: 'ignore', body: { tag: '-', left: 2, right: { tag: '**', left: 3, right: 4 } } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('2 ** 3 - 4;'),
+			[ { tag: 'ignore', body: { tag: '-', left: { tag: '**', left: 2, right: 3 }, right: 4 } } ]
+		);
+	});
+	test('exp beats mul', function() {
+		assert.deepEqual(
+			tortoise.parse('2 * 3 ** 4;'),
+			[ { tag: 'ignore', body: { tag: '*', left: 2, right: { tag: '**', left: 3, right: 4 } } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('2 ** 3 * 4;'),
+			[ { tag: 'ignore', body: { tag: '*', left: { tag: '**', left: 2, right: 3 }, right: 4 } } ]
+		);
+	});
+	test('exp beats div', function() {
+		assert.deepEqual(
+			tortoise.parse('2 / 3 ** 4;'),
+			[ { tag: 'ignore', body: { tag: '/', left: 2, right: { tag: '**', left: 3, right: 4 } } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('2 ** 3 / 4;'),
+			[ { tag: 'ignore', body: { tag: '/', left: { tag: '**', left: 2, right: 3 }, right: 4 } } ]
+		);
+	});
+	test('exp beats mod', function() {
+		assert.deepEqual(
+			tortoise.parse('2 % 3 ** 4;'),
+			[ { tag: 'ignore', body: { tag: '%', left: 2, right: { tag: '**', left: 3, right: 4 } } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse('2 ** 3 % 4;'),
+			[ { tag: 'ignore', body: { tag: '%', left: { tag: '**', left: 2, right: 3 }, right: 4 } } ]
+		);
+	});
 	test('mul beats add', function() {
 		assert.deepEqual(
 			tortoise.parse('2 + 3 * 4;'),
