@@ -192,6 +192,24 @@ suite('expression evaluation (integers and variables)', function() {
 			2
 		);
 	});
+	test('exponentiation', function() {
+		assert.deepEqual(
+			tortoise.eval('3 ** x;', {bindings:{x:8}}),
+			Math.pow(3, 8)
+		);
+		assert.deepEqual(
+			tortoise.eval('3 ** -x;', {bindings:{x:8}}),
+			Math.pow(3, -8)
+		);
+		assert.deepEqual(
+			tortoise.eval('-3 ** x;', {bindings:{x:8}}),
+			Math.pow(-3, 8)
+		);
+		assert.deepEqual(
+			tortoise.eval('-3 ** -x;', {bindings:{x:8}}),
+			Math.pow(-3, -8)
+		);
+	});
 });
 
 suite('variable definition', function() {
