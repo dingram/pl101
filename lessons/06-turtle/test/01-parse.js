@@ -85,6 +85,26 @@ suite('strings', function() {
 			[ { tag: 'ignore', body: { tag:'string', value:'foo BaR baz:' } } ]
 		);
 	});
+	test('single-quoted with escapes', function() {
+		assert.deepEqual(
+			tortoise.parse("'fo\\\\o\\'s';"),
+			[ { tag: 'ignore', body: { tag:'string', value:"fo\\o's" } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse("'ntest\\ntest2';"),
+			[ { tag: 'ignore', body: { tag:'string', value:'ntest\\ntest2' } } ]
+		);
+	});
+	test('double-quoted with escapes', function() {
+		assert.deepEqual(
+			tortoise.parse("\"fo\\\\o\\\"s\";"),
+			[ { tag: 'ignore', body: { tag:'string', value:"fo\\o\"s" } } ]
+		);
+		assert.deepEqual(
+			tortoise.parse("\"ntest\\ntest2\";"),
+			[ { tag: 'ignore', body: { tag:'string', value:'ntest\ntest2' } } ]
+		);
+	});
 });
 
 suite('identifiers', function() {

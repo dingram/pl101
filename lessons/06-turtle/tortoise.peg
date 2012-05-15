@@ -116,25 +116,37 @@ unary
 	/ primary
 
 sqStrChar
-	= [0-9a-zA-Z _+,:]
-	/ "\u005c\u005c" { return "\u005c"; }
-	/ "\u005c'" { return "'"; }
+	= unescapedChar
+	/ unicodeEscapeChar
+	/ "\\" char:['\\] { return char; }
+	/ "\\" char:. { return "\\"+char; }
 
 dqStrChar
-	= [0-9a-zA-Z _+,:]
+	= unescapedChar
 	/ escapedChar
 
+unescapedChar
+	// any Unicode character except ' or " or \ or control character
+	= [^'"\\\0-\x1F\x7f]
+
 escapedChar
-	= "\u005c" char:.
-		{
-			switch (char) {
-				case 'n': return "\n";
-				case 'r': return "\r";
-				case 't': return "\t";
-				case '0': return "\0";
-			}
-			return char;
-		}
+  = "\\'"  { return "'";  }
+  / '\\"'  { return '"';  }
+  / "\\\\" { return "\\"; }
+  / "\\/"  { return "/";  }
+  / "\\b"  { return "\b"; }
+  / "\\f"  { return "\f"; }
+  / "\\n"  { return "\n"; }
+  / "\\r"  { return "\r"; }
+  / "\\t"  { return "\t"; }
+	/ unicodeEscapeChar
+
+unicodeEscapeChar
+  = "\\u" h1:hexDigit h2:hexDigit h3:hexDigit h4:hexDigit {
+      return String.fromCharCode(parseInt("0x" + h1 + h2 + h3 + h4));
+    }
+
+hexDigit = [0-9a-fA-F]
 
 sqString "single-quoted string"
 	= "'" chars:sqStrChar* "'"
