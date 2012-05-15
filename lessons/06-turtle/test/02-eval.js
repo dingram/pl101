@@ -338,3 +338,75 @@ suite('function definition', function(){
 		assert.isFunction(env.bindings.x);
 	});
 });
+
+suite('function call', function(){
+	test('no args, empty body', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('define x() { } x();', env),
+			0
+		);
+	});
+	test('one arg, empty body', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('define x(foo) { } x(1);', env),
+			0
+		);
+	});
+	test('many args, empty body', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('define x(foo, bar, baz) { } x(1, 2, 3);', env),
+			0
+		);
+	});
+	test('no args, single-statement body', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('define x() { 1 + 2; } x();', env),
+			3
+		);
+	});
+	test('one args, single-statement body', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('define x(foo) { foo + 4; } x(1);', env),
+			5
+		);
+	});
+	test('many args, single-statement body', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('define x(foo, bar, baz) { foo + bar * baz - 3; } x(4, 5, 6);', env),
+			31
+		);
+	});
+	test('no args, multi-statement body', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('define x() { var y; y := 11; if (1 == 2) { 42; } } x();', env),
+			11
+		);
+	});
+	test('one arg, multi-statement body', function() {
+		assert.deepEqual(
+			tortoise.eval('define x(foo) { var y; y := foo - 2; if (foo > 3) { 42; } } x(3);'),
+			1
+		);
+		assert.deepEqual(
+			tortoise.eval('define x(foo) { var y; y := foo - 2; if (foo > 3) { 42; } } x(4);'),
+			42
+		);
+	});
+	test('many args, multi-statement body', function() {
+		assert.deepEqual(
+			tortoise.eval('define x(foo, bar, baz) { var y; y := (baz + 20) / 4; if (foo + bar > 3) { 42; } } x(1, 2, 4);'),
+			6
+		);
+		assert.deepEqual(
+			tortoise.eval('define x(foo, bar, baz) { var y; y := (baz + 20) / 4; if (foo + bar > 3) { 42; } } x(2, 3, 6);'),
+			42
+		);
+	});
+});

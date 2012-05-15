@@ -52,6 +52,11 @@
 			case '>':  return evalExpr(expr.left, env) >  evalExpr(expr.right, env);
 
 			case 'ident': return lookup(env, expr.name);
+
+			case 'call':
+				var func = lookup(env, expr.name);
+				var args = expr.args.map(evalExpr);
+				return func.apply(null, args);
 		}
 
 		throw new Error('Undefined opcode: '+expr.tag);
