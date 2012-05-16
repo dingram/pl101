@@ -78,21 +78,16 @@ Turtle.prototype.left = function (ang) {
     this.angle += ang;
     this.updateTurtle();
 };
-Turtle.prototype.penup = function () {
+Turtle.prototype.pen_up = function () {
     this.pen = false;
 };
-Turtle.prototype.pendown = function () {
+Turtle.prototype.pen_down = function () {
     this.pen = true;
 };
 Turtle.prototype.home = function() {
     this.setPosition(this.originx, this.originy);
 };
 
-// Utility function to log messages
-var log_console = function(msg) {
-    $('#console').append('<p>' + msg + '</p>');
-};
-// After page load
 $(function() {
 		$('#output').css({bottom: ($('#input').height()+10)+'px'});
     var myTurtle = new Turtle("canvas");
@@ -101,6 +96,11 @@ $(function() {
     tortoise.add_binding(env, 'right', function(a) { myTurtle.right(a); });
     tortoise.add_binding(env, 'left', function(a) { myTurtle.left(a); });
     tortoise.add_binding(env, 'home', function() { myTurtle.home(); });
+    tortoise.add_binding(env, 'pen_up', function() { myTurtle.pen_up(); });
+    tortoise.add_binding(env, 'pen_down', function() { myTurtle.pen_down(); });
+    tortoise.add_binding(env, 'color_rgb', function(r,g,b) { myTurtle.setColor(r, g, b); });
+    tortoise.add_binding(env, 'opacity', function(o) { myTurtle.setOpacity(o); });
+    tortoise.add_binding(env, 'width', function(w) { myTurtle.setWidth(w); });
     $('#run').click(function() {
         var user_text = $('#program').val();
 				//$('#console').html('');
