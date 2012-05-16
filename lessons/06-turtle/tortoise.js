@@ -14,6 +14,10 @@ if (typeof module == 'undefined') this.tortoise = {};
 		if (!env || typeof env != 'object') {
 			throw new Error('Environment missing');
 		}
+		if (typeof env.bindings == 'undefined') {
+			env.bindings = {};
+			env._outer = null;
+		}
 		if (name in env.bindings) {
 			env._outer = { bindings: env.bindings, _outer: env._outer };
 			env.bindings = {};
@@ -150,5 +154,6 @@ if (typeof module == 'undefined') this.tortoise = {};
 
 	x.eval = eval;
 	x.parse = function(){ return parser.parse.apply(parser, arguments); };
+	x.add_binding = add_binding;
 
 })(typeof module == 'undefined' ? this.tortoise : module.exports);
