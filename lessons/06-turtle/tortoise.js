@@ -78,7 +78,7 @@ if (typeof module == 'undefined') this.tortoise = {};
 
 			case 'call':
 				var func = lookup(env, expr.name);
-				var args = expr.args.map(evalExpr);
+				var args = expr.args.map(function(x){ return evalExpr(x, env); });
 				return func.apply(null, args);
 		}
 
