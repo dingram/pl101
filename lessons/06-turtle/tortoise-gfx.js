@@ -94,6 +94,7 @@ var log_console = function(msg) {
 };
 // After page load
 $(function() {
+		$('#output').css({bottom: ($('#input').height()+10)+'px'});
     var myTurtle = new Turtle("canvas");
     var env = { };
     tortoise.add_binding(env, 'forward', function(d) { myTurtle.forward(d); });
