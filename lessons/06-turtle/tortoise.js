@@ -1,6 +1,14 @@
+if (typeof module == 'undefined') this.tortoise = {};
 (function(x){
 
-	var parser = require('./tortoise-parser');
+	var parser;
+	if (typeof require != 'undefined') {
+		parser = require('./tortoise-parser');
+	} else if (typeof TORTOISE != 'undefined') {
+		parser = TORTOISE;
+	} else {
+		throw 'Cannot find parser';
+	}
 
 	var add_binding = function(env, name, value) {
 		if (!env || typeof env != 'object') {
@@ -143,4 +151,4 @@
 	x.eval = eval;
 	x.parse = function(){ return parser.parse.apply(parser, arguments); };
 
-})(typeof module == 'undefined' ? this : module.exports);
+})(typeof module == 'undefined' ? this.tortoise : module.exports);
