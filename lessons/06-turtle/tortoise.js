@@ -4,7 +4,8 @@ if (typeof module == 'undefined') this.tortoise = {};
 	var parser;
 	if (typeof require != 'undefined') {
 		parser = require('./tortoise-parser');
-	} else if (typeof TORTOISE != 'undefined') {
+	}
+	if (typeof parser == 'undefined' && typeof TORTOISE != 'undefined') {
 		parser = TORTOISE;
 	} else {
 		throw 'Cannot find parser';
