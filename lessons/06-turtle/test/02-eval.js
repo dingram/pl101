@@ -459,6 +459,30 @@ suite('function definition', function(){
 		);
 		assert.isFunction(env.bindings.x);
 	});
+	test('one (optional) arg, empty body', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('define x(foo := 14) { }', env),
+			0
+		);
+		assert.isFunction(env.bindings.x);
+	});
+	test('many args, one optional, empty body', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('define x(foo, bar, baz := 12) { }', env),
+			0
+		);
+		assert.isFunction(env.bindings.x);
+	});
+	test('many args (all optional), empty body', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('define x(foo := 12, bar := 34, baz := 56) { }', env),
+			0
+		);
+		assert.isFunction(env.bindings.x);
+	});
 	test('no args, single-statement body', function() {
 		var env = {};
 		assert.deepEqual(
@@ -467,7 +491,7 @@ suite('function definition', function(){
 		);
 		assert.isFunction(env.bindings.x);
 	});
-	test('one args, single-statement body', function() {
+	test('one arg, single-statement body', function() {
 		var env = {};
 		assert.deepEqual(
 			tortoise.eval('define x(foo) { foo + 4; }', env),
@@ -479,6 +503,30 @@ suite('function definition', function(){
 		var env = {};
 		assert.deepEqual(
 			tortoise.eval('define x(foo, bar, baz) { foo + bar * baz - 3; }', env),
+			0
+		);
+		assert.isFunction(env.bindings.x);
+	});
+	test('one (optional) arg, single-statement body', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('define x(foo := 4) { foo + 4; }', env),
+			0
+		);
+		assert.isFunction(env.bindings.x);
+	});
+	test('many args, one optional, single-statement body', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('define x(foo, bar, baz := 56) { foo + bar * baz - 3; }', env),
+			0
+		);
+		assert.isFunction(env.bindings.x);
+	});
+	test('many args (all optional), single-statement body', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('define x(foo := 12, bar := 34, baz := 56) { foo + bar * baz - 3; }', env),
 			0
 		);
 		assert.isFunction(env.bindings.x);
@@ -503,6 +551,30 @@ suite('function definition', function(){
 		var env = {};
 		assert.deepEqual(
 			tortoise.eval('define x(foo, bar, baz) { var y; y := (baz + 20) / 4; if (foo + bar > 3) { 42; } }', env),
+			0
+		);
+		assert.isFunction(env.bindings.x);
+	});
+	test('one (optional) arg, multi-statement body', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('define x(foo := 12) { var y; y := foo - 21; if (foo > 3) { 42; } }', env),
+			0
+		);
+		assert.isFunction(env.bindings.x);
+	});
+	test('many args, one optional, multi-statement body', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('define x(foo, bar, baz := 56) { var y; y := (baz + 20) / 4; if (foo + bar > 3) { 42; } }', env),
+			0
+		);
+		assert.isFunction(env.bindings.x);
+	});
+	test('many args (all optional), multi-statement body', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('define x(foo := 12, bar := 34, baz := 56) { var y; y := (baz + 20) / 4; if (foo + bar > 3) { 42; } }', env),
 			0
 		);
 		assert.isFunction(env.bindings.x);
@@ -538,7 +610,7 @@ suite('function call', function(){
 			3
 		);
 	});
-	test('one args, single-statement body', function() {
+	test('one arg, single-statement body', function() {
 		var env = {};
 		assert.deepEqual(
 			tortoise.eval('define x(foo) { foo + 4; } x(1);', env),

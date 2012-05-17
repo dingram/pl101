@@ -23,7 +23,7 @@ statement "statement"
 		{ return { tag:"repeat", expr:expr, body:body }; }
 	/ "define" rws v:identifier ws "(" ws ")" ws "{" ws body:statements ws "}" ws
 		{ return { tag:'define', name:v, args:[], body:body }; }
-	/ "define" rws v:identifier ws "(" ws args:ident_list ws ")" ws "{" ws body:statements ws "}" ws
+	/ "define" rws v:identifier ws "(" ws args:var_list ws ")" ws "{" ws body:statements ws "}" ws
 		{ return { tag:'define', name:v, args:args, body:body }; }
 	/ v:identifier ws ":=" ws expr:expression ws ";" ws
 		{ return { tag:":=", left:v, right:expr }; }
@@ -38,7 +38,7 @@ comma_varlist
 	= "," ws v:var_init
 		{ return v; }
 
-var_list "list of variables"
+var_list
 	= head:var_init tail:comma_varlist*
 		{ return [head].concat(tail); }
 
@@ -52,7 +52,7 @@ comma_ident
 	= "," ws v:identifier
 		{ return v; }
 
-ident_list "list of identifiers"
+ident_list
 	= head:identifier tail:comma_ident*
 		{ return [head].concat(tail); }
 

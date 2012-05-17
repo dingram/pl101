@@ -125,8 +125,8 @@ if (typeof module == 'undefined') this.tortoise = {};
 			case 'define':
 				var body = function(){
 					var innerEnv = { bindings: {}, _outer: env };
-					for (var i = 0, l = stmt.args.length; i < l; ++i) {
-						innerEnv.bindings[stmt.args[i]] = arguments[i];
+					for (var i = 0, l = stmt.args.length, al = arguments.length; i < l; ++i) {
+						innerEnv.bindings[stmt.args[i].name] = i < al ? arguments[i] : stmt.args[i].value;
 					}
 					return execStatements(stmt.body, innerEnv);
 				};

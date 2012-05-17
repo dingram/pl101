@@ -681,7 +681,7 @@ TORTOISE = (function(){
                         if (result4 !== null) {
                           result5 = parse_ws();
                           if (result5 !== null) {
-                            result6 = parse_ident_list();
+                            result6 = parse_var_list();
                             if (result6 !== null) {
                               result7 = parse_ws();
                               if (result7 !== null) {
@@ -1059,7 +1059,6 @@ TORTOISE = (function(){
         var result0, result1, result2;
         var pos0, pos1;
         
-        reportFailures++;
         pos0 = clone(pos);
         pos1 = clone(pos);
         result0 = parse_var_init();
@@ -1085,10 +1084,6 @@ TORTOISE = (function(){
         }
         if (result0 === null) {
           pos = clone(pos0);
-        }
-        reportFailures--;
-        if (reportFailures === 0 && result0 === null) {
-          matchFailed("list of variables");
         }
         return result0;
       }
@@ -1239,7 +1234,6 @@ TORTOISE = (function(){
         var result0, result1, result2;
         var pos0, pos1;
         
-        reportFailures++;
         pos0 = clone(pos);
         pos1 = clone(pos);
         result0 = parse_identifier();
@@ -1265,10 +1259,6 @@ TORTOISE = (function(){
         }
         if (result0 === null) {
           pos = clone(pos0);
-        }
-        reportFailures--;
-        if (reportFailures === 0 && result0 === null) {
-          matchFailed("list of identifiers");
         }
         return result0;
       }
