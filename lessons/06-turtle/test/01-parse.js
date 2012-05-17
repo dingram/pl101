@@ -202,6 +202,66 @@ suite('identifiers', function() {
 			[ { tag: 'ignore', body: { tag: '!', expr: {tag:'ident', name:'foo' } } } ]
 		);
 	});
+	test('array subscript 1 int', function() {
+		assert.deepEqual(
+			tortoise.parse('x[1];'),
+			[ { tag: 'ignore', body: { tag: 'subscript', expr: {tag:'ident', name:'x' }, indices: [ 1 ] } } ]
+		);
+	});
+	test('array subscript 2 ints', function() {
+		assert.deepEqual(
+			tortoise.parse('x[1][14];'),
+			[ { tag: 'ignore', body: { tag: 'subscript', expr: {tag:'ident', name:'x' }, indices: [ 1, 14 ] } } ]
+		);
+	});
+	test('array subscript 1 ident', function() {
+		assert.deepEqual(
+			tortoise.parse('x[foo];'),
+			[ { tag: 'ignore', body: { tag: 'subscript', expr: {tag:'ident', name:'x' }, indices: [ {tag:'ident', name:'foo'} ] } } ]
+		);
+	});
+	test('array subscript 1 string', function() {
+		assert.deepEqual(
+			tortoise.parse('x["foo"];'),
+			[ { tag: 'ignore', body: { tag: 'subscript', expr: {tag:'ident', name:'x' }, indices: [ {tag:'string', value:'foo'} ] } } ]
+		);
+	});
+	test('array member 1 string', function() {
+		assert.deepEqual(
+			tortoise.parse('x.foo;'),
+			[ { tag: 'ignore', body: { tag: 'subscript', expr: {tag:'ident', name:'x' }, indices: [ {tag:'string', value:'foo'} ] } } ]
+		);
+	});
+	test('array subscript 2 idents', function() {
+		assert.deepEqual(
+			tortoise.parse('x[foo][bar];'),
+			[ { tag: 'ignore', body: { tag: 'subscript', expr: {tag:'ident', name:'x' }, indices: [ {tag:'ident', name:'foo'}, {tag:'ident', name:'bar'} ] } } ]
+		);
+	});
+	test('array subscript 2 strings', function() {
+		assert.deepEqual(
+			tortoise.parse('x["foo"]["bar"];'),
+			[ { tag: 'ignore', body: { tag: 'subscript', expr: {tag:'ident', name:'x' }, indices: [ {tag:'string', value:'foo'}, {tag:'string', value:'bar'} ] } } ]
+		);
+	});
+	test('array member 2 strings', function() {
+		assert.deepEqual(
+			tortoise.parse('x.foo.bar;'),
+			[ { tag: 'ignore', body: { tag: 'subscript', expr: {tag:'ident', name:'x' }, indices: [ {tag:'string', value:'foo'}, {tag:'string', value:'bar'} ] } } ]
+		);
+	});
+	test('array subscript 1 expr', function() {
+		assert.deepEqual(
+			tortoise.parse('x[1+2];'),
+			[ { tag: 'ignore', body: { tag: 'subscript', expr: {tag:'ident', name:'x' }, indices: [ {tag:'+', left:1, right:2} ] } } ]
+		);
+	});
+	test('array subscript mixed', function() {
+		assert.deepEqual(
+			tortoise.parse('x[foo][bar];'),
+			[ { tag: 'ignore', body: { tag: 'subscript', expr: {tag:'ident', name:'x' }, indices: [ {tag:'ident', name:'foo'}, {tag:'ident', name:'bar'} ] } } ]
+		);
+	});
 });
 
 suite('expressions', function() {

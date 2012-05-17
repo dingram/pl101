@@ -377,6 +377,51 @@ suite('variable assignment', function() {
 	});
 });
 
+suite('variable subscript', function() {
+	test('string', function(){
+		assert.deepEqual(
+			tortoise.eval('"foo"[0];'),
+			'f'
+		);
+		assert.deepEqual(
+			tortoise.eval('"bar"[1];'),
+			'a'
+		);
+		assert.deepEqual(
+			tortoise.eval('"bar"[2];'),
+			'r'
+		);
+	});
+	test('dictionary, single-level', function(){
+		assert.deepEqual(
+			tortoise.eval('var x := { a: 1, b: 2, c: 4 }; x["a"];'),
+			1
+		);
+		assert.deepEqual(
+			tortoise.eval('var x := { a: 1, b: 2, c: 4 }; x["b"];'),
+			2
+		);
+		assert.deepEqual(
+			tortoise.eval('var x := { a: 1, b: 2, c: 4 }; x["c"];'),
+			4
+		);
+	});
+	test('dictionary, multi-level', function(){
+		assert.deepEqual(
+			tortoise.eval('var x := { a: 1, b: { c: 4 } }; x["a"];'),
+			1
+		);
+		assert.deepEqual(
+			tortoise.eval('var x := { a: 1, b: { c: 4 } }; x["b"];'),
+			{ c: 4 }
+		);
+		assert.deepEqual(
+			tortoise.eval('var x := { a: 1, b: { c: 4 } }; x.b.c;'),
+			4
+		);
+	});
+});
+
 suite('if', function() {
 	test('simple', function() {
 		assert.deepEqual(

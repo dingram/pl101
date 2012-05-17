@@ -139,11 +139,11 @@ exponential
 	/ unary
 
 unary
-	= "-" ws expr:primary
+	= "-" ws expr:member_access
 		{ return (typeof expr == 'number') ? -expr : { tag:'*', left:-1, right:expr }; }
-	/ "!" ws expr:primary
+	/ "!" ws expr:member_access
 		{ return { tag:'!', expr:expr }; }
-	/ primary
+	/ member_access
 
 sqStrChar
 	= unescapedChar
@@ -193,6 +193,22 @@ string "string"
 identifier "identifier"
 	= firstchar:[a-zA-Z_] chars:[0-9a-zA-Z_]* ws
 		{ return firstchar + chars.join(''); }
+
+accessor
+	= "[" ws expr:expression ws "]" ws
+		{ return expr; }
+	/ "." ws name:identifier ws
+		{ return { tag: "string", value: name }; }
+
+member_access
+	= base:primary accessors:accessor* ws
+		{
+			if (!accessors.length) {
+				return base;
+			} else {
+				return { tag: 'subscript', expr: base, indices: accessors };
+			}
+		}
 
 primary
 	= n:number ws

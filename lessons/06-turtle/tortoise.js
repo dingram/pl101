@@ -82,6 +82,30 @@ if (typeof module == 'undefined') this.tortoise = {};
 				}
 				return result;
 
+			case 'subscript':
+				var base = evalExpr(expr.expr, env);
+				var result = base;
+				if (typeof base != 'string' && typeof base != 'object') {
+					throw new Error('Cannot access subscripts of non-string/-dictionary expression');
+				}
+				var indices = expr.indices.map(function(x){ return evalExpr(x, env); });
+				for (var i = 0, l = indices.length; i < l; ++i) {
+					if (typeof result == 'string') {
+						if (typeof indices[i] != 'number') {
+							throw new Error('String offset must be a number');
+						} else if (indices[i] >= 0 && indices[i] < result.length) {
+							result = result[indices[i]];
+						} else {
+							throw new Error('String offset '+indices[i]+' does not exist');
+						}
+					} else if (typeof result != 'undefined' && indices[i] in result) {
+						result = result[indices[i]];
+					} else {
+						throw new Error('Subscript '+indices[i]+' does not exist');
+					}
+				}
+				return result;
+
 			case 'call':
 				var func = lookup(env, expr.name);
 				var args = expr.args.map(function(x){ return evalExpr(x, env); });
