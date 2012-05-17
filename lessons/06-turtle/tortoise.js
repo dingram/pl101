@@ -49,7 +49,7 @@ if (typeof module == 'undefined') this.tortoise = {};
 	};
 
 	var evalExpr = function(expr, env) {
-		if (typeof expr == 'number') {
+		if (typeof expr == 'number' || typeof expr == 'boolean' || typeof expr == 'undefined') {
 			return expr;
 		}
 		switch (expr.tag) {
