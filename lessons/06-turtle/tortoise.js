@@ -75,6 +75,12 @@ if (typeof module == 'undefined') this.tortoise = {};
 
 			case 'ident': return lookup(env, expr.name);
 			case 'string': return expr.value;
+			case 'dict':
+				var result = {};
+				for (var i in expr.contents) {
+					result[i] = evalExpr(expr.contents[i], env);
+				}
+				return result;
 
 			case 'call':
 				var func = lookup(env, expr.name);

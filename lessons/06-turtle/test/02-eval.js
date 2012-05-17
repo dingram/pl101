@@ -244,6 +244,45 @@ suite('expression evaluation (integers and variables)', function() {
 	});
 });
 
+suite('expression evaluation (dictionaries)', function() {
+	test('empty', function() {
+		assert.deepEqual(
+			tortoise.eval('{};'),
+			{}
+		);
+	});
+	test('single-element int', function() {
+		assert.deepEqual(
+			tortoise.eval('{ a: 1 };'),
+			{a: 1}
+		);
+	});
+	test('single-element string', function() {
+		assert.deepEqual(
+			tortoise.eval('{ a: "abc" };'),
+			{a: "abc"}
+		);
+	});
+	test('single-element expression', function() {
+		assert.deepEqual(
+			tortoise.eval('{ a: 1+2 };'),
+			{a: 3}
+		);
+	});
+	test('single-element complex expression', function() {
+		assert.deepEqual(
+			tortoise.eval('{ a: 1+2 };'),
+			{a: 3}
+		);
+	});
+	test('nested complex expression', function() {
+		assert.deepEqual(
+			tortoise.eval('{ foo: { bar: x*(1+2), baz: "quux" } };', { bindings: {x: 15}, _outer: null }),
+			{foo: { bar: 45, baz: 'quux' }}
+		);
+	});
+});
+
 suite('variable definition', function() {
 	test('declaration', function() {
 		var env = {};
