@@ -15,8 +15,8 @@ start
 statements = statement*
 
 statement "statement"
-	= "var" rws v:identifier ws ";" ws
-		{ return { tag:"var", name:v }; }
+	= "var" rws v:var_list ws ";" ws
+		{ return { tag:"var", vars:v }; }
 	/ "if" ws "(" ws expr:expression ws ")" ws "{" ws body:statements ws "}" ws else_body:else_block?
 		{ return { tag:"if", expr:expr, body:body, else_body:else_body }; }
 	/ "repeat" ws "(" ws expr:expression ws ")" ws "{" ws body:statements ws "}" ws
@@ -33,6 +33,20 @@ statement "statement"
 else_block
 	= "else" ws "{" ws body:statements ws "}" ws
 		{ return body; }
+
+comma_varlist
+	= "," ws v:var_init
+		{ return v; }
+
+var_list "list of variables"
+	= head:var_init tail:comma_varlist*
+		{ return [head].concat(tail); }
+
+var_init
+	= n:identifier !":"
+		{ return { name:n, value:undefined }; }
+	/ n:identifier ws ":=" ws expr:expression ws
+		{ return { name:n, value:expr }; }
 
 comma_ident
 	= "," ws v:identifier
@@ -161,7 +175,7 @@ string "string"
 	/ dqString
 
 identifier "identifier"
-	= firstchar:[a-zA-Z_] chars:[0-9a-zA-Z_]*
+	= firstchar:[a-zA-Z_] chars:[0-9a-zA-Z_]* ws
 		{ return firstchar + chars.join(''); }
 
 primary
@@ -169,6 +183,14 @@ primary
 		{ return n; }
 	/ s:string ws
 		{ return s; }
+	/ 'undefined' ws
+		{ return undefined; }
+	/ 'null' ws
+		{ return null; }
+	/ 'true' ws
+		{ return true; }
+	/ 'false' ws
+		{ return false; }
 	/ v:identifier ws "(" ws ")" ws
 		{ return {tag:"call", name:v, args:[]}; }
 	/ v:identifier ws "(" ws args:arglist ws ")" ws

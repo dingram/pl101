@@ -93,7 +93,13 @@ if (typeof module == 'undefined') this.tortoise = {};
 				return evalExpr(stmt.body, env);
 
 			case 'var':
-				add_binding(env, stmt.name, 0);
+				for (var i = 0, l = stmt.vars.length; i < l; ++i) {
+					var val = evalExpr(stmt.vars[i].value, env);
+					if (typeof val === 'undefined') {
+						val = 0;
+					}
+					add_binding(env, stmt.vars[i].name, val);
+				}
 				return 0;
 
 			case ':=':

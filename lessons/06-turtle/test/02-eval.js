@@ -256,7 +256,7 @@ suite('variable definition', function() {
 			{ bindings: { x: 0 }, _outer: null }
 		);
 	});
-	test('dual declaration', function() {
+	test('two declarations', function() {
 		var env = {};
 		assert.deepEqual(
 			tortoise.eval('var x; var y;', env),
@@ -265,6 +265,50 @@ suite('variable definition', function() {
 		assert.deepEqual(
 			env,
 			{ bindings: { x: 0, y: 0 }, _outer: null }
+		);
+	});
+	test('dual declaration', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('var x, y;', env),
+			0
+		);
+		assert.deepEqual(
+			env,
+			{ bindings: { x: 0, y: 0 }, _outer: null }
+		);
+	});
+	test('declaration with initialisation', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('var x := 12;', env),
+			0
+		);
+		assert.deepEqual(
+			env,
+			{ bindings: { x: 12 }, _outer: null }
+		);
+	});
+	test('two declarations with initialisation', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('var x := 12; var y := 34;', env),
+			0
+		);
+		assert.deepEqual(
+			env,
+			{ bindings: { x: 12, y: 34 }, _outer: null }
+		);
+	});
+	test('dual declaration with initialisation', function() {
+		var env = {};
+		assert.deepEqual(
+			tortoise.eval('var x := 12, y := 34;', env),
+			0
+		);
+		assert.deepEqual(
+			env,
+			{ bindings: { x: 12, y: 34 }, _outer: null }
 		);
 	});
 });
