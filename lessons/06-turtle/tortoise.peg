@@ -50,6 +50,30 @@ var_init
 
 expression "expression"
 	= logical_disjunction
+	/ dictionary
+
+dictionary
+	= "{" "}" ws
+		{ return { tag:'dict', contents:{} }; }
+	/ "{" ws v:dict_members ws "}" ws
+		{ return { tag:'dict', contents:v }; }
+
+dict_members
+	= head:dict_member tail:comma_dict_member*
+		{ var v = {}; v[head.n] = head.v; for (var i = 0, l = tail.length; i < l; ++i) { v[tail[i].n] = tail[i].v; }; return v; }
+
+comma_dict_member
+	= "," ws v:dict_member
+		{ return v; }
+
+dict_member
+	= n:dict_key ":" ws v:expression
+		{ return { n: n, v: v }; }
+
+dict_key
+	= identifier
+	/ v:string
+		 { return v.value; }
 
 logic_disj_term
 	= "||" ws right:equality ws

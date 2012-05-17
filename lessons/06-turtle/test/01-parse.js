@@ -107,6 +107,57 @@ suite('strings', function() {
 	});
 });
 
+suite('dicts', function() {
+	test('empty', function() {
+		assert.deepEqual(
+			tortoise.parse("{};"),
+			[ { tag: 'ignore', body: { tag:'dict', contents:{} } } ]
+		);
+	});
+	test('single element', function() {
+		assert.deepEqual(
+			tortoise.parse("{ a: 1 };"),
+			[ { tag: 'ignore', body: { tag:'dict', contents:{ a: 1 } } } ]
+		);
+	});
+	test('multiple elements', function() {
+		assert.deepEqual(
+			tortoise.parse("{ a: 1, b: 2 };"),
+			[ { tag: 'ignore', body: { tag:'dict', contents:{ a: 1, b: 2 } } } ]
+		);
+	});
+	test('single element, string key', function() {
+		assert.deepEqual(
+			tortoise.parse("{ 'a': 1 };"),
+			[ { tag: 'ignore', body: { tag:'dict', contents:{ a: 1 } } } ]
+		);
+	});
+	test('multiple elements, one string key', function() {
+		assert.deepEqual(
+			tortoise.parse("{ a: 1, 'b': 2 };"),
+			[ { tag: 'ignore', body: { tag:'dict', contents:{ a: 1, b: 2 } } } ]
+		);
+	});
+	test('multiple elements, all string keys', function() {
+		assert.deepEqual(
+			tortoise.parse("{ 'a': 1, \"b\": 2 };"),
+			[ { tag: 'ignore', body: { tag:'dict', contents:{ a: 1, b: 2 } } } ]
+		);
+	});
+	test('single element, string value', function() {
+		assert.deepEqual(
+			tortoise.parse("{ 'a': 'wtf' };"),
+			[ { tag: 'ignore', body: { tag:'dict', contents:{ a: { tag: 'string', value: 'wtf' } } } } ]
+		);
+	});
+	test('single element, identifier value', function() {
+		assert.deepEqual(
+			tortoise.parse("{ a: a };"),
+			[ { tag: 'ignore', body: { tag:'dict', contents:{ a: { tag: 'ident', name: 'a' } } } } ]
+		);
+	});
+});
+
 suite('identifiers', function() {
 	test('name checks', function() {
 		assert.deepEqual(

@@ -43,6 +43,12 @@ TORTOISE = (function(){
         "comma_varlist": parse_comma_varlist,
         "var_list": parse_var_list,
         "var_init": parse_var_init,
+        "expression": parse_expression,
+        "dictionary": parse_dictionary,
+        "dict_members": parse_dict_members,
+        "comma_dict_member": parse_comma_dict_member,
+        "dict_member": parse_dict_member,
+        "dict_key": parse_dict_key,
         "logic_disj_term": parse_logic_disj_term,
         "logical_disjunction": parse_logical_disjunction,
         "logic_conj_term": parse_logic_conj_term,
@@ -266,7 +272,7 @@ TORTOISE = (function(){
               if (result2 !== null) {
                 result3 = parse_ws();
                 if (result3 !== null) {
-                  result4 = parse_logical_disjunction();
+                  result4 = parse_expression();
                   if (result4 !== null) {
                     result5 = parse_ws();
                     if (result5 !== null) {
@@ -407,7 +413,7 @@ TORTOISE = (function(){
                 if (result2 !== null) {
                   result3 = parse_ws();
                   if (result3 !== null) {
-                    result4 = parse_logical_disjunction();
+                    result4 = parse_expression();
                     if (result4 !== null) {
                       result5 = parse_ws();
                       if (result5 !== null) {
@@ -813,7 +819,7 @@ TORTOISE = (function(){
                       if (result2 !== null) {
                         result3 = parse_ws();
                         if (result3 !== null) {
-                          result4 = parse_logical_disjunction();
+                          result4 = parse_expression();
                           if (result4 !== null) {
                             result5 = parse_ws();
                             if (result5 !== null) {
@@ -871,7 +877,7 @@ TORTOISE = (function(){
                   if (result0 === null) {
                     pos0 = clone(pos);
                     pos1 = clone(pos);
-                    result0 = parse_logical_disjunction();
+                    result0 = parse_expression();
                     if (result0 !== null) {
                       result1 = parse_ws();
                       if (result1 !== null) {
@@ -1147,7 +1153,7 @@ TORTOISE = (function(){
               if (result2 !== null) {
                 result3 = parse_ws();
                 if (result3 !== null) {
-                  result4 = parse_logical_disjunction();
+                  result4 = parse_expression();
                   if (result4 !== null) {
                     result5 = parse_ws();
                     if (result5 !== null) {
@@ -1178,6 +1184,275 @@ TORTOISE = (function(){
           }
           if (result0 !== null) {
             result0 = (function(offset, line, column, n, expr) { return { name:n, value:expr }; })(pos0.offset, pos0.line, pos0.column, result0[0], result0[4]);
+          }
+          if (result0 === null) {
+            pos = clone(pos0);
+          }
+        }
+        return result0;
+      }
+      
+      function parse_expression() {
+        var result0;
+        
+        reportFailures++;
+        result0 = parse_logical_disjunction();
+        if (result0 === null) {
+          result0 = parse_dictionary();
+        }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("expression");
+        }
+        return result0;
+      }
+      
+      function parse_dictionary() {
+        var result0, result1, result2, result3, result4, result5;
+        var pos0, pos1;
+        
+        pos0 = clone(pos);
+        pos1 = clone(pos);
+        if (input.charCodeAt(pos.offset) === 123) {
+          result0 = "{";
+          advance(pos, 1);
+        } else {
+          result0 = null;
+          if (reportFailures === 0) {
+            matchFailed("\"{\"");
+          }
+        }
+        if (result0 !== null) {
+          if (input.charCodeAt(pos.offset) === 125) {
+            result1 = "}";
+            advance(pos, 1);
+          } else {
+            result1 = null;
+            if (reportFailures === 0) {
+              matchFailed("\"}\"");
+            }
+          }
+          if (result1 !== null) {
+            result2 = parse_ws();
+            if (result2 !== null) {
+              result0 = [result0, result1, result2];
+            } else {
+              result0 = null;
+              pos = clone(pos1);
+            }
+          } else {
+            result0 = null;
+            pos = clone(pos1);
+          }
+        } else {
+          result0 = null;
+          pos = clone(pos1);
+        }
+        if (result0 !== null) {
+          result0 = (function(offset, line, column) { return { tag:'dict', contents:{} }; })(pos0.offset, pos0.line, pos0.column);
+        }
+        if (result0 === null) {
+          pos = clone(pos0);
+        }
+        if (result0 === null) {
+          pos0 = clone(pos);
+          pos1 = clone(pos);
+          if (input.charCodeAt(pos.offset) === 123) {
+            result0 = "{";
+            advance(pos, 1);
+          } else {
+            result0 = null;
+            if (reportFailures === 0) {
+              matchFailed("\"{\"");
+            }
+          }
+          if (result0 !== null) {
+            result1 = parse_ws();
+            if (result1 !== null) {
+              result2 = parse_dict_members();
+              if (result2 !== null) {
+                result3 = parse_ws();
+                if (result3 !== null) {
+                  if (input.charCodeAt(pos.offset) === 125) {
+                    result4 = "}";
+                    advance(pos, 1);
+                  } else {
+                    result4 = null;
+                    if (reportFailures === 0) {
+                      matchFailed("\"}\"");
+                    }
+                  }
+                  if (result4 !== null) {
+                    result5 = parse_ws();
+                    if (result5 !== null) {
+                      result0 = [result0, result1, result2, result3, result4, result5];
+                    } else {
+                      result0 = null;
+                      pos = clone(pos1);
+                    }
+                  } else {
+                    result0 = null;
+                    pos = clone(pos1);
+                  }
+                } else {
+                  result0 = null;
+                  pos = clone(pos1);
+                }
+              } else {
+                result0 = null;
+                pos = clone(pos1);
+              }
+            } else {
+              result0 = null;
+              pos = clone(pos1);
+            }
+          } else {
+            result0 = null;
+            pos = clone(pos1);
+          }
+          if (result0 !== null) {
+            result0 = (function(offset, line, column, v) { return { tag:'dict', contents:v }; })(pos0.offset, pos0.line, pos0.column, result0[2]);
+          }
+          if (result0 === null) {
+            pos = clone(pos0);
+          }
+        }
+        return result0;
+      }
+      
+      function parse_dict_members() {
+        var result0, result1, result2;
+        var pos0, pos1;
+        
+        pos0 = clone(pos);
+        pos1 = clone(pos);
+        result0 = parse_dict_member();
+        if (result0 !== null) {
+          result1 = [];
+          result2 = parse_comma_dict_member();
+          while (result2 !== null) {
+            result1.push(result2);
+            result2 = parse_comma_dict_member();
+          }
+          if (result1 !== null) {
+            result0 = [result0, result1];
+          } else {
+            result0 = null;
+            pos = clone(pos1);
+          }
+        } else {
+          result0 = null;
+          pos = clone(pos1);
+        }
+        if (result0 !== null) {
+          result0 = (function(offset, line, column, head, tail) { var v = {}; v[head.n] = head.v; for (var i = 0, l = tail.length; i < l; ++i) { v[tail[i].n] = tail[i].v; }; return v; })(pos0.offset, pos0.line, pos0.column, result0[0], result0[1]);
+        }
+        if (result0 === null) {
+          pos = clone(pos0);
+        }
+        return result0;
+      }
+      
+      function parse_comma_dict_member() {
+        var result0, result1, result2;
+        var pos0, pos1;
+        
+        pos0 = clone(pos);
+        pos1 = clone(pos);
+        if (input.charCodeAt(pos.offset) === 44) {
+          result0 = ",";
+          advance(pos, 1);
+        } else {
+          result0 = null;
+          if (reportFailures === 0) {
+            matchFailed("\",\"");
+          }
+        }
+        if (result0 !== null) {
+          result1 = parse_ws();
+          if (result1 !== null) {
+            result2 = parse_dict_member();
+            if (result2 !== null) {
+              result0 = [result0, result1, result2];
+            } else {
+              result0 = null;
+              pos = clone(pos1);
+            }
+          } else {
+            result0 = null;
+            pos = clone(pos1);
+          }
+        } else {
+          result0 = null;
+          pos = clone(pos1);
+        }
+        if (result0 !== null) {
+          result0 = (function(offset, line, column, v) { return v; })(pos0.offset, pos0.line, pos0.column, result0[2]);
+        }
+        if (result0 === null) {
+          pos = clone(pos0);
+        }
+        return result0;
+      }
+      
+      function parse_dict_member() {
+        var result0, result1, result2, result3;
+        var pos0, pos1;
+        
+        pos0 = clone(pos);
+        pos1 = clone(pos);
+        result0 = parse_dict_key();
+        if (result0 !== null) {
+          if (input.charCodeAt(pos.offset) === 58) {
+            result1 = ":";
+            advance(pos, 1);
+          } else {
+            result1 = null;
+            if (reportFailures === 0) {
+              matchFailed("\":\"");
+            }
+          }
+          if (result1 !== null) {
+            result2 = parse_ws();
+            if (result2 !== null) {
+              result3 = parse_expression();
+              if (result3 !== null) {
+                result0 = [result0, result1, result2, result3];
+              } else {
+                result0 = null;
+                pos = clone(pos1);
+              }
+            } else {
+              result0 = null;
+              pos = clone(pos1);
+            }
+          } else {
+            result0 = null;
+            pos = clone(pos1);
+          }
+        } else {
+          result0 = null;
+          pos = clone(pos1);
+        }
+        if (result0 !== null) {
+          result0 = (function(offset, line, column, n, v) { return { n: n, v: v }; })(pos0.offset, pos0.line, pos0.column, result0[0], result0[3]);
+        }
+        if (result0 === null) {
+          pos = clone(pos0);
+        }
+        return result0;
+      }
+      
+      function parse_dict_key() {
+        var result0;
+        var pos0;
+        
+        result0 = parse_identifier();
+        if (result0 === null) {
+          pos0 = clone(pos);
+          result0 = parse_string();
+          if (result0 !== null) {
+            result0 = (function(offset, line, column, v) { return v.value; })(pos0.offset, pos0.line, pos0.column, result0);
           }
           if (result0 === null) {
             pos = clone(pos0);
@@ -2861,7 +3136,7 @@ TORTOISE = (function(){
                           if (result0 !== null) {
                             result1 = parse_ws();
                             if (result1 !== null) {
-                              result2 = parse_logical_disjunction();
+                              result2 = parse_expression();
                               if (result2 !== null) {
                                 result3 = parse_ws();
                                 if (result3 !== null) {
@@ -2938,7 +3213,7 @@ TORTOISE = (function(){
         if (result0 !== null) {
           result1 = parse_ws();
           if (result1 !== null) {
-            result2 = parse_logical_disjunction();
+            result2 = parse_expression();
             if (result2 !== null) {
               result0 = [result0, result1, result2];
             } else {
@@ -2969,7 +3244,7 @@ TORTOISE = (function(){
         reportFailures++;
         pos0 = clone(pos);
         pos1 = clone(pos);
-        result0 = parse_logical_disjunction();
+        result0 = parse_expression();
         if (result0 !== null) {
           result1 = [];
           result2 = parse_comma_expression();
