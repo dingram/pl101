@@ -43,8 +43,6 @@ TORTOISE = (function(){
         "comma_varlist": parse_comma_varlist,
         "var_list": parse_var_list,
         "var_init": parse_var_init,
-        "comma_ident": parse_comma_ident,
-        "ident_list": parse_ident_list,
         "logic_disj_term": parse_logic_disj_term,
         "logical_disjunction": parse_logical_disjunction,
         "logic_conj_term": parse_logic_conj_term,
@@ -1184,81 +1182,6 @@ TORTOISE = (function(){
           if (result0 === null) {
             pos = clone(pos0);
           }
-        }
-        return result0;
-      }
-      
-      function parse_comma_ident() {
-        var result0, result1, result2;
-        var pos0, pos1;
-        
-        pos0 = clone(pos);
-        pos1 = clone(pos);
-        if (input.charCodeAt(pos.offset) === 44) {
-          result0 = ",";
-          advance(pos, 1);
-        } else {
-          result0 = null;
-          if (reportFailures === 0) {
-            matchFailed("\",\"");
-          }
-        }
-        if (result0 !== null) {
-          result1 = parse_ws();
-          if (result1 !== null) {
-            result2 = parse_identifier();
-            if (result2 !== null) {
-              result0 = [result0, result1, result2];
-            } else {
-              result0 = null;
-              pos = clone(pos1);
-            }
-          } else {
-            result0 = null;
-            pos = clone(pos1);
-          }
-        } else {
-          result0 = null;
-          pos = clone(pos1);
-        }
-        if (result0 !== null) {
-          result0 = (function(offset, line, column, v) { return v; })(pos0.offset, pos0.line, pos0.column, result0[2]);
-        }
-        if (result0 === null) {
-          pos = clone(pos0);
-        }
-        return result0;
-      }
-      
-      function parse_ident_list() {
-        var result0, result1, result2;
-        var pos0, pos1;
-        
-        pos0 = clone(pos);
-        pos1 = clone(pos);
-        result0 = parse_identifier();
-        if (result0 !== null) {
-          result1 = [];
-          result2 = parse_comma_ident();
-          while (result2 !== null) {
-            result1.push(result2);
-            result2 = parse_comma_ident();
-          }
-          if (result1 !== null) {
-            result0 = [result0, result1];
-          } else {
-            result0 = null;
-            pos = clone(pos1);
-          }
-        } else {
-          result0 = null;
-          pos = clone(pos1);
-        }
-        if (result0 !== null) {
-          result0 = (function(offset, line, column, head, tail) { return [head].concat(tail); })(pos0.offset, pos0.line, pos0.column, result0[0], result0[1]);
-        }
-        if (result0 === null) {
-          pos = clone(pos0);
         }
         return result0;
       }

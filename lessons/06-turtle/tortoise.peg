@@ -48,14 +48,6 @@ var_init
 	/ n:identifier ws ":=" ws expr:expression ws
 		{ return { name:n, value:expr }; }
 
-comma_ident
-	= "," ws v:identifier
-		{ return v; }
-
-ident_list
-	= head:identifier tail:comma_ident*
-		{ return [head].concat(tail); }
-
 expression "expression"
 	= logical_disjunction
 
