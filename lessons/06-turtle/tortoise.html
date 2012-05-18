@@ -99,5 +99,23 @@ lsystem_draw({
 }, 'A', 4);
 </script>
 
+<script type="text/x-tortoise-script" id="ex-sierpinski">
+width(2);
+
+right(90);
+forward(100);
+right(90);
+forward(100);
+right(180);
+
+lsystem_draw({
+	'F': function() { forward(25); },
+	'+': function() { right(60); },
+	'-': function() { left(60); },
+	'A': 'B-A-B',
+	'B': 'A+B+A'
+}, 'A', 4);
+</script>
+
 	</body>
 </html>
