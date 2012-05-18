@@ -82,27 +82,21 @@ curve(100, 29, 0.80, 10);
 </script>
 
 <script type="text/x-tortoise-script" id="ex-hilbert">
-define lsystem_draw(rules, axiom, iterations) {
-	var expr := lsystem_expand(rules, axiom, iterations);
+width(2);
 
-	repeat (expr.length) {
-		var c := expr[i];
-		var r := rules[c];
-		if (!is_string(r)) {
-			r.func.call(null, r.arg);
-		}
-	}
-
-	return 0;
-};
+right(90);
+forward(100);
+right(90);
+forward(100);
+right(180);
 
 lsystem_draw({
-	'F': forward,
-	'+': right,
-	'-': left,
+	'F': function() { forward(25); },
+	'+': function() { right(90); },
+	'-': function() { left(90); },
 	'A': '-BF+AFA+FB-',
 	'B': '+AF-BFB-FA+'
-}, 'A', 1);
+}, 'A', 4);
 </script>
 
 	</body>

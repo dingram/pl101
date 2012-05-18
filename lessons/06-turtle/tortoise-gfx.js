@@ -117,7 +117,7 @@ var lsystem_draw = function(rules, axiom, iterations) {
 		if (!(c in rules)) {
 			throw new Error('No such production: '+c);
 		} else if (typeof r != 'string') {
-			r.func.call(null, r.arg);
+			r();
 		}
 	}
 
@@ -137,9 +137,9 @@ $(function() {
     tortoise.add_binding(env, 'color_rgb', function(r,g,b) { myTurtle.setColor(r, g, b); });
     tortoise.add_binding(env, 'opacity', function(o) { myTurtle.setOpacity(o); });
     tortoise.add_binding(env, 'width', function(w) { myTurtle.setWidth(w); });
-    tortoise.add_binding(env, 'is_string', function(x) { return typeof x === 'string'; );
+    tortoise.add_binding(env, 'is_string', function(x) { return (typeof x) === 'string'; });
     tortoise.add_binding(env, 'lsystem_expand', lsystem_expand);
-    //tortoise.add_binding(env, 'lsystem_draw', lsystem_draw);
+    tortoise.add_binding(env, 'lsystem_draw', lsystem_draw);
     $('#run').click(function() {
         var user_text = $('#program').val();
 				//$('#console').html('');
