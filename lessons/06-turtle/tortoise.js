@@ -92,7 +92,12 @@ if (typeof module == 'undefined') this.tortoise = {};
 				for (var i = 0, l = indices.length; i < l; ++i) {
 					if (typeof result == 'string') {
 						if (typeof indices[i] != 'number') {
-							throw new Error('String offset must be a number');
+							switch (indices[i]) {
+								case 'length':
+									return result.length;
+								default:
+									throw new Error('String offset must be a number');
+							}
 						} else if (indices[i] >= 0 && indices[i] < result.length) {
 							result = result[indices[i]];
 						} else {

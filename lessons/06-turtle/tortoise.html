@@ -25,10 +25,13 @@
 			<div id="canvas"></div>
 		</section>
 		<section id="input">
-			<aside>
+			<aside id="examples">
 				<h2>Examples</h2>
 				<ul>
-					<li><a href="javascript:;">Square</a></li>
+					<li><a href="#ex-square">Square</a></li>
+					<li><a href="#ex-rose">Rose</a></li>
+					<li><a href="#ex-curve">Curve fractal</a></li>
+					<li><a href="#ex-hilbert">Hilbert Curve</a></li>
 				</ul>
 			</aside>
 			<div>
@@ -36,5 +39,71 @@
 				<button id="run">Run</button>
 			</div>
 		</section>
+
+<script type="text/x-tortoise-script" id="ex-square">
+repeat(4) {
+	forward(50);
+	right(90);
+}
+</script>
+
+<script type="text/x-tortoise-script" id="ex-rose">
+repeat(18) {
+	right(20);
+	repeat(36) {
+		forward(20);
+		right(10);
+	}
+}</script>
+
+<script type="text/x-tortoise-script" id="ex-curve">
+define curve(size, angle, scale, count) {
+	if (count > 0) {
+		forward(size);
+		left(angle);
+		curve(size * scale, angle, scale, count - 1);
+
+		right(90);
+		curve(size * scale * scale, angle, scale, count - 1);
+		left(90);
+
+		right(angle);
+		right(180);
+		forward(size);
+		left(180);
+
+	}
+}
+
+right(180);
+forward(100);
+right(180);
+curve(100, 29, 0.80, 10);
+</script>
+
+<script type="text/x-tortoise-script" id="ex-hilbert">
+define lsystem_draw(rules, axiom, iterations) {
+	var expr := lsystem_expand(rules, axiom, iterations);
+
+	repeat (expr.length) {
+		var c := expr[i];
+		var r := rules[c];
+		if (!is_string(r)) {
+			r.func.call(null, r.arg);
+		}
+	}
+
+	return 0;
+};
+
+lsystem_draw({
+	'F': forward,
+	'+': right,
+	'-': left,
+	'A': '-BF+AFA+FB-',
+	'B': '+AF-BFB-FA+'
+}, 'A', 1);
+</script>
+
 	</body>
 </html>
