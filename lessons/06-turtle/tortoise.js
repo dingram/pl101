@@ -48,8 +48,18 @@ if (typeof module == 'undefined') this.tortoise = {};
 		return lookup(env._outer, name);
 	};
 
+	var makeFunction = function(args, body, env) {
+		return function(){
+			var innerEnv = { bindings: {}, _outer: env };
+			for (var i = 0, l = args.length, al = arguments.length; i < l; ++i) {
+				innerEnv.bindings[args[i].name] = i < al ? arguments[i] : args[i].value;
+			}
+			return execStatements(body, innerEnv);
+		};
+	};
+
 	var evalExpr = function(expr, env) {
-		if (typeof expr == 'number' || typeof expr == 'boolean' || typeof expr == 'undefined') {
+		if (typeof expr == 'number' || typeof expr == 'boolean' || typeof expr == 'undefined' || typeof expr == 'function') {
 			return expr;
 		}
 		switch (expr.tag) {
@@ -111,6 +121,10 @@ if (typeof module == 'undefined') this.tortoise = {};
 				}
 				return result;
 
+			case 'function':
+				var body = makeFunction(expr.args, expr.body, env);
+				return body;
+
 			case 'call':
 				var func = lookup(env, expr.name);
 				var args = expr.args.map(function(x){ return evalExpr(x, env); });
@@ -158,13 +172,7 @@ if (typeof module == 'undefined') this.tortoise = {};
 				return val;
 
 			case 'define':
-				var body = function(){
-					var innerEnv = { bindings: {}, _outer: env };
-					for (var i = 0, l = stmt.args.length, al = arguments.length; i < l; ++i) {
-						innerEnv.bindings[stmt.args[i].name] = i < al ? arguments[i] : stmt.args[i].value;
-					}
-					return execStatements(stmt.body, innerEnv);
-				};
+				var body = makeFunction(stmt.args, stmt.body, env);
 				add_binding(env, stmt.name, body);
 				return 0;
 

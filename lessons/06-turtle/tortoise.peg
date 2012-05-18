@@ -223,6 +223,10 @@ primary
 		{ return true; }
 	/ 'false' ws
 		{ return false; }
+	/ "function" ws "(" ws ")" ws "{" ws body:statements ws "}" ws
+		{ return { tag:'function', args:[], body:body }; }
+	/ "function" ws "(" ws args:var_list ws ")" ws "{" ws body:statements ws "}" ws
+		{ return { tag:'function', args:args, body:body }; }
 	/ v:identifier ws "(" ws ")" ws
 		{ return {tag:"call", name:v, args:[]}; }
 	/ v:identifier ws "(" ws args:arglist ws ")" ws
