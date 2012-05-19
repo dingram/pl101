@@ -84,11 +84,13 @@ curve(100, 29, 0.80, 10);
 <script type="text/x-tortoise-script" id="ex-hilbert">
 width(2);
 
+pen_up();
 right(90);
 forward(100);
 right(90);
 forward(100);
 right(180);
+pen_down();
 
 lsystem_draw({
 	'F': function() { forward(25); },
