@@ -1,0 +1,57 @@
+var evalExpr = function(expr, env, cont) {
+    if(typeof expr === 'number') {
+        return thunk(cont, expr);
+    }
+    switch(expr[0]) {
+        case '+':
+            return thunk(
+                evalExpr, expr[1], env,
+                function(v1) {
+                    return thunk(
+                        evalExpr, expr[2], env,
+                        function(v2) {
+                            return thunk(cont, v1 + v2);
+                        }
+                    );
+                }
+            );
+        // Add multiplication
+        case '*':
+            return thunk(
+                evalExpr, expr[1], env,
+                function(v1) {
+                    return thunk(
+                        evalExpr, expr[2], env,
+                        function(v2) {
+                            return thunk(cont, v1 * v2);
+                        }
+                    );
+                }
+            );
+        default:
+            throw new Error("Unknown form");
+    }
+};
+
+------------------------------------------------------------------------
+
+var step = function (state) {
+    if (state.data.tag === "value") {
+        state.data = state.data.val;
+        state.done = true;
+    } else if (state.data.tag === "thunk") {
+        state.data = state.data.func.apply(null, state.data.args);
+    } else {
+        throw new Error("Bad thunk");
+    }
+};
+
+------------------------------------------------------------------------
+
+var evalTwo = function (expr0, expr1, env) {
+    var state0 = stepStart(expr0, env), state1 = stepStart(expr1, env);
+    while(!state0.done || !state1.done) {
+        if (!state0.done) step(state0);
+        if (!state1.done) step(state1);
+    }
+};
