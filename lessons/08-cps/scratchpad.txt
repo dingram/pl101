@@ -55,3 +55,17 @@ var evalTwo = function (expr0, expr1, env) {
         if (!state1.done) step(state1);
     }
 };
+
+------------------------------------------------------------------------
+
+var evalDiv = function (top, bottom, env, cont, xcont) {
+    return thunk(
+        evalExpr, top, env,
+        function(v1) {
+            return thunk(
+                evalExpr, bottom, env,
+                function(v2) {
+                    return v2===0?thunk(xcont, 'EXCEPTION!'):thunk(cont, v1 / v2);
+            }, xcont);
+    }, xcont);
+};
